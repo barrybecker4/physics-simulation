@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="src/css/styles.css">
+
+        <script src="node_modules/planck-js/dist/planck.min.js"></script>
+        <script src="node_modules/phaser/dist/phaser.min.js"></script>
+        <script type="module" src="src/js/physicsSimulator.js"></script>
+    </head>
+
+    <body>
+        <div id="UI" class="ui-controls">
+            <span>Select a totem puzzle: </span>
+            <select id="simulationSelector">
+                <option value="simulation1">Car</option>
+                <option selected value="simulation2">Rag-doll</option>
+            </select>
+            <button id="restartButton">Restart</button>
+        </div>
+        <div id = "physicsSimulator"></div>
+    </body>
+
+</html>
