@@ -1,8 +1,4 @@
 
-//export default {
-//    openTab,
-//}
-
 function openTab(evt, tabName) {
   hideTabs();
   showActiveTab(tabName, evt.currentTarget);

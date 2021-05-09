@@ -17,26 +17,23 @@ export default class PlanckWorld {
   }
 
   createContent(phaserTime) {
-    this.createBox(this.width / 2, this.height - 20, this.width, 40, false);
+    this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false);
   }
 
   // arguments: x, y coordinates of the center, with and height of the box, in pixels
   createBox(posX, posY, width, height, isDynamic){
 
-    // this is how we create a generic Box2D body
     let box = this.world.createBody();
     if (isDynamic){
-
-        // Box2D bodies born as static bodies, but we can make them dynamic
         box.setDynamic();
     }
 
-    // a body can have one or more fixtures. This is how we create a box fixture inside a body
+    // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
     const scale = this.physicsOptions.worldScale;
     box.createFixture(planck.Box(width / 2 / scale, height / 2 / scale));
 
     // now we place the body in the world
-    box.setPosition(planck.Vec2(posX / scale, posY / scale));
+    box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale));
 
     // time to set mass information
     box.setMassData({
