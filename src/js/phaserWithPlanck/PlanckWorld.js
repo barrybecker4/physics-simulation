@@ -17,11 +17,12 @@ export default class PlanckWorld {
   }
 
   createContent(phaserTime) {
-    this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false);
+    const color = Phaser.Display.Color.IntegerToColor(0x00ee11)
+    this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false, color);
   }
 
   // arguments: x, y coordinates of the center, with and height of the box, in pixels
-  createBox(posX, posY, width, height, isDynamic){
+  createBox(posX, posY, width, height, isDynamic, color){
 
     let box = this.world.createBody();
     if (isDynamic){
@@ -43,9 +44,6 @@ export default class PlanckWorld {
     });
 
     // now we create a graphics object representing the body
-    var color = new Phaser.Display.Color();
-    color.random();
-    color.brighten(50).saturate(100);
     let userData = this.createGraphics();
     userData.fillStyle(color.color, 1);
     userData.fillRect(-width / 2, -height / 2, width, height);

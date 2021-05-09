@@ -1,20 +1,23 @@
 import physicsOptions from "../physicsOptions.js";
 import PlanckWorld from "./PlanckWorld.js";
 
+
 let game;
 
+
 window.onload = function() {
-  const restartButton = document.getElementById("restartButton");
-  restartButton.onclick = doRestart();
+  const restartButton = document.getElementById("restartButton1");
+  restartButton.onclick = doRestart;
 
   doRestart();
 }
 
 function doRestart() {
   if (game) {
-    game.destroy(true);
+    //game.destroy(true);
+    game.scene.start("PlayGame");
   }
-  initializePhaser();
+  else initializePhaser();
 }
 
 function initializePhaser() {
@@ -28,18 +31,18 @@ function initializePhaser() {
           width: 600,
           height: 600
       },
-      scene: playGame
+      scene: PlayGame
     }
     game = new Phaser.Game(gameConfig);
     window.focus();
 }
 
-class playGame extends Phaser.Scene {
+class PlayGame extends Phaser.Scene {
   constructor(){
     super("PlayGame");
   }
 
-  create(){
+  create() {
     const createGraphics = () => this.add.graphics();
     this.world = new PlanckWorld(game.config.width, game.config.height, physicsOptions, createGraphics);
     this.world.createContent();
@@ -51,18 +54,25 @@ class playGame extends Phaser.Scene {
         callbackScope: this,
         callback: function(){
             const xPos = Phaser.Math.Between(100, game.config.width - 100);
-            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true);
+            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, this.randomColor());
             this.tick ++;
             if (this.tick == 200) {
-                this.scene.start("PlayGame");
+                doRestart();
             }
         },
         loop: true
     });
   }
 
+  randomColor() {
+    const color = new Phaser.Display.Color();
+    color.random();
+    color.saturate(-30).brighten(30);
+    return color;
+  }
+
   update(){
     const timeStep = 1 / 30;
     this.world.update(timeStep);
   }
-};
+}
