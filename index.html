@@ -2,22 +2,45 @@
 <html>
     <head>
         <link rel="stylesheet" href="src/css/styles.css">
+        <link rel="stylesheet" href="src/css/tabs.css">
 
         <script src="node_modules/planck-js/dist/planck.min.js"></script>
         <script src="node_modules/phaser/dist/phaser.min.js"></script>
-        <script type="module" src="src/js/physicsSimulator.js"></script>
+        <script type="module" src="src/js/phaserWithPlanck/physicsSimulator.js"></script>
+        <script src="src/js/ui/tabs.js"></script>
     </head>
 
     <body>
-        <div id="UI" class="ui-controls">
-            <span>Select a totem puzzle: </span>
-            <select id="simulationSelector">
-                <option value="simulation1">Car</option>
-                <option selected value="simulation2">Rag-doll</option>
-            </select>
-            <button id="restartButton">Restart</button>
+        <div class="tab">
+            <button class="tab-links" onclick="openTab(event, 'PhaserWithPlanck')" id="defaultTab">PhaserWithPlanck</button>
+            <button class="tab-links" onclick="openTab(event, 'PhaserPlanckPlugin')">PhaserPlanckPlugin</button>
+            <button class="tab-links" onclick="openTab(event, 'PhaserMatter')">PhaserMatter</button>
         </div>
-        <div id = "physicsSimulator"></div>
+
+        <div id="PhaserWithPlanck" class="tab-content">
+            <div class="ui-controls">
+                <button id="restartButton1">Restart</button>
+            </div>
+            <div id="physicsSimulator1"></div>
+        </div>
+
+        <div id="PhaserPlanckPlugin" class="tab-content">
+            <div class="ui-controls">
+                <button id="restartButton2">Restart</button>
+            </div>
+            <div id="physicsSimulator2"></div>
+        </div>
+
+        <div id="PhaserMatter" class="tab-content">
+            <div class="ui-controls">
+                <button id="restartButton3">Restart</button>
+            </div>
+            <div id="physicsSimulator3"></div>
+        </div>
+
+        <script>
+            document.getElementById("defaultTab").click();
+        </script>
     </body>
 
 </html>
