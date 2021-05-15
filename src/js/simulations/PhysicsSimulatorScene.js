@@ -1,12 +1,14 @@
 import PlanckWorld from "./PlanckWorld.js";
+import phaserUtils from "./phaserUtils.js";
 
-export default class PhysicsSimulatorScene2 extends Phaser.Scene {
 
-  static NAME = "PhysicsSimulatorScene2";
-  static MAX_BLOCKS = 300;
+export default class PhysicsSimulatorScene extends Phaser.Scene {
+
+  static NAME = "PhysicsSimulatorScene";
+  static MAX_BLOCKS = 100;
 
   constructor(){
-    super(PhysicsSimulatorScene2.NAME);
+    super(PhysicsSimulatorScene.NAME);
   }
 
   create() {
@@ -18,25 +20,18 @@ export default class PhysicsSimulatorScene2 extends Phaser.Scene {
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;
     this.time.addEvent({
-        delay: 40,
+        delay: 400,
         callbackScope: this,
         callback: function(){
             const xPos = Phaser.Math.Between(100, config.width - 100);
-            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, this.randomColor());
+            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, phaserUtils.randomColor());
             this.tick ++;
-            if (this.tick == PhysicsSimulatorScene2.MAX_BLOCKS) {
-                this.game.scene.start(PhysicsSimulatorScene2.NAME, config);
+            if (this.tick === PhysicsSimulatorScene.MAX_BLOCKS) {
+                this.game.scene.start(PhysicsSimulatorScene.NAME, config);
             }
         },
         loop: true
     });
-  }
-
-  randomColor() {
-    const color = new Phaser.Display.Color();
-    color.random();
-    color.saturate(-30).brighten(30);
-    return color;
   }
 
   update() {

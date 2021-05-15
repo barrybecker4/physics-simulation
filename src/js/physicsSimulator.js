@@ -1,6 +1,5 @@
-import physicsOptions from "./physicsOptions.js";
-import PhysicsSimulatorScene from "./PhysicsSimulatorScene.js";
-import PhysicsSimulatorScene2 from "./PhysicsSimulatorScene2.js";
+import PhysicsSimulatorScene from "./simulations/PhysicsSimulatorScene.js";
+import PhysicsSimulatorScene2 from "./simulations/PhysicsSimulatorScene2.js";
 
 
 let game;
@@ -11,7 +10,7 @@ window.onload = function() {
   getPauseButton().onclick = togglePause;
 
   initializePhaser();
-}
+};
 
 
 function simulationSelectionChanged() {
@@ -60,7 +59,7 @@ function getPauseButton() {
 function initializePhaser() {
   let gameConfig = {
       type: Phaser.AUTO,
-      backgroundColor: physicsOptions.backgroundColor,
+      backgroundColor: 0x110022,
       scale: {
           mode: Phaser.Scale.FIT,
           autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -69,7 +68,7 @@ function initializePhaser() {
           height: 600
       },
       scene: [PhysicsSimulatorScene, PhysicsSimulatorScene2]
-    }
+    };
     game = new Phaser.Game(gameConfig);
     game.config.currentScene = PhysicsSimulatorScene.NAME;
     window.focus();

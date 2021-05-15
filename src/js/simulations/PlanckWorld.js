@@ -12,13 +12,12 @@ export default class PlanckWorld {
 
     const pl = planck;
     const Vec2 = pl.Vec2;
-    var world = new pl.World(Vec2(0, physicsOptions.gravity));
 
-    this.world = world;
+    this.world = new pl.World(Vec2(0, physicsOptions.gravity));
   }
 
   createContent(phaserTime) {
-    const color = Phaser.Display.Color.IntegerToColor(0x00ee11)
+    const color = Phaser.Display.Color.IntegerToColor(0x00ee11);
     this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false, color);
   }
 
@@ -27,7 +26,7 @@ export default class PlanckWorld {
 
     let box = this.world.createBody();
     if (isDynamic){
-        box.setDynamic();
+      box.setDynamic();
     }
 
     // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
@@ -39,9 +38,9 @@ export default class PlanckWorld {
 
     // time to set mass information
     box.setMassData({
-        mass: 1,
-        center: planck.Vec2(),
-        I: 1 // needed to rotate
+      mass: 1,
+      center: planck.Vec2(),
+      I: 1 // needed to rotate
     });
 
     // now we create a graphics object representing the body
