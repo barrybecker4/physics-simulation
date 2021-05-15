@@ -1,37 +1,45 @@
 import physicsOptions from "./physicsOptions.js";
 import PhysicsSimulatorScene from "./PhysicsSimulatorScene.js";
 
-
 let game;
 
 window.onload = function() {
-  const restartButton = document.getElementById("restartButton");
-  restartButton.onclick = doRestart;
-
-  const pauseButton = document.getElementById("pauseButton");
-  pauseButton.onclick = doPause;
+  getRestartButton().onclick = doRestart;
+  getPauseButton().onclick = togglePause;
 
   initializePhaser();
 }
 
 function doRestart() {
   if (game) {
-    game.scene.start(PhysicsSimulatorScene.name, game.config);
+    game.scene.start(PhysicsSimulatorScene.NAME, game.config);
+    doResume();
   }
 }
 
-function doPause() {
-  const pauseButton = document.getElementById("pauseButton");
+function togglePause() {
+  if (game.scene.paused) doResume();
+  else doPause();
+}
 
-  if (game.scene.paused) {
-    game.scene.resume(PhysicsSimulatorScene.name);
-    pauseButton.innerText = "Pause";
-  }
-  else {
-    game.scene.pause(PhysicsSimulatorScene.name);
-    pauseButton.innerText = "Resume";
-  }
-  game.scene.paused = !game.scene.paused;
+function doPause() {
+  game.scene.pause(PhysicsSimulatorScene.NAME);
+  getPauseButton().innerText = "Resume";
+  game.scene.paused = true;
+}
+
+function doResume() {
+  game.scene.resume(PhysicsSimulatorScene.NAME);
+  getPauseButton().innerText = "Pause";
+  game.scene.paused = false;
+}
+
+function getRestartButton() {
+  return document.getElementById("restartButton");
+}
+
+function getPauseButton() {
+  return document.getElementById("pauseButton");
 }
 
 function initializePhaser() {
