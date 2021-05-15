@@ -10,10 +10,18 @@
 
     <body>
 
-        <div class="ui-controls">
+        <div id="UI" class="ui-controls">
+            <span>Select a Simulation: </span>
+            <select id="simulationSelector">
+                <option value="PhysicsSimulatorScene">Falling Blocks</option>
+                <option value="PhysicsSimulatorScene2">Many Falling Blocks</option>
+            </select>
+            <span class="spacer"></span>
             <button id="pauseButton">Pause</button>
             <button id="restartButton">Restart</button>
         </div>
+
+
         <div id="physicsSimulator"></div>
 
     </body>

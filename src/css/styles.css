@@ -1,15 +1,21 @@
 
 body {
-    background: #eeeeee;
-    padding: 0px;
-    margin: 0px;
+  background: #eeeeee;
+  padding: 0px;
+  margin: 0px;
 }
 
 .ui-controls {
-    color: #000000;
-    margin: auto;
-    width: 90%;
-    padding: 10px;
+  color: #000000;
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+}
+
+.ui-controls .spacer {
+  display: inline-block;
+  width: 40px;
+  color: #aabb00;
 }
 
 .sim-content {
