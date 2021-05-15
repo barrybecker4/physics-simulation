@@ -1,7 +1,7 @@
 {
-  "name": "totem-destroyer",
+  "name": "physics-simulation",
   "version": "1.0.0",
-  "description": "Simple game",
+  "description": "Collection of physics simulations",
   "main": "game.js",
   "dependencies": {
     "phaser": "^3.54.0",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/barrybecker4/totemDestroyer.git"
+    "url": "git+https://github.com/barrybecker4/physics-simulation.git"
   },
   "keywords": [
     "planck",
@@ -22,7 +22,7 @@
   "author": "Barry Becker",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/barrybecker4/totemDestroyer/issues"
+    "url": "https://github.com/barrybecker4/physics-simulation/issues"
   },
-  "homepage": "https://github.com/barrybecker4/totemDestroyer#readme"
+  "homepage": "https://github.com/barrybecker4/physics-simulation"
 }

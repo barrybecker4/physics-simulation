@@ -1,7 +1,8 @@
+import physicsOptions from "./physicsOptions.js";
 
 export default class PlanckWorld {
 
-  constructor(width, height, physicsOptions, createGraphics) {
+  constructor(width, height, createGraphics) {
     // create a Box2D world
     this.width = width;
     this.height = height;

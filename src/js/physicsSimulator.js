@@ -1,23 +1,39 @@
-import physicsOptions from "../physicsOptions.js";
+import physicsOptions from "./physicsOptions.js";
 import PlanckWorld from "./PlanckWorld.js";
 
 
 let game;
+let paused = false;
 
 
 window.onload = function() {
-  const restartButton = document.getElementById("restartButton1");
+  const restartButton = document.getElementById("restartButton");
   restartButton.onclick = doRestart;
+
+  const pauseButton = document.getElementById("pauseButton");
+  pauseButton.onclick = doPause;
 
   doRestart();
 }
 
 function doRestart() {
   if (game) {
-    //game.destroy(true);
     game.scene.start("PlayGame");
   }
   else initializePhaser();
+}
+
+function doPause() {
+  const pauseButton = document.getElementById("pauseButton");
+  if (!paused) {
+    game.scene.pause("PlayGame");
+    pauseButton.innerText = "Resume";
+  }
+  else {
+    game.scene.resume("PlayGame");
+    pauseButton.innerText = "Pause";
+  }
+  paused = !paused;
 }
 
 function initializePhaser() {
@@ -27,7 +43,7 @@ function initializePhaser() {
       scale: {
           mode: Phaser.Scale.FIT,
           autoCenter: Phaser.Scale.CENTER_BOTH,
-          parent: "physicsSimulator1",
+          parent: "physicsSimulator",
           width: 600,
           height: 600
       },
@@ -44,7 +60,7 @@ class PlayGame extends Phaser.Scene {
 
   create() {
     const createGraphics = () => this.add.graphics();
-    this.world = new PlanckWorld(game.config.width, game.config.height, physicsOptions, createGraphics);
+    this.world = new PlanckWorld(game.config.width, game.config.height, createGraphics);
     this.world.createContent();
 
     // creates a random box each 500ms, then restarts after a while.
@@ -71,7 +87,8 @@ class PlayGame extends Phaser.Scene {
     return color;
   }
 
-  update(){
+  update() {
+    if (paused) return;
     const timeStep = 1 / 30;
     this.world.update(timeStep);
   }
