@@ -1,7 +1,7 @@
 
 export default class PlanckWorld {
 
-  constructor(width, height, physicsOptions, createGraphics) {
+  constructor(width, height, physicsOptions, createGraphics, sounds) {
     // create a Box2D world
     this.width = width;
     this.height = height;
@@ -11,6 +11,14 @@ export default class PlanckWorld {
 
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
+
+    this.world.on('begin-contact', function(contact) {
+      const volume = 0.1 + Math.random() / 50.0;
+      if (volume > 0 && sounds) {
+        //Sounds.playScrape(volume);
+        sounds.playHit(volume);
+      }
+    });
   }
 
   gravityChanged(g) {

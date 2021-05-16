@@ -1,13 +1,13 @@
 import PlanckWorld from "./PlanckWorld.js";
 import phaserUtils from "./phaserUtils.js";
 
-export default class PhysicsSimulatorScene2 extends Phaser.Scene {
+export default class BridgeScene extends Phaser.Scene {
 
-  static NAME = "PhysicsSimulatorScene2";
+  static NAME = "BridgeScene";
   static MAX_BLOCKS = 300;
 
   constructor(){
-    super(PhysicsSimulatorScene2.NAME);
+    super(BridgeScene.NAME);
   }
 
   create() {
@@ -23,10 +23,15 @@ export default class PhysicsSimulatorScene2 extends Phaser.Scene {
         callbackScope: this,
         callback: function(){
             const xPos = Phaser.Math.Between(100, config.width - 100);
-            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, phaserUtils.randomColor(20, 10));
+            this.world.createBox(xPos, -100,
+                Phaser.Math.Between(20, 80),
+                Phaser.Math.Between(20, 80),
+                true,
+                phaserUtils.randomColor(20, 10)
+            );
             this.tick ++;
-            if (this.tick === PhysicsSimulatorScene2.MAX_BLOCKS) {
-                this.game.scene.start(PhysicsSimulatorScene2.NAME, config);
+            if (this.tick === BridgeScene.MAX_BLOCKS) {
+                this.game.scene.start(BridgeScene.NAME, config);
             }
         },
         loop: true
@@ -34,7 +39,7 @@ export default class PhysicsSimulatorScene2 extends Phaser.Scene {
   }
 
 
-  update() {
+  update(time, delta) {
     const timeStep = 1 / 30;
     this.world.update(timeStep);
   }
