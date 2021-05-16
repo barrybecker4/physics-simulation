@@ -13,12 +13,26 @@ export default class PlanckWorld {
     physicsOptions.addGravityChangeListener(this);
 
     this.world.on('begin-contact', function(contact) {
-      const volume = 0.1 + Math.random() / 50.0;
-      if (volume > 0 && sounds) {
+
+      if (sounds) {
+        const impact = PlanckWorld.calculateImpact(contact);
+        const volume = 10.0 * impact;
         //Sounds.playScrape(volume);
         sounds.playHit(volume);
       }
     });
+  }
+
+  static calculateImpact(contact) {
+    const bodyA = contact.m_fixtureA.m_body;
+    const bodyB = contact.m_fixtureB.m_body;
+    const velocity1Mag = bodyA.c_velocity.v.length();
+    const velocity2Mag = bodyB.c_velocity.v.length();
+    const mass1 = bodyA.m_mass;
+    const mass2 = bodyB.m_mass;
+    const energy = 0.5 * mass1 * mass2 * velocity1Mag * velocity2Mag;
+    console.log("energy = " + energy);
+    return energy;
   }
 
   gravityChanged(g) {
