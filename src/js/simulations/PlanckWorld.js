@@ -1,19 +1,20 @@
-import physicsOptions from "./physicsOptions.js";
 
 export default class PlanckWorld {
 
-  constructor(width, height, createGraphics) {
+  constructor(width, height, physicsOptions, createGraphics) {
     // create a Box2D world
     this.width = width;
     this.height = height;
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
-    const worldScale = physicsOptions.worldScale;
+    this.worldScale = physicsOptions.worldScale;
 
-    const pl = planck;
-    const Vec2 = pl.Vec2;
+    this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
+    physicsOptions.addGravityChangeListener(this);
+  }
 
-    this.world = new pl.World(Vec2(0, physicsOptions.gravity));
+  gravityChanged(g) {
+    this.world.setGravity(planck.Vec2(0, g));
   }
 
   createContent(phaserTime) {
@@ -31,7 +32,11 @@ export default class PlanckWorld {
 
     // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
     const scale = this.physicsOptions.worldScale;
-    box.createFixture(planck.Box(width / 2 / scale, height / 2 / scale));
+    box.createFixture(planck.Box(width / 2 / scale, height / 2 / scale), {
+      density: this.physicsOptions.density,
+      restitution: this.physicsOptions.restitution,
+      friction: this.physicsOptions.friction,
+    });
 
     // now we place the body in the world
     box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale));
@@ -54,7 +59,7 @@ export default class PlanckWorld {
 
 
   update(timeStep) {
-    this.world.step(1 / 30);
+    this.world.step(timeStep);
     this.world.clearForces();
 
     // iterate through all bodies

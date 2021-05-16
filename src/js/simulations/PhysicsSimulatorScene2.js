@@ -13,7 +13,7 @@ export default class PhysicsSimulatorScene2 extends Phaser.Scene {
   create() {
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
-    this.world = new PlanckWorld(config.width, config.height, createGraphics);
+    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics);
     this.world.createContent();
 
     // creates a random box every short delay, then restarts after a while.

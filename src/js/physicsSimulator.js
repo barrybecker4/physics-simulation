@@ -1,17 +1,35 @@
 import PhysicsSimulatorScene from "./simulations/PhysicsSimulatorScene.js";
 import PhysicsSimulatorScene2 from "./simulations/PhysicsSimulatorScene2.js";
+import PhysicsOptions from "./simulations/PhysicsOptions.js";
 
 
 let game;
+const physicsOptions = new PhysicsOptions();
 
 window.onload = function() {
   getSimulationSelector().onchange = simulationSelectionChanged;
   getRestartButton().onclick = doRestart;
   getPauseButton().onclick = togglePause;
 
+  initPhysicsControls();
   initializePhaser();
 };
 
+function initPhysicsControls() {
+    initNumberInput("gravity", physicsOptions.gravity);
+    initNumberInput("friction", physicsOptions.friction);
+    initNumberInput("density", physicsOptions.density);
+    initNumberInput("restitution", physicsOptions.restitution);
+}
+
+function initNumberInput(name, defaultValue) {
+    const input = document.getElementById(name + "Input");
+    input.value = defaultValue;
+    input.oninput = (input) => {
+        console.log("input val = " + (+input.target.value));
+        physicsOptions[name] = +input.target.value;
+    }
+}
 
 function simulationSelectionChanged() {
     const simulationSelector = getSimulationSelector();
@@ -67,9 +85,10 @@ function initializePhaser() {
           width: 600,
           height: 600
       },
-      scene: [PhysicsSimulatorScene, PhysicsSimulatorScene2]
+      scene: [PhysicsSimulatorScene, PhysicsSimulatorScene2],
     };
     game = new Phaser.Game(gameConfig);
     game.config.currentScene = PhysicsSimulatorScene.NAME;
+    game.config.physicsOptions = physicsOptions;
     window.focus();
 }

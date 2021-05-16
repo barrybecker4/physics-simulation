@@ -12,6 +12,10 @@ body {
   padding: 10px;
 }
 
+.ui-controls span {
+  padding: 10px;
+}
+
 .ui-controls .spacer {
   display: inline-block;
   width: 40px;

@@ -11,14 +11,29 @@
     <body>
 
         <div id="UI" class="ui-controls">
-            <span>Select a Simulation: </span>
-            <select title="Select a physics simulation to run" id="simulationSelector">
-                <option value="PhysicsSimulatorScene">Falling Blocks</option>
-                <option value="PhysicsSimulatorScene2">Many Falling Blocks</option>
-            </select>
+            <p>Use this Flash application, based on <a href="https://piqnt.com/planck.js/">Planck-js</a>
+                to simulate dynamic structures.</p>
+            <p>You can click on things and drag them around, " +
+                and you can press 'd' over an object to delete it.</p>
+
+            <div>
+                <span>Gravity</span><input id="gravityInput" type="number" min="-20" max="20" step="2" value="8">
+                <span>Friction</span><input id="frictionInput" type="number" min="0" max="10" step="0.1" value="0.5">
+                <span>Density</span><input id="densityInput" type="number" min="0" max="10" step="0.1" value="1.0">
+                <span>Restitution</span><input id="restitutionInput"  type="number" min="0" max="10" step="0.1" value="0.2">
+            </div>
             <span class="spacer"></span>
-            <button id="pauseButton">Pause</button>
-            <button id="restartButton">Restart</button>
+            <div>
+                <span>Select a Simulation: </span>
+                <select title="Select a physics simulation to run" id="simulationSelector">
+                    <option value="PhysicsSimulatorScene">Falling Blocks</option>
+                    <option value="PhysicsSimulatorScene2">Many Falling Blocks</option>
+                </select>
+                <span class="spacer"></span>
+                <button id="pauseButton">Pause</button>
+                <button id="restartButton">Restart</button>
+                <span class="spacer"></span><span>Debug</span><input id="debugCheckbox"  type="checkbox" id="debug">
+            </div>
         </div>
 
 
