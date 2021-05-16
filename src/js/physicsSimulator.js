@@ -25,10 +25,7 @@ function initPhysicsControls() {
 function initNumberInput(name, defaultValue) {
     const input = document.getElementById(name + "Input");
     input.value = defaultValue;
-    input.oninput = (input) => {
-        console.log("input val = " + (+input.target.value));
-        physicsOptions[name] = +input.target.value;
-    }
+    input.oninput = (input) => physicsOptions[name] = +input.target.value;
 }
 
 function simulationSelectionChanged() {
@@ -36,6 +33,7 @@ function simulationSelectionChanged() {
     game.scene.stop(game.config.currentScene);
     game.config.currentScene = simulationSelector.options[ simulationSelector.selectedIndex ].value;
     game.scene.start(game.config.currentScene);
+    doResume();
 }
 
 function doRestart() {

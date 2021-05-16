@@ -23,10 +23,7 @@ export default class PhysicsOptions {
 
     set gravity(g) {
         this._gravity = g;
-        console.log("gravity set to " + g);
-        this.gravityListeners.forEach((listener) => {
-            listener.gravityChanged(g)
-        });
+        this.gravityListeners.forEach(listener => listener.gravityChanged(g));
     }
 
     addGravityChangeListener(listener) {

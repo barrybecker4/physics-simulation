@@ -5,7 +5,7 @@ import phaserUtils from "./phaserUtils.js";
 export default class PhysicsSimulatorScene extends Phaser.Scene {
 
   static NAME = "PhysicsSimulatorScene";
-  static MAX_BLOCKS = 100;
+  static MAX_BLOCKS = 400;
 
   constructor() {
     super(PhysicsSimulatorScene.NAME);
@@ -20,7 +20,7 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;
     this.time.addEvent({
-        delay: 400,
+        delay: 600,
         callbackScope: this,
         callback: function(){
             const xPos = Phaser.Math.Between(100, config.width - 100);
