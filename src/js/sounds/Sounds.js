@@ -1,6 +1,3 @@
-//import flash.media.Sound;
-//import flash.media.SoundTransform;
-
 
 export default class Sounds {
 

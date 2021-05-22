@@ -1,5 +1,6 @@
 import PlanckWorld from "./PlanckWorld.js";
 import phaserUtils from "./phaserUtils.js";
+import Sounds from "../sounds/Sounds.js";
 
 export default class BridgeScene extends Phaser.Scene {
 
@@ -10,10 +11,14 @@ export default class BridgeScene extends Phaser.Scene {
     super(BridgeScene.NAME);
   }
 
+  preload() {
+    this.sounds = new Sounds(this);
+  }
+
   create() {
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
-    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics);
+    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
     this.world.createContent();
 
     // creates a random box every short delay, then restarts after a while.

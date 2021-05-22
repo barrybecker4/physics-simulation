@@ -44,7 +44,6 @@ export default class PlanckWorld {
     this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false, color);
   }
 
-  // arguments: x, y coordinates of the center, with and height of the box, in pixels
   createBox(posX, posY, width, height, isDynamic, color){
 
     let box = this.world.createBody();

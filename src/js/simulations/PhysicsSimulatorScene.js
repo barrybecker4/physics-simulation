@@ -14,11 +14,9 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
 
   preload() {
     this.sounds = new Sounds(this);
-    console.log("sound loaded");
   }
 
   create() {
-
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
     this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
@@ -33,7 +31,6 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
             const xPos = Phaser.Math.Between(100, config.width - 100);
             this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, phaserUtils.randomColor());
             this.tick ++;
-            this.sounds.playHit();
             if (this.tick === PhysicsSimulatorScene.MAX_BLOCKS) {
                 this.sounds.playScrape();
                 this.game.scene.start(PhysicsSimulatorScene.NAME, config);

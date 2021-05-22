@@ -1,6 +1,8 @@
+import PhysicsControls from "./ui/PhysicsControls.js";
 import PhysicsSimulatorScene from "./simulations/PhysicsSimulatorScene.js";
 import BridgeScene from "./simulations/BridgeScene.js";
 import PhysicsOptions from "./simulations/PhysicsOptions.js";
+
 
 
 let game;
@@ -12,22 +14,9 @@ window.onload = function() {
   getRestartButton().onclick = doRestart;
   getPauseButton().onclick = togglePause;
 
-  initPhysicsControls();
+  const physicsControls = new PhysicsControls(physicsOptions);
   initializePhaser();
 };
-
-function initPhysicsControls() {
-    initNumberInput("gravity", physicsOptions.gravity);
-    initNumberInput("friction", physicsOptions.friction);
-    initNumberInput("density", physicsOptions.density);
-    initNumberInput("restitution", physicsOptions.restitution);
-}
-
-function initNumberInput(name, defaultValue) {
-    const input = document.getElementById(name + "Input");
-    input.value = defaultValue;
-    input.oninput = (input) => physicsOptions[name] = +input.target.value;
-}
 
 function simulationSelectionChanged() {
     const simulationSelector = getSimulationSelector();
