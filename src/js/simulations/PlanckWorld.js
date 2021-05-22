@@ -1,50 +1,67 @@
 
 export default class PlanckWorld {
 
-  constructor(width, height, physicsOptions, createGraphics, sounds) {
+  constructor(width, height, physicsOptions, createGraphics) {
     // create a Box2D world
     this.width = width;
     this.height = height;
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
+    this.contactListeners = [];
 
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
 
-    this.world.on('begin-contact', function(contact) {
-
-      if (sounds) {
-        const impact = PlanckWorld.calculateImpact(contact);
-        const volume = 10.0 * impact;
-        //Sounds.playScrape(volume);
-        sounds.playHit(volume);
-      }
+    this.world.on('begin-contact', contact => {
+      this.contactListeners.forEach(listener => {
+        if (listener.onBeginContact) {
+          listener.onBeginContact(contact);
+        }
+      });
+    });
+    this.world.on('end-contact', contact => {
+      this.contactListeners.forEach(listener => {
+        if (listener.onEndContact) {
+          listener.onEndContact(contact);
+        }
+      });
+    });
+    this.world.on('pre-solve', (contact, oldManifold) => {
+      this.contactListeners.forEach(listener => {
+        if (listener.onPreSolve) {
+          listener.onPreSolve(contact, oldManifold);
+        }
+      });
+    });
+    this.world.on('post-solve', (contact, contactImpulse) => {
+      this.contactListeners.forEach(listener => {
+        if (listener.onPostSolve) {
+          listener.onPostSolve(contact, contactImpulse);
+        }
+      });
     });
   }
 
-  static calculateImpact(contact) {
-    const bodyA = contact.m_fixtureA.m_body;
-    const bodyB = contact.m_fixtureB.m_body;
-    const velocity1Mag = bodyA.c_velocity.v.length();
-    const velocity2Mag = bodyB.c_velocity.v.length();
-    const mass1 = bodyA.m_mass;
-    const mass2 = bodyB.m_mass;
-    const energy = 0.5 * mass1 * mass2 * velocity1Mag * velocity2Mag;
-    console.log("energy = " + energy);
-    return energy;
+  addContactListener(contactListener) {
+    this.contactListeners.push(contactListener);
+  }
+
+  removeContactListener(contactListener) {
+    const index = this.contactListeners.indexOf(contactListener);
+    this.contactListeners.splice(index, 1);
   }
 
   gravityChanged(g) {
     this.world.setGravity(planck.Vec2(0, g));
   }
 
-  createContent(phaserTime) {
-    const color = Phaser.Display.Color.IntegerToColor(0x00ee11);
-    this.createBox(this.width / 3, this.height - 20, this.width / 2, 40, false, color);
+  createGround(xpos, ypos, width, height, color = 0x00ee11) {
+    const groundColor = Phaser.Display.Color.IntegerToColor(color);
+    const box = this.createBox(xpos, ypos, width, height, false, groundColor);
   }
 
-  createBox(posX, posY, width, height, isDynamic, color){
+  createBox(posX, posY, width, height, isDynamic, color) {
 
     let box = this.world.createBody();
     if (isDynamic){
@@ -53,7 +70,9 @@ export default class PlanckWorld {
 
     // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
     const scale = this.physicsOptions.worldScale;
-    box.createFixture(planck.Box(width / 2 / scale, height / 2 / scale), {
+    const physWidth = width / 2 / scale;
+    const physHeight = height / 2 / scale;
+    box.createFixture(planck.Box(physWidth, physHeight), {
       density: this.physicsOptions.density,
       restitution: this.physicsOptions.restitution,
       friction: this.physicsOptions.friction,
@@ -64,7 +83,7 @@ export default class PlanckWorld {
 
     // time to set mass information
     box.setMassData({
-      mass: 1,
+      mass: physWidth * physHeight,
       center: planck.Vec2(),
       I: 1 // needed to rotate
     });
@@ -76,6 +95,7 @@ export default class PlanckWorld {
 
     // a body can have anything in its user data, normally it's used to store its sprite
     box.setUserData(userData);
+    return box;
   }
 
 

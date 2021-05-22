@@ -7,70 +7,56 @@
 //import mx.core.UIComponent;
 
 import KeyboardInteractor from "../animation/interactors/KeyboardInteractors.js";
+import MouseDragInteractor from "../animation/interactors/MouseDragInteractor.js";
+import NoiseContactListener from "../animation/NoiseContactListener.js";
+
 
 /**
  * Default implementations for simulations.
  * @author Barry Becker
  */
-class AbstractSimulation  {
-/*
-    protected var world:b2World;
-    protected var canvas:UIComponent;
-    protected var params:PhysicalParameters;
-    protected var interactors:Array;
-    private var _scale:Number;
+export default class AbstractSimulation  {
 
-    // an array of interactors to us in the simulation
-    protected var _interactors:Array;
-
-    public function AbstractSimulation() {}
-
-    public function get instructions():String {
-        return "Use this Flash application, based on <a href=\"http://box2dflash.sourceforge.net/\">Box2DAS3</a> " +
-            "to simulate dynamic structures. You can click on things and drag them around, " +
-            "and you can press 'd' over an object to delete it.";
+    constructor(world, canvas, params) {
+      this.world = world;
+      this.canvas = canvas;
+      this.params = params;
+      this._scale = canvas.width / 80;
+      world.addContactListener(new NoiseContactListener());
     }
 
-    initialize(world:b2World, canvas:UIComponent,
-                               params:PhysicalParameters):void {
-        this.world = world;
-        this.canvas = canvas;
-        this.params = params;
-        _scale = canvas.width / 80;
-        world.SetContactListener(new NoiseContactListener());
+    get instructions() {
+        return "<p>A <a href=\"https://piqnt.com/planck.js/\">Planck-js</a>application to simulate dynamic structures.</p>" +
+          "<p>You can click on things and drag them around, and you can press 'd' over an object to delete it.</p>";
     }
 
-    addStaticElements():void {
+    addStaticElements() {
     }
 
-    addDynamicElements():void {
+    addDynamicElements() {
     }
-
 
     //Called every time a new frame is drawn.  The default is to do nothing.
-    onFrameUpdate():void {
+    onFrameUpdate() {
     }
 
-    createInteractors():void {
-        interactors = [new MouseDragInteractor(canvas, world, scale)];
+    createInteractors() {
+        this.interactors = [new MouseDragInteractor(this.canvas, this.world, this.scale)];
     }
 
     // Cleanup when the simulation is destroyed
-    cleanup():void {
-        for each (var interactor:Interactor in interactors) {
-            interactor.removeHandlers();
-        }
-        canvas.x = 0;
-        canvas.y = 0;
+    cleanup() {
+        interactors.forEach(interactor => interactor.removeHandlers());
+        this.canvas.x = 0;
+        this.canvas.y = 0;
     }
 
-    get scale():Number {
-        return _scale;
+    get scale() {
+        return this._scale;
     }
 
-    set scale(s:Number):void {
-        _scale = s;
+    set scale(s) {
+        this._scale = s;
     }
 
- */
 }

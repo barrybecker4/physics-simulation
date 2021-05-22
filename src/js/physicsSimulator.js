@@ -66,6 +66,9 @@ function initializePhaser() {
   let gameConfig = {
       type: Phaser.AUTO,
       backgroundColor: 0x110022,
+      audio: {
+        disableWebAudio: false,
+      },
       scale: {
           mode: Phaser.Scale.FIT,
           autoCenter: Phaser.Scale.CENTER_BOTH,

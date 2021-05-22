@@ -1,11 +1,13 @@
 import PlanckWorld from "./PlanckWorld.js";
 import phaserUtils from "./phaserUtils.js";
 import Sounds from "../sounds/Sounds.js";
+import NoiseContactListener from "../animation/NoiseContactListener.js";
+
 
 export default class BridgeScene extends Phaser.Scene {
 
   static NAME = "BridgeScene";
-  static MAX_BLOCKS = 300;
+  static MAX_BLOCKS = 100;
 
   constructor(){
     super(BridgeScene.NAME);
@@ -18,13 +20,14 @@ export default class BridgeScene extends Phaser.Scene {
   create() {
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
-    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
-    this.world.createContent();
+    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics);
+    this.world.addContactListener(new NoiseContactListener(this.sounds));
+    this.world.createGround(this.world.width / 4, this.world.height - 20, 0.7 * this.world.width, 60);
 
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;
     this.time.addEvent({
-        delay: 40,
+        delay: 1000,
         callbackScope: this,
         callback: function(){
             const xPos = Phaser.Math.Between(100, config.width - 100);

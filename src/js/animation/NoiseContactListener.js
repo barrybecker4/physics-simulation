@@ -4,18 +4,24 @@
 //import Box2D.Dynamics.*;
 //import Box2D.Dynamics.Contacts.b2Contact;
 //import Box2D.Dynamics.Contacts.b2ContactResult;
-//import com.becker.common.Sounds;
 
-class NoiseContactListener extends b2ContactListener {
+import physicsUtils from "../simulations/physicsUtils.js";
+
+
+export default class NoiseContactListener  {
+
+    constructor(sounds) {
+        this.sounds = sounds;
+    }
 
     /**
      * Called when a contact point is added.
      */
-    BeginContact(point) {
-        const volume = 0.1 + Math.random() / 50.0;
-        if (volume > 0) {
-            //Sounds.playScrape(volume);
-            Sounds.playHit(volume);
+    onBeginContact(contact) {
+        if (this.sounds) {
+            const impact = physicsUtils.calculateImpact(contact);
+            const volume = 10.0 * impact;
+            this.sounds.playHit(volume);
         }
     }
 
@@ -23,7 +29,7 @@ class NoiseContactListener extends b2ContactListener {
      * Called after the contact has been solved. This includes the geometry
      * and the forces.
      *
-     override public function PostSolve(point:b2Contact, impulse:b2ContactImpulse):void {
+     override public function onPostSolve(point:b2Contact, impulse:b2ContactImpulse):void {
 
         var sum:Number = 0;
         for each (var imp:Number in impulse.normalImpulses) {
