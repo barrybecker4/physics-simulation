@@ -58,7 +58,7 @@ export default class PlanckWorld {
 
   createGround(xpos, ypos, width, height, color = 0x00ee11) {
     const groundColor = Phaser.Display.Color.IntegerToColor(color);
-    const box = this.createBox(xpos, ypos, width, height, false, groundColor);
+    return this.createBox(xpos, ypos, width, height, false, groundColor);
   }
 
   createBody(bodyDef) {

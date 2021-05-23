@@ -2,6 +2,7 @@ import PlanckWorld from "./PlanckWorld.js";
 import phaserUtils from "./phaserUtils.js";
 import Sounds from "../sounds/Sounds.js";
 import NoiseContactListener from "../animation/NoiseContactListener.js";
+import BridgeSimulation from "./BridgeSimulation.js";
 
 
 export default class BridgeScene extends Phaser.Scene {
@@ -23,6 +24,8 @@ export default class BridgeScene extends Phaser.Scene {
     this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics);
     this.world.addContactListener(new NoiseContactListener(this.sounds));
     this.world.createGround(this.world.width / 4, this.world.height - 20, 0.7 * this.world.width, 60);
+
+    const bridgeSim = new BridgeSimulation(this.world, config.physicsOptions);
 
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;

@@ -1,17 +1,8 @@
-//import Box2D.Collision.*;
-//import Box2D.Collision.Shapes.*;
-//import Box2D.Common.Math.*;
-//import Box2D.Dynamics.*;
-//import flash.display.Sprite;
-//import flash.events.MouseEvent;
-
-
 /**
  * Handles mouse button clicks.
- *
  * @author Barry Becker
  */
-class MouseButtonInteractor {
+export default class MouseButtonInteractor {
 
     /**
      * @param owner the owning sprite for which we will handle mouse interaction.
@@ -21,13 +12,13 @@ class MouseButtonInteractor {
         this._buttonPressHandler = null;
         this._buttonReleaseHandler = null
 
-        owner.stage.addEventListener(MouseEvent.MOUSE_DOWN, this.buttonPress, false, 0, true);
-        owner.stage.addEventListener(MouseEvent.MOUSE_UP, this.buttonRelease, false, 0, true);
+        owner.scene.addEventListener(MouseEvent.MOUSE_DOWN, this.buttonPress, false, 0, true);
+        owner.scene.addEventListener(MouseEvent.MOUSE_UP, this.buttonRelease, false, 0, true);
     }
 
     removeHandlers() {
-        this.owner.stage.removeEventListener(MouseEvent.MOUSE_DOWN, this.buttonPress);
-        this.owner.stage.removeEventListener(MouseEvent.MOUSE_UP, this.buttonRelease);
+        this.owner.scene.removeEventListener(MouseEvent.MOUSE_DOWN, this.buttonPress);
+        this.owner.scene.removeEventListener(MouseEvent.MOUSE_UP, this.buttonRelease);
     }
 
     /** must have the form of handler()  */

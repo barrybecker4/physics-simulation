@@ -1,32 +1,23 @@
-//import Box2D.Collision.*;
-//import Box2D.Collision.Shapes.*;
-//import Box2D.Common.Math.*;
-//import Box2D.Dynamics.*;
-//import flash.display.Sprite;
-//import flash.events.KeyboardEvent;
-//import General.Input;
-
 /**
  * Handles the keyboard actions.
- *
  * @author Barry Becker
  */
-class KeyboardInteractor {
+export default class KeyboardInteractor {
 
     /**
      * @param owner the owning sprite for which we will handle keyboard interation.
      */
     constructor(owner) {
       this.owner = owner;
-      owner.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPress, false, 0, true);
-      owner.stage.addEventListener(KeyboardEvent.KEY_UP, keyRelease, false, 0, true);
+      owner.scene.addEventListener(KeyboardEvent.KEY_DOWN, this.keyPress, false, 0, true);
+      owner.scene.addEventListener(KeyboardEvent.KEY_UP, this.keyRelease, false, 0, true);
       this._keyPressHandler = null;
       this._keyReleaseHandler = null;
     }
 
     removeHandlers() {
-        this.owner.stage.removeEventListener(KeyboardEvent.KEY_DOWN, this.keyPress);
-        this.owner.stage.removeEventListener(KeyboardEvent.KEY_UP, this.keyRelease);
+        this.owner.scene.removeEventListener(KeyboardEvent.KEY_DOWN, this.keyPress);
+        this.owner.scene.removeEventListener(KeyboardEvent.KEY_UP, this.keyRelease);
     }
 
     /** must have the form of handler(keyCode:uint)  */

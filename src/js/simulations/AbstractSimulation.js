@@ -6,7 +6,7 @@
 //import com.becker.animation.box2d.Simulation;
 //import mx.core.UIComponent;
 
-import KeyboardInteractor from "../animation/interactors/KeyboardInteractors.js";
+import KeyboardInteractor from "../animation/interactors/KeyboardInteractor.js";
 import MouseDragInteractor from "../animation/interactors/MouseDragInteractor.js";
 import NoiseContactListener from "../animation/NoiseContactListener.js";
 
@@ -17,11 +17,10 @@ import NoiseContactListener from "../animation/NoiseContactListener.js";
  */
 export default class AbstractSimulation  {
 
-    constructor(world, canvas, params) {
+    constructor(world, params) {
       this.world = world;
-      this.canvas = canvas;
       this.params = params;
-      this._scale = canvas.width / 80;
+      this._scale = 3.0;  //canvas.width / 80;
       world.addContactListener(new NoiseContactListener());
     }
 
@@ -41,14 +40,14 @@ export default class AbstractSimulation  {
     }
 
     createInteractors() {
-        this.interactors = [new MouseDragInteractor(this.canvas, this.world, this.scale)];
+        this.interactors = [new MouseDragInteractor(this.world, this.scale)];
     }
 
     // Cleanup when the simulation is destroyed
     cleanup() {
         interactors.forEach(interactor => interactor.removeHandlers());
-        this.canvas.x = 0;
-        this.canvas.y = 0;
+        //this.canvas.x = 0;
+        //this.canvas.y = 0;
     }
 
     get scale() {
