@@ -61,6 +61,10 @@ export default class PlanckWorld {
     const box = this.createBox(xpos, ypos, width, height, false, groundColor);
   }
 
+  createBody(bodyDef) {
+    return this.world.createBody(bodyDef);
+  }
+
   createBox(posX, posY, width, height, isDynamic, color) {
 
     let box = this.world.createBody();
