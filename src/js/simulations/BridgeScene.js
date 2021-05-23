@@ -25,8 +25,10 @@ export default class BridgeScene extends Phaser.Scene {
     this.world.addContactListener(new NoiseContactListener(this.sounds));
     this.world.createGround(this.world.width / 4, this.world.height - 20, 0.7 * this.world.width, 60);
 
-    const bridgeSim = new BridgeSimulation(this.world, config.physicsOptions);
+    this.bridgeSim = new BridgeSimulation();
+    this.bridgeSim.initialize(this.world, config.physicsOptions);
 
+    /*
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;
     this.time.addEvent({
@@ -46,12 +48,13 @@ export default class BridgeScene extends Phaser.Scene {
             }
         },
         loop: true
-    });
+    });*/
   }
 
 
   update(time, delta) {
     const timeStep = 1 / 30;
+    this.bridgeSim.onFrameUpdate();
     this.world.update(timeStep);
   }
 

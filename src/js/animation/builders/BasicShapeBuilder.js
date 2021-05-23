@@ -208,8 +208,8 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     lineShape.setAsArray(verts, 2);
     lineDef.shape = lineShape;
 
-    const diff = new planck.Point(stop.x - start.x, stop.y - start.y);
-    bodyDef.userData = new planck.Line(diff, this.scale);
+    //const diff = new planck.Vec2(stop.x - start.x, stop.y - start.y);
+    bodyDef.userData = new Line(this.world.graphics, start, stop);
     return this.addShapeWithoutFixture(bodyDef);
   }
 

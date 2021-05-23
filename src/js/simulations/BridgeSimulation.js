@@ -28,8 +28,12 @@ const BRIDGE_STARTX = 100;
 
 export default class BridgeSimulation extends AbstractSimulation {
 
-  constructor(world, params) {
-    super(world, params);
+  constructor() {
+    super();
+  }
+
+  initialize(world, params) {
+    super.initialize(world, params);
 
     this.shapeBuilder = new BasicShapeBuilder(world, this.scale);
     this.crapBuilder = new CrapBuilder(world, this.scale);

@@ -17,7 +17,9 @@ import NoiseContactListener from "../animation/NoiseContactListener.js";
  */
 export default class AbstractSimulation  {
 
-    constructor(world, params) {
+    constructor() {}
+
+    initialize(world, params) {
       this.world = world;
       this.params = params;
       this._scale = 3.0;  //canvas.width / 80;
@@ -46,8 +48,6 @@ export default class AbstractSimulation  {
     // Cleanup when the simulation is destroyed
     cleanup() {
         interactors.forEach(interactor => interactor.removeHandlers());
-        //this.canvas.x = 0;
-        //this.canvas.y = 0;
     }
 
     get scale() {
