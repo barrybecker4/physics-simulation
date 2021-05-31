@@ -78,10 +78,10 @@ function initializePhaser() {
           width: 600,
           height: 600
       },
-      scene: [ BridgeScene,  PhysicsSimulatorScene ],
+      scene: [   BridgeScene, PhysicsSimulatorScene, ],
     };
     game = new Phaser.Game(gameConfig);
-    game.config.currentScene = BridgeScene.NAME;
+    game.config.currentScene = gameConfig.scene[0].NAME;
     game.config.physicsOptions = physicsOptions;
 
     window.focus();

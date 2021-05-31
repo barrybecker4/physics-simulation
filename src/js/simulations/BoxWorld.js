@@ -23,7 +23,6 @@ export default class BoxWorld {
     physicsOptions.addGravityChangeListener(this);
 
     this.initInteractionListeners();
-
   }
 
   initInteractionListeners() {
@@ -73,17 +72,13 @@ export default class BoxWorld {
   /**
    * @param simulation the Simulation to show in this world
    */
-  setSimulation(simulation, params) {
-
-    removeEventListener(Event.ENTER_FRAME, this.onEnterFrame);
-    //removeEventListener(ResizeEvent.RESIZE, resized);
+  setSimulation(simulation) {
     this.firstTime = true;
-    //world = createWorld();
 
     if (this.simulation != null) {
       this.simulation.cleanup();
     }
-    simulation.initialize(this.world, this.createGraphics, params);
+    simulation.initialize(this.world, this.createGraphics, this.physicsOptions);
     this.simulation = simulation;
     this.startAnimation();
   }
@@ -92,11 +87,6 @@ export default class BoxWorld {
   }
 
   startAnimation() {
-
-    //this.removeAllChildren();
-    //this.addEventListener(Event.ENTER_FRAME, this.onEnterFrame, false, 0, true);
-    //this.addEventListener(ResizeEvent.RESIZE, this.resized, false, 0, true);
-
     this.world.setContinuousPhysics(true);
 
     this.simulation.addStaticElements();
@@ -107,23 +97,9 @@ export default class BoxWorld {
     //simulation.scale = this.width / 100;
   }
 
-  get enableSimulation() {
-    return this._enableSimulation;
-  }
-
-  set enableSimulation(enable) {
-    if (enable) {
-      this.addEventListener(Event.ENTER_FRAME, this.onEnterFrame, false, 0, true);
-    }
-    else {
-      this.removeEventListener(Event.ENTER_FRAME, this.onEnterFrame);
-    }
-    this._enableSimulation = enable;
-  }
-
   onEnterFrame(e) {
 
-    if (this.firstTime && this.enableSimulation && this.scene != null) {
+    if (this.firstTime && this.scene != null) {
       console.log("adding interactors");
       this.simulation.createInteractors();
       this.firstTime = false;
@@ -146,16 +122,13 @@ export default class BoxWorld {
 
     for (let bb = this.world.getBodyList(); bb; bb = bb.getNext()) {
       let shape = bb.getUserData(); // AbstractShape's graphics object
-      if (shape && shape.scale) {
-        const scale = this.simulation.scale;
-        const bodyPosition = bb.getPosition();
-        shape.x = bodyPosition.x * scale;
-        shape.y = bodyPosition.y * scale;
-        console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active);
-        shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
-      } else {
-        console.log("error shape scale = " + shape.scaleX)
-      }
+      const scale = this.simulation.scale;
+      const bodyPosition = bb.getPosition();
+      shape.x = bodyPosition.x * scale;
+      shape.y = bodyPosition.y * scale;
+      if (Math.random() <= .1)
+        console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active + " s=" + scale);
+      shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
     }
   }
 
@@ -189,13 +162,6 @@ export default class BoxWorld {
       }
     }
   }
-
-  /*
-  createWorld() {
-    const gravityVec = new planck.Vec2(0.0, gravity);
-    const doSleep = true;
-    return new b2World(gravityVec, doSleep);
-  }*/
 
   set showDebugDrawing(show) {
     if (show) {

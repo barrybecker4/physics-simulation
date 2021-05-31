@@ -1,10 +1,10 @@
 
 export default class PlanckWorld {
 
-  constructor(width, height, physicsOptions, createGraphics) {
+  constructor(physicsOptions, createGraphics) {
     // create a Box2D world
-    this.width = width;
-    this.height = height;
+    //this.width = width;
+    //this.height = height;
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
@@ -61,21 +61,25 @@ export default class PlanckWorld {
     return this.createBox(xpos, ypos, width, height, false, groundColor);
   }
 
+
   createBody(bodyDef) {
     return this.world.createBody(bodyDef);
   }
 
   createBox(posX, posY, width, height, isDynamic, color) {
 
-    let box = this.world.createBody();
-    if (isDynamic){
-      box.setDynamic();
-    }
+    const scale = this.physicsOptions.worldScale;
+    const bodyDef = {
+      type: isDynamic ? 'dynamic': 'static',
+      position: new planck.Vec2(posX / scale, 0.8 * posY / scale)
+    };
 
     // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
-    const scale = this.physicsOptions.worldScale;
+
     const physWidth = width / 2 / scale;
     const physHeight = height / 2 / scale;
+
+    let box = this.world.createBody(bodyDef);
     box.createFixture(planck.Box(physWidth, physHeight), {
       density: this.physicsOptions.density,
       restitution: this.physicsOptions.restitution,
@@ -83,7 +87,7 @@ export default class PlanckWorld {
     });
 
     // now we place the body in the world
-    box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale));
+    //box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale));
 
     box.setMassData({
       mass: physWidth * physHeight,
@@ -106,7 +110,7 @@ export default class PlanckWorld {
     this.world.step(timeStep);
     this.world.clearForces();
 
-    // iterate through all bodies
+    // iterate through all bodies and render them
     for (let b = this.world.getBodyList(); b; b = b.getNext()){
 
       let bodyPosition = b.getPosition();

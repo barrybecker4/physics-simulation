@@ -10,8 +10,6 @@ import AbstractShape from "./AbstractShape.js";
  */
 export default class Rectangle extends AbstractShape {
 
-  //private var img:DisplayObject;
-
 
   constructor(createGraphics, width, height, color = 0xaa77ff) {
     super(createGraphics, color);
@@ -26,7 +24,11 @@ export default class Rectangle extends AbstractShape {
   init() {
     this.graphics = this.createGraphics();
     const theColor = Phaser.Display.Color.IntegerToColor(this.color);
+    console.log("theColor=" + theColor + " c=" + this.color)
     this.graphics.fillStyle(theColor.color, 1);
-    this.graphics.fillRect(this.x - this.width / 2, this.y- this.height / 2, this.width, this.height);
+
+    const xpos = this.x - this.width / 2;
+    const ypos = this.y - this.height / 2;
+    this.graphics.fillRect(xpos, ypos, this.width, this.height);
   }
 }

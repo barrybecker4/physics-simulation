@@ -29,21 +29,17 @@ export default class BridgeSimulation extends AbstractSimulation {
   }
 
   addStaticElements() {
-    const width = this.world.width;
     this.anchor = new planck.Vec2();
-    this.ground = this.shapeBuilder.createBox(width / 2, this.world.height - 30, width, 10, false, 0x00ee11);
+    // used to do this.world.getGroundBody();
+    this.ground = this.shapeBuilder.createBox(50, 200 - 30, 60, 10, false, 0x00ee11);
   }
 
 
   addDynamicElements(){
-    const bodyDef = { isDynamic: true, type: 'dyanmic', position: new planck.Vec2() }; // is it isDynamic or tye: 'dynamic'?
-    //bodyDef.type = b2Body.b2_dynamicBody;
-    //let bodyDef = this.world.createBody();
-    //bodyDef.setDynamic();
-    //bodyDef.position = new planck.Vec2();
+    const bodyDef = { type: 'dynamic', position: new planck.Vec2() }; // is it isDynamic or tye: 'dynamic'?
 
-    this.addBridge(bodyDef);
-    this.crapBuilder.addCrap(bodyDef, 6, 5, 15);
+    //this.addBridge(bodyDef);
+    this.crapBuilder.addCrap(bodyDef, 6, 0, 0); // 5, 15);
   }
 
   /** Bridge */

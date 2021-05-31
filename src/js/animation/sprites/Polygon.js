@@ -57,8 +57,8 @@ export default class Polygon extends AbstractShape {
     this.graphics.lineStyle(0.5, theColor.color);
 
     //const matrix = new planck.Matrix(boundingWidth/img.width, 0, 0, boundingHeight/img.height, min.x, min.y);
-
     //this.graphics.beginBitmapFill(bmd, matrix, true, true);
+
     const pts = this.points;
     this.graphics.moveTo(pts[0].x, pts[0].y);
 

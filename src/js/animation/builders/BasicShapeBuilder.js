@@ -4,6 +4,7 @@ import AbstractBuilder from "./AbstractBuilder.js";
 import Util from "../common/Util.js"
 import Line from "../sprites/Line.js"
 import Polygon from "../sprites/Polygon.js";
+import phaserUtils from "/physics-simulation/src/js/simulations/phaserUtils.js";
 
 const MAX_GROUP_INDEX = 1000000;
 
@@ -23,10 +24,9 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     if (groupIndex !== MAX_GROUP_INDEX) {
       fixtureDef.filter.groupIndex = groupIndex;
     }
-    //const shape = new planck.Polygon();
     const shape = planck.Box(width, height);
     fixtureDef.shape = shape;
-    bodyDef.userData = new Rectangle(this.createGraphics, width * 2 * this.scale, height * 2 * this.scale).graphics;
+    bodyDef.userData = new Rectangle(this.createGraphics, width * 2 * this.scale, height * 2 * this.scale, 0x2244ff).graphics;
 
     return this.addShape(fixtureDef, bodyDef);
   }
@@ -235,7 +235,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     for (let i = 0; i < verticesArr.length; i++) {
       vec.push(new planck.Vec2(verticesArr[i].x / this.scale,verticesArr[i].y / this.scale));
     }
-    const bodyDef = { isDynamic: true };
+    const bodyDef = { type: 'dynamic' };
     //bodyDef.type = b2Body.b2_dynamicBody;
 
     const polyDef = new planck.Polygon();

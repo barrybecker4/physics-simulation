@@ -4,7 +4,7 @@
 import AbstractBuilder from "./AbstractBuilder.js";
 import BasicShapeBuilder from "./BasicShapeBuilder.js";
 
-const DEFAULT_X_POS = 120;
+const DEFAULT_X_POS = 150;
 const DEFAULT_Y_POS = 50;
 
 const DEFAULT_X_SPREAD = 400;
@@ -12,7 +12,7 @@ const DEFAULT_Y_SPREAD = 150;
 
 const DEFAULT_SIZE = 10.0;
 const DENSITY = 1.0;
-const FRICTION = 0.9;
+const FRICTION = 0.5;
 const RESTITUTION = 0.1;
 
 

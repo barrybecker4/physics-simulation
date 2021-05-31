@@ -10,7 +10,8 @@ export default class Sounds {
     // Sound is added each time so it can use a different channel each time
     playHit(volume = 1.0) {
         const hit = this.scene.sound.add("hit", {loop: false, volume: 0.5});
-        hit.play({ volume })
+        if (!isNaN(volume))
+          hit.play({ volume })
     }
 
     playScrape(volume = 1.0) {

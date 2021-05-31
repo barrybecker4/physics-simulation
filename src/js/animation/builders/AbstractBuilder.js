@@ -18,9 +18,14 @@ export default class AbstractBuilder  {
   addShape(fixtureDef, bodyDef, isBullet = false) {
 
     const body = this.world.createBody(bodyDef);
+
     body.setBullet(isBullet);
-    body.createFixture(fixtureDef);
-    //this.canvas.addChild(bodyDef.userData);
+    body.createFixture(fixtureDef.shape, fixtureDef);
+    body.setMassData({              // need ?
+      mass: 1.0,
+      center: planck.Vec2(),
+      I: 1 // needed to rotate
+    });
     return body;
   }
 
