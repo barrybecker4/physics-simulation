@@ -20,14 +20,14 @@
                 <span>Gravity</span><input id="gravityInput" type="number" min="-20" max="20" step="1" value="8">
                 <span>Friction</span><input id="frictionInput" type="number" min="0" max="10" step="0.1" value="0.5">
                 <span>Density</span><input id="densityInput" type="number" min="0" max="10" step="0.1" value="1.0">
-                <span>Restitution</span><input id="restitutionInput"  type="number" min="0" max="10" step="0.1" value="0.2">
+                <span>Restitution</span><input id="restitutionInput" type="number" min="0" max="10" step="0.1" value="0.2">
             </div>
             <span class="spacer"></span>
             <div>
                 <span>Select a Simulation: </span>
                 <select title="Select a physics simulation to run" id="simulationSelector">
                     <option value="PhysicsSimulatorScene">Falling Blocks</option>
-                    <option value="BridgeScene">Bridge</option>
+                    <option selected value="BridgeScene">Bridge</option>
                 </select>
                 <span class="spacer"></span>
                 <button id="pauseButton">Pause</button>

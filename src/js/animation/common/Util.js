@@ -1,16 +1,17 @@
 //import Box2D.Common.Math.b2Vec2;
 //import flash.geom.Point;
 
-/** convert from radians to degrees */
-const RAD_TO_DEG = 180.0 / Math.PI;
-
-/** convert from degrees to radians */
-const DEG_TO_RAD = Math.PI / 180.0;
 
 const LN10 = Math.log(10.0);
 
 
 export default class Util  {
+
+  /** convert from radians to degrees */
+  static RAD_TO_DEG = 180.0 / Math.PI;
+
+  /** convert from degrees to radians */
+  static DEG_TO_RAD = Math.PI / 180.0;
 
   /**
    * @param lightness (0, 1) 0 returns dark colors, 1 light colors.

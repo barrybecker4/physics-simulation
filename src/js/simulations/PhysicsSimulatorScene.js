@@ -19,17 +19,16 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
   create() {
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
-    this.world = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
-    this.world.createGround(this.world.width / 3, this.world.height - 20, this.world.width / 2, 40);
+    this.planckWorld = new PlanckWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
+    this.planckWorld.createGround(this.planckWorld.width / 3, this.planckWorld.height - 20, this.planckWorld.width / 2, 40);
 
     // creates a random box every short delay, then restarts after a while.
     this.tick = 0;
     this.time.addEvent({
         delay: 600,
         callbackScope: this,
-        callback: function(){
-            const xPos = Phaser.Math.Between(100, config.width - 100);
-            this.world.createBox(xPos, -100, Phaser.Math.Between(20, 80), Phaser.Math.Between(20, 80), true, phaserUtils.randomColor());
+        callback: () => {
+            this.createRandomBox(config);
             this.tick ++;
             if (this.tick === PhysicsSimulatorScene.MAX_BLOCKS) {
                 this.sounds.playScrape();
@@ -40,9 +39,16 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
     });
   }
 
+  createRandomBox(config) {
+    const xPos = Phaser.Math.Between(100, config.width - 100);
+    const randomWidth = Phaser.Math.Between(20, 80);
+    const randomHeight = Phaser.Math.Between(20, 80);
+    this.planckWorld.createBox(xPos, -100, randomWidth, randomHeight, true, phaserUtils.randomColor());
+  }
+
   update(time, delta) {
     const timeStep = 1 / 30;
-    this.world.update(timeStep);
+    this.planckWorld.update(timeStep);
   }
 
 }

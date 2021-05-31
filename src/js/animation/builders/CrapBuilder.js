@@ -21,8 +21,8 @@ const RESTITUTION = 0.1;
  */
 export default class CrapBuilder extends AbstractBuilder {
 
-  constructor(world, scale) {
-    super(world, scale);
+  constructor(world, createGraphics, scale) {
+    super(world, createGraphics, scale);
 
     this.xPos = DEFAULT_X_POS;
     this.yPos = DEFAULT_Y_POS;
@@ -33,7 +33,7 @@ export default class CrapBuilder extends AbstractBuilder {
     this.shapeSize = DEFAULT_SIZE;
     this.shapeHalfSize = DEFAULT_SIZE / 2.0;
 
-    this.builder = new BasicShapeBuilder(world, scale);
+    this.builder = new BasicShapeBuilder(world, createGraphics, scale);
   }
 
   setSpawnPosition(xpos, ypos) {
@@ -112,10 +112,10 @@ export default class CrapBuilder extends AbstractBuilder {
     const shapeSize = this.shapeSize;
     pts.push(new planck.Vec2(( -shapeSize - Math.random() * shapeSize) / s,
       ( shapeSize + Math.random() * shapeSize) / this.scale));
-    pts.push(new planck.Vec2(( -shapeHalfSize - Math.random() * shapeSize) / s,
+    pts.push(new planck.Vec2(( -this.shapeHalfSize - Math.random() * shapeSize) / s,
       (-shapeSize - Math.random() * shapeSize) / this.scale));
     pts.push(new planck.Vec2(( this.shapeHalfSize + Math.random() * shapeSize) / s,
-      (-shapeSize - Math.random() * shapeSize) / scale));
+      (-shapeSize - Math.random() * shapeSize) / this.scale));
     pts.push(new planck.Vec2(( shapeSize + Math.random() * shapeSize) / s,
       ( shapeSize + Math.random() * shapeSize) / s));
     return pts;
@@ -144,8 +144,8 @@ export default class CrapBuilder extends AbstractBuilder {
 
   /** Random position and angle for body definition */
   setRandomPlacement(bodyDef) {
-    bodyDef.position.Set((Math.random() * this.xSpread + this.xPos) / this.scale,
-      (Math.random() * this.ySpread + tihs.yPos) / this.scale);
+    bodyDef.position.set((Math.random() * this.xSpread + this.xPos) / this.scale,
+      (Math.random() * this.ySpread + this.yPos) / this.scale);
     bodyDef.angle = Math.random() * Math.PI;
   }
 }

@@ -19,11 +19,12 @@ export default class AbstractSimulation  {
 
     constructor() {}
 
-    initialize(world, params) {
+    initialize(world, createGraphics, params) {
       this.world = world;
+      this.createGraphics = createGraphics;
       this.params = params;
       this._scale = 3.0;  //canvas.width / 80;
-      world.addContactListener(new NoiseContactListener());
+      //world.addContactListener(new NoiseContactListener()); this is raw planckWorld
     }
 
     get instructions() {
@@ -47,7 +48,7 @@ export default class AbstractSimulation  {
 
     // Cleanup when the simulation is destroyed
     cleanup() {
-        interactors.forEach(interactor => interactor.removeHandlers());
+        this.interactors.forEach(interactor => interactor.removeHandlers());
     }
 
     get scale() {

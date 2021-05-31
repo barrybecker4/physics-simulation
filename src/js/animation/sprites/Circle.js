@@ -15,38 +15,21 @@ import AbstractShape from "./AbstractShape.js";
 export default class Circle extends AbstractShape {
 
 
-  constructor(graphics, radius, image = null, color = 0x9988cc) {
-    super(graphics, color);
+  constructor(createGraphics, radius, image = null, color = 0x9988cc) {
+    super(createGraphics, color);
     this.radius = radius;
     this.imageClass = image;
-    //this.circle = new Shape();
-    //addChild(circle);
 
     this.init();
   }
 
   init() {
+    this.graphics = this.createGraphics();
     const g = this.graphics;
 
-    if (imageClass) {
-      const img = new this.imageClass;
-      const bmd = new BitmapData(img.width, img.height, true, 0x224466);
-      bmd.draw(img);
-
-      const matrix =
-        new planck.Matrix(2 * radius / img.width, 0, 0,
-          2 * radius / img.height,
-          -radius, -radius);
-
-      g.lineStyle(0);
-      g.beginBitmapFill(bmd, matrix, true, true);
-    }
-    else {
-      g.lineStyle(1);
-      g.beginFill(this.color , 0.6);
-    }
-    g.drawCircle(x, y, this.radius);
-    g.endFill();
+    g.lineStyle(1);
+    g.fillStyle(this.color , 0.6);
+    g.fillCircle(this.x, this.y, this.radius);
 
     g.moveTo(0, 0);
     g.lineTo(this.radius, 0);

@@ -8,8 +8,9 @@
 
 export default class AbstractBuilder  {
 
-  constructor(world, scale) {
+  constructor(world, createGraphics, scale) {
     this.world = world;
+    this.createGraphics = createGraphics;
     //this.canvas = canvas;
     this._scale = scale;
   }

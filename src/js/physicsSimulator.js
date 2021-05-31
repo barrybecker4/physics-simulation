@@ -1,3 +1,4 @@
+//import PhysicsControls from "/physics-simulation/src/ui/PhysicsControls.js";
 import PhysicsControls from "./ui/PhysicsControls.js";
 import PhysicsSimulatorScene from "./simulations/PhysicsSimulatorScene.js";
 import BridgeScene from "./simulations/BridgeScene.js";
@@ -21,6 +22,7 @@ window.onload = function() {
 function simulationSelectionChanged() {
     const simulationSelector = getSimulationSelector();
     game.scene.stop(game.config.currentScene);
+    console.log("simulationSelector.selectedIndex = " + simulationSelector.selectedIndex)
     game.config.currentScene = simulationSelector.options[ simulationSelector.selectedIndex ].value;
     game.scene.start(game.config.currentScene);
     doResume();
@@ -76,10 +78,10 @@ function initializePhaser() {
           width: 600,
           height: 600
       },
-      scene: [PhysicsSimulatorScene, BridgeScene],
+      scene: [ BridgeScene,  PhysicsSimulatorScene ],
     };
     game = new Phaser.Game(gameConfig);
-    game.config.currentScene = PhysicsSimulatorScene.NAME;
+    game.config.currentScene = BridgeScene.NAME;
     game.config.physicsOptions = physicsOptions;
 
     window.focus();

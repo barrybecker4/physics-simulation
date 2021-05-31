@@ -1,9 +1,10 @@
 import Util from "../animation/common/Util.js";
+import Line from "../animation/sprites/Line.js";
+import AbstractShape from "../animation/sprites/AbstractShape.js";
 
 const VELOCITY_ITERATIONS = 10;
 const STEP_ITERATIONS = 6;
 const TIME_STEP = 1.0 / 20.0;
-const ORIG_WIDTH = 1200;
 
 
 
@@ -21,6 +22,11 @@ export default class BoxWorld {
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
 
+    this.initInteractionListeners();
+
+  }
+
+  initInteractionListeners() {
     this.world.on('begin-contact', contact => {
       this.contactListeners.forEach(listener => {
         if (listener.onBeginContact) {
@@ -65,19 +71,19 @@ export default class BoxWorld {
   }
 
   /**
-   * @param the name of a class that implements Simulation
+   * @param simulation the Simulation to show in this world
    */
   setSimulation(simulation, params) {
 
     removeEventListener(Event.ENTER_FRAME, this.onEnterFrame);
-    removeEventListener(ResizeEvent.RESIZE, resized);
+    //removeEventListener(ResizeEvent.RESIZE, resized);
     this.firstTime = true;
     //world = createWorld();
 
     if (this.simulation != null) {
       this.simulation.cleanup();
     }
-    simulation.initialize(this.world, params);
+    simulation.initialize(this.world, this.createGraphics, params);
     this.simulation = simulation;
     this.startAnimation();
   }
@@ -87,9 +93,9 @@ export default class BoxWorld {
 
   startAnimation() {
 
-    this.removeAllChildren();
-    this.addEventListener(Event.ENTER_FRAME, this.onEnterFrame, false, 0, true);
-    this.addEventListener(ResizeEvent.RESIZE, this.resized, false, 0, true);
+    //this.removeAllChildren();
+    //this.addEventListener(Event.ENTER_FRAME, this.onEnterFrame, false, 0, true);
+    //this.addEventListener(ResizeEvent.RESIZE, this.resized, false, 0, true);
 
     this.world.setContinuousPhysics(true);
 
@@ -125,7 +131,7 @@ export default class BoxWorld {
     // for stuff in the simulation that needs to be updated every frame
     this.simulation.onFrameUpdate();
 
-    this.world.Step(TIME_STEP, VELOCITY_ITERATIONS, STEP_ITERATIONS);
+    this.world.step(TIME_STEP, VELOCITY_ITERATIONS, STEP_ITERATIONS);
     this.world.clearForces();
     if (this.showDebug) {
       this.world.drawDebugData();
@@ -139,15 +145,17 @@ export default class BoxWorld {
   drawAllBodies() {
 
     for (let bb = this.world.getBodyList(); bb; bb = bb.getNext()) {
-
-      //for (var fixture:b2Fixture = bb.GetFixtureList(); fixture; fixture = fixture.GetNext()) {
-      let shape = bb.betUserData(); //AbstractShape
-      if (shape) {
-        shape.x = bb.getPosition().x * this.simulation.scale;
-        shape.y = bb.getPosition().y * this.simulation.scale;
-        shape.rotation = bb.getAngle() * Util.RAD_TO_DEG;
+      let shape = bb.getUserData(); // AbstractShape's graphics object
+      if (shape && shape.scale) {
+        const scale = this.simulation.scale;
+        const bodyPosition = bb.getPosition();
+        shape.x = bodyPosition.x * scale;
+        shape.y = bodyPosition.y * scale;
+        console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active);
+        shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
+      } else {
+        console.log("error shape scale = " + shape.scaleX)
       }
-      //}
     }
   }
 
@@ -155,7 +163,7 @@ export default class BoxWorld {
   drawAllJoints() {
     const s = this.simulation.scale;
 
-    for (let joint = world.getJointList(); joint; joint = joint.getNext()) {
+    for (let joint = this.world.getJointList(); joint; joint = joint.getNext()) {
 
       if (joint.getUserData()) {
         const userData = joint.getUserData().getUserData();
@@ -210,8 +218,8 @@ export default class BoxWorld {
       dbgDraw.SetFillAlpha(0.4);
       dbgDraw.SetLineThickness(2.0);
       dbgDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit || b2DebugDraw.e_pairBit);  //0xFFFFFFFF;
-      world.SetDebugDraw(dbgDraw);
-      world.DrawDebugData();
+      this.world.SetDebugDraw(dbgDraw);
+      this.world.DrawDebugData();
       this.showDebug = true;
     }*/
   }

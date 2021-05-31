@@ -1,14 +1,3 @@
-// import Box2D.Common.Math.b2Vec2;
-// import Box2D.Dynamics.Joints.b2RevoluteJointDef;
-// import Box2D.Dynamics.b2Body;
-// import Box2D.Dynamics.b2BodyDef;
-// import Box2D.Dynamics.b2World;
-// import com.becker.animation.box2d.builders.CrapBuilder;
-// import com.becker.common.PhysicalParameters;
-//
-// import com.becker.animation.box2d.builders.AbstractBuilder;
-// import com.becker.animation.box2d.builders.BasicShapeBuilder;
-
 import AbstractSimulation from "./AbstractSimulation.js";
 import BasicShapeBuilder from "../animation/builders/BasicShapeBuilder.js";
 import CrapBuilder from "../animation/builders/CrapBuilder.js";
@@ -32,24 +21,26 @@ export default class BridgeSimulation extends AbstractSimulation {
     super();
   }
 
-  initialize(world, params) {
-    super.initialize(world, params);
+  initialize(world, createGraphics, params) {
+    super.initialize(world, createGraphics, params);
 
-    this.shapeBuilder = new BasicShapeBuilder(world, this.scale);
-    this.crapBuilder = new CrapBuilder(world, this.scale);
+    this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, this.scale);
+    this.crapBuilder = new CrapBuilder(world, createGraphics, this.scale);
   }
 
   addStaticElements() {
     const width = this.world.width;
-    this.ground = this.world.createGround(width / 2, this.world.height - 30, width, 10);
-    // this.world.getGroundBody();
     this.anchor = new planck.Vec2();
+    this.ground = this.shapeBuilder.createBox(width / 2, this.world.height - 30, width, 10, false, 0x00ee11);
   }
 
 
   addDynamicElements(){
-    const bodyDef = { isDynamic: true };
+    const bodyDef = { isDynamic: true, type: 'dyanmic', position: new planck.Vec2() }; // is it isDynamic or tye: 'dynamic'?
     //bodyDef.type = b2Body.b2_dynamicBody;
+    //let bodyDef = this.world.createBody();
+    //bodyDef.setDynamic();
+    //bodyDef.position = new planck.Vec2();
 
     this.addBridge(bodyDef);
     this.crapBuilder.addCrap(bodyDef, 6, 5, 15);
@@ -59,8 +50,9 @@ export default class BridgeSimulation extends AbstractSimulation {
   addBridge(bodyDef) {
 
     const s = this.scale;
-    let body = this.builder.buildBlock(24 / s, 5 / s, bodyDef, 20.0, 0.2, 0.1);
-    let prevBody = ground;
+    let body;
+    //let body = this.builder.buildBlock(24 / s, 5 / s, bodyDef, 20.0, 0.2, 0.1);
+    let prevBody = this.ground;
 
     const jd = {
       bodyA: prevBody,
@@ -80,7 +72,7 @@ export default class BridgeSimulation extends AbstractSimulation {
       jd.bodyB = body;
       jd.anchorPoint = this.anchor;
 
-      this.world.world.createJoint(planck.RevoluteJoint(jd));
+      this.world.createJoint(planck.RevoluteJoint(jd));
       prevBody = body;
     }
 
@@ -88,6 +80,6 @@ export default class BridgeSimulation extends AbstractSimulation {
     jd.bodyA = prevBody;
     jd.bodyB = this.ground;
     jd.anchorPoint = this.anchor;
-    this.world.world.createJoint(planck.RevoluteJoint(jd));
+    this.world.createJoint(planck.RevoluteJoint(jd));
   }
 }

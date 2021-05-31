@@ -5,8 +5,8 @@
  */
 export default class AbstractShape {
 
-  constructor(graphics, color = 0x9988cc) {
-    this.graphics = graphics;
+  constructor(createGraphics, color = 0x9988cc) {
+    this.createGraphics = createGraphics;
     this.color = color;
   }
 }

@@ -1,36 +1,17 @@
-// import Box2D.Collision.b2AABB;
-// import Box2D.Collision.Shapes.b2CircleShape;
-// import Box2D.Collision.Shapes.b2PolygonShape;
-// import Box2D.Common.Math.b2Vec2;
-// import Box2D.Dynamics.b2Body;
-// import Box2D.Dynamics.b2BodyDef;
-// import Box2D.Dynamics.b2FixtureDef;
-// import Box2D.Dynamics.b2World;
-// import Box2D.Dynamics.b2FixtureDef;
-// import com.becker.animation.sprites.AbstractShape.js;
-// import com.becker.animation.sprites.Bazooka;
-// import com.becker.animation.sprites.Bullet;
-// import com.becker.animation.sprites.ExplodableShape;
-// import com.becker.animation.sprites.Line;
-// import com.becker.common.PhysicalParameters;
-// import flash.display.BitmapData;
-//
-// import com.becker.animation.sprites.Circle;
-// import com.becker.animation.sprites.Polygon;
-// import com.becker.animation.sprites.Rectangle;
-// import com.becker.common.Util;
-
-//import flash.geom.Point;
-
+import Rectangle from '../sprites/Rectangle.js';
+import Circle from '../sprites/Circle.js';
 import AbstractBuilder from "./AbstractBuilder.js";
+import Util from "../common/Util.js"
+import Line from "../sprites/Line.js"
+import Polygon from "../sprites/Polygon.js";
 
 const MAX_GROUP_INDEX = 1000000;
 
 export default class BasicShapeBuilder extends AbstractBuilder {
 
   /** Constructor */
-  constructor(world, scale) {
-    super(world, scale);
+  constructor(world, createGraphics, scale) {
+    super(world, createGraphics, scale);
   }
 
   buildBlock(width, height, bodyDef,
@@ -42,12 +23,46 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     if (groupIndex !== MAX_GROUP_INDEX) {
       fixtureDef.filter.groupIndex = groupIndex;
     }
-    const shape = new planck.PolygonShape();  // b2PolygonShape
-    shape.setAsBox(width, height);
+    //const shape = new planck.Polygon();
+    const shape = planck.Box(width, height);
     fixtureDef.shape = shape;
-    bodyDef.userData = new planck.Rectangle(width * 2 * this.scale, height * 2 * this.scale);
+    bodyDef.userData = new Rectangle(this.createGraphics, width * 2 * this.scale, height * 2 * this.scale).graphics;
 
-    return addShape(fixtureDef, bodyDef);
+    return this.addShape(fixtureDef, bodyDef);
+  }
+
+  createBox(posX, posY, width, height, isDynamic, color, density = 1.0, friction = 0.5, restitution = 0.2) {
+
+    let box = this.world.createBody();
+    if (isDynamic){
+      box.setDynamic();
+    }
+
+    // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
+    const scale = this.scale;
+    const physWidth = width / 2 / scale;
+    const physHeight = height / 2 / scale;
+    box.createFixture(planck.Box(physWidth, physHeight), {
+      density, restitution, friction,
+    });
+
+    // now we place the body in the world
+    box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale)); // why 0.8?
+
+    // time to set mass information
+    box.setMassData({
+      mass: physWidth * physHeight,
+      center: planck.Vec2(),
+      I: 1 // needed to rotate
+    });
+
+    // now we create a graphics object representing the body
+    const userData = new Rectangle(this.createGraphics, -width / 2, -height / 2, width, height, color).graphics;
+
+    // a body can have anything in its user data, normally it's used to store its sprite
+    box.setUserData(userData);
+    box.label = "ground";
+    return box;
   }
 
   buildOrientedBlock(orientedBlock, bodyDef,
@@ -59,14 +74,14 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       fixtureDef.filter.groupIndex = groupIndex;
     }
 
-    const mainShape = new planck.PolygonShape();
+    const mainShape = new planck.Polygon();
     console.log("oriented center = " + orientedBlock.center + " ang=" + orientedBlock.rotation);
     mainShape.setAsOrientedBox(
       orientedBlock.width, orientedBlock.height, orientedBlock.center, orientedBlock.rotation);
     fixtureDef.shape = mainShape;
-    bodyDef.userData = new planck.Rectangle(orientedBlock.width * 2 * this.scale, orientedBlock.height * 2 * this.scale);
+    bodyDef.setUserData(new Rectangle(this.createGraphics, orientedBlock.width * 2 * this.scale, orientedBlock.height * 2 * this.scale).graphics);
 
-    return addShape(fixtureDef, bodyDef);
+    return this.addShape(fixtureDef, bodyDef);
   }
 
 
@@ -76,10 +91,10 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       isSensor: true,
     }
 
-    const shape = new planck.PolygonShape();
+    const shape = new planck.Polygon();
     shape.setAsOrientedBox(width, height, center);
     fixtureDef.shape = shape;
-    fixtureDef.userData = sensorName;
+    fixtureDef.setUserData(sensorName);
     body.createFixture(fixtureDef);
   }
 
@@ -93,12 +108,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     if (groupIndex != MAX_GROUP_INDEX) {
       boxDef.filter.groupIndex = groupIndex;
     }
-    const shape = new planck.PolygonShape();
+    const shape = new planck.Polygon();
     shape.setAsBox(width, height);
     boxDef.shape = shape;
-    bodyDef.userData = new Bazooka(width * 2 * scale, height * 2 * scale);
+    bodyDef.setUserData()new Bazooka(width * 2 * scale, height * 2 * scale).graphics);
 
-    return addShape(boxDef, bodyDef);
+    return this.addShape(boxDef, bodyDef);
   } */
 
   /*
@@ -112,9 +127,9 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       circleDef.filter.groupIndex = groupIndex;
     }
     circleDef.shape = new planck.CircleShape(radius);
-    bodyDef.userData = new Bullet(radius * scale, duration);
+    bodyDef.setUserData(new Bullet(radius * scale, duration).graphics);
 
-    return addShape(circleDef, bodyDef, false); // true (causes slow)
+    return this.addShape(circleDef, bodyDef, false); // true (causes slow)
   }*/
 
   /**
@@ -132,24 +147,24 @@ export default class BasicShapeBuilder extends AbstractBuilder {
 
     const masterBlock = orientedBlocks[0];
 
-    const mainShape = new planck.PolygonShape();
+    const mainShape = new planck.Polygon();
     mainShape.setAsOrientedBox(masterBlock.width, masterBlock.height, masterBlock.center, masterBlock.rotation);
     fixtureDef.shape = mainShape;
 
-    bodyDef.userData = new planck.Rectangle(masterBlock.width * 2 * scale, masterBlock.height * 2 * scale);
+    bodyDef.setUserData(new Rectangle(masterBlock.width * 2 * this.scale, masterBlock.height * 2 * this.scale).graphics);
     const body = this.addShape(fixtureDef, bodyDef);
 
     for (let i = 1; i < orientedBlocks.length; i++) {
       const orientedBlock = orientedBlocks[i];
-      const blockShape = new planck.PolygonShape();
+      const blockShape = new planck.Polygon();
       blockShape.setAsOrientedBox(orientedBlock.width, orientedBlock.height, orientedBlock.center, orientedBlock.rotation);
 
       fixtureDef.shape = blockShape;
-      const rect = new planck.Rectangle(orientedBlock.width * 2 * scale, orientedBlock.height * 2 * this.scale);
+      const rect = new Rectangle(orientedBlock.width * 2 * this.scale, orientedBlock.height * 2 * this.scale).graphics;
       rect.x = orientedBlock.center.x * this.scale;
       rect.y = orientedBlock.center.y * this.scale;
       rect.rotation = Util.RAD_TO_DEG * orientedBlock.rotation;
-      bodyDef.userData.addChild(rect);
+      // bodyDef.userData.addChild(rect); how to do children in phaser?
 
       this.addShapeWithoutFixture(bodyDef);
     }
@@ -165,8 +180,8 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     if (groupIndex !== MAX_GROUP_INDEX) {
       circleDef.filter.groupIndex = groupIndex;
     }
-    circleDef.shape = new planck.CircleShape(radius);
-    bodyDef.userData = new Circle(radius * this.scale, null, 0x4455ee);
+    circleDef.shape = new planck.Circle(radius);
+    bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, 0x4455ee).graphics;
 
     return this.addShape(circleDef, bodyDef);
   }
@@ -182,16 +197,14 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       polyDef.filter.groupIndex = groupIndex;
     }
 
-    const poly = new planck.PolygonShape();
     const verts = [];
-
     for (let i = 0; i < points.length; i++) {
       verts.push(new planck.Vec2(vpoints[i].x, vpoints[i].y));
     }
-    poly.setAsArray(verts, vpoints.length);
+    const poly = new planck.Polygon(verts);
     polyDef.shape = poly;
 
-    bodyDef.userData = new Polygon(vpoints, scale);
+    bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale).graphics;
     return this.addShape(polyDef, bodyDef);
   }
 
@@ -204,12 +217,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     }
 
     const lineShape = new b2PolygonShape();
-    const verts = [ new planck.b2Vec2(start.x, start.y), new plack.b2Vec2(stop.x, stop.y) ];
+    const verts = [ new planck.b2Vec2(start.x, start.y), new planck.Vec2(stop.x, stop.y) ];
     lineShape.setAsArray(verts, 2);
     lineDef.shape = lineShape;
 
     //const diff = new planck.Vec2(stop.x - start.x, stop.y - start.y);
-    bodyDef.userData = new Line(this.world.graphics, start, stop);
+    bodyDef.setUserData(new Line(this.world.graphics, start, stop).graphics);
     return this.addShapeWithoutFixture(bodyDef);
   }
 
@@ -225,12 +238,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     const bodyDef = { isDynamic: true };
     //bodyDef.type = b2Body.b2_dynamicBody;
 
-    const polyDef = new PolygonShape();
+    const polyDef = new planck.Polygon();
     polyDef.setAsArray(vec);
 
-    bodyDef.position.Set(xPos/this.scale, yPos/this.scale);
+    bodyDef.position.set(xPos/this.scale, yPos/this.scale);
     // custom userData used to map the texture
-    bodyDef.userData = new ExplodableShape(numEnterPoints, vec, this.scale, texture);
+    bodyDef.setUserData(new ExplodableShape(numEnterPoints, vec, this.scale, texture).graphics);
 
     const fixtureDef = { density: 1, friction: 0.5, restitution: 0.2, shape: polyDef };
 

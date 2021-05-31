@@ -85,7 +85,6 @@ export default class PlanckWorld {
     // now we place the body in the world
     box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale));
 
-    // time to set mass information
     box.setMassData({
       mass: physWidth * physHeight,
       center: planck.Vec2(),
@@ -93,7 +92,7 @@ export default class PlanckWorld {
     });
 
     // now we create a graphics object representing the body
-    let userData = this.createGraphics();
+    const userData = this.createGraphics();
     userData.fillStyle(color.color, 1);
     userData.fillRect(-width / 2, -height / 2, width, height);
 
@@ -120,6 +119,7 @@ export default class PlanckWorld {
       userData.x = bodyPosition.x * scale;
       userData.y = bodyPosition.y * scale;
       userData.rotation = bodyAngle;
+      //console.log("userData x = " + userData.x + " y = " + userData.y + " s = " + userData.scale + " visible=" + userData.visible);
     }
   }
 }
