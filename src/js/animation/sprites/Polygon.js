@@ -43,6 +43,7 @@ export default class Polygon extends AbstractShape {
         this.max.y = pt.y;
       }
     });
+    console.log("poly bounds are " + pts);
   }
 
   init() {
@@ -50,21 +51,26 @@ export default class Polygon extends AbstractShape {
     //var bmd:BitmapData = new BitmapData(img.width, img.height);
     //bmd.draw(img);
     this.graphics = this.createGraphics();
+    const g = this.graphics;
 
     const boundingWidth = this.max.x - this.min.x;
     const boundingHeight = this.max.y - this.min.y;
     const theColor = Phaser.Display.Color.IntegerToColor(this.color);
-    this.graphics.lineStyle(0.5, theColor.color);
+    console.log("the poly Color=" + theColor + " c=" + this.color)
+    g.lineStyle(1, theColor.color);
 
     //const matrix = new planck.Matrix(boundingWidth/img.width, 0, 0, boundingHeight/img.height, min.x, min.y);
     //this.graphics.beginBitmapFill(bmd, matrix, true, true);
 
     const pts = this.points;
-    this.graphics.moveTo(pts[0].x, pts[0].y);
+    g.moveTo(pts[0].x, pts[0].y);
 
     // fill poly instead
     for (let i= 1; i < pts.length; i++) {
-      this.graphics.lineTo(pts[i].x, pts[i].y);
+      g.lineTo(pts[i].x, pts[i].y);
     }
+    g.fillStyle(theColor.color, 0.2);
+    g.fillPoints(this.points, true);
+    g.strokePoints(this.points, true);
   }
 }

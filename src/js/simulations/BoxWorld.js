@@ -126,8 +126,8 @@ export default class BoxWorld {
       const bodyPosition = bb.getPosition();
       shape.x = bodyPosition.x * scale;
       shape.y = bodyPosition.y * scale;
-      if (Math.random() <= .1)
-        console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active + " s=" + scale);
+      //if (Math.random() <= .1)
+      //  console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active + " s=" + scale);
       shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
     }
   }

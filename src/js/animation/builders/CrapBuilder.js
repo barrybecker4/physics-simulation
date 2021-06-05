@@ -64,11 +64,12 @@ export default class CrapBuilder extends AbstractBuilder {
   addBlocks(num, size, bodyDef)  {
 
     const halfSize = size / 2.0;
-    for (let i = 0; i < num; i++){
+    const scale = this.scale;
+    for (let i = 0; i < num; i++) {
       this.setRandomPlacement(bodyDef);
-      this.builder.buildBlock((Math.random() * halfSize + size) / this.scale,
-        (Math.random() * halfSize + size) / this.scale,
-        bodyDef, DENSITY, FRICTION, RESTITUTION);
+      const width = (Math.random() * halfSize + size) / scale;
+      const height = (Math.random() * halfSize + size) / scale;
+      this.builder.buildBlock(width, height, bodyDef, DENSITY, FRICTION, RESTITUTION);
     }
   }
 
@@ -123,23 +124,29 @@ export default class CrapBuilder extends AbstractBuilder {
 
   createPentagonPoints() {
     const scale = this.scale;
-    const pt0 = new planck.Vec2(0, (10 +Math.random()*10) / scale);
-    const pt2 = new planck.Vec2((-5 - Math.random()*10) / scale, (-10 - Math.random()*10) / scale);
-    const pt3 = new planck.Vec2(( 5 + Math.random()*10) / scale, (-10 - Math.random()*10) / scale);
+    const pts = [];
+    pts.push(new planck.Vec2(0, (10 + Math.random()*10) / scale));
+    pts.push({});
+    pts.push(this.createPolyPoint(-5, -10, scale));
+    pts.push(this.createPolyPoint(5, -10, scale));
     let s = Math.random() / 2 + 0.8;
-    const pt1 = new planck.Vec2(s*(pt0.x + pt2.x), s*(pt0.y + pt2.y));
+    pts[1] = new planck.Vec2(s * (pts[0].x + pts[2].x), s * (pts[0].y + pts[2].y));
     s = Math.random() / 2 + 0.8;
-    const pt4 = new planck.Vec2(s*(pt3.x + pt0.x), s*(pt3.y + pt0.y));
-    return [ pt0, pt1, pt2, pt3, pt4 ];
+    pts.push(new planck.Vec2(s * (pts[3].x + pts[0].x), s * (pts[3].y + pts[0].y)));
+    return pts;
   }
 
   createTrianglePoints() {
     const pts = [];
     const scale = this.scale;
     pts.push(new planck.Vec2(0, (10 + Math.random() * 10) / scale));
-    pts.push(new planck.Vec2((-5 - Math.random() * 10) / scale, (-10 - Math.random()*10) / scale));
-    pts.push(new planck.Vec2(( 5 + Math.random() * 10) / scale, ( -10 - Math.random() * 10) / scale));
+    pts.push(this.createPolyPoint(-5, -10, scale));
+    pts.push(this.createPolyPoint(5, -10, scale));
     return pts;
+  }
+
+  createPolyPoint(baseX, baseY, scale) {
+    return new planck.Vec2((baseX - Math.random() * 10) / scale, (baseY - Math.random() * 10) / scale);
   }
 
   /** Random position and angle for body definition */

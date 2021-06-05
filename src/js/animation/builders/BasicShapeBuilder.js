@@ -57,7 +57,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     });
 
     // now we create a graphics object representing the body
-    const userData = new Rectangle(this.createGraphics, -width / 2, -height / 2, width, height, color).graphics;
+    const userData = new Rectangle(this.createGraphics, width, height, color).graphics;
 
     // a body can have anything in its user data, normally it's used to store its sprite
     box.setUserData(userData);
@@ -201,10 +201,8 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     for (let i = 0; i < points.length; i++) {
       verts.push(new planck.Vec2(vpoints[i].x, vpoints[i].y));
     }
-    const poly = new planck.Polygon(verts);
-    polyDef.shape = poly;
-
-    bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale).graphics;
+    polyDef.shape = new planck.Polygon(verts);
+    bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale, 0xee22aa).graphics;
     return this.addShape(polyDef, bodyDef);
   }
 

@@ -12,6 +12,5 @@ function calculateImpact(contact) {
   const mass1 = bodyA.m_mass ? bodyA.m_mass : 10;
   const mass2 = bodyB.m_mass ? bodyB.m_mass : 10;
   const energy = 0.5 * mass1 * mass2 * velocityMag * velocityMag;
-  console.log("energy = " + energy);
   return energy;
 }

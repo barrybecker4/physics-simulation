@@ -36,10 +36,10 @@ export default class BridgeSimulation extends AbstractSimulation {
 
 
   addDynamicElements(){
-    const bodyDef = { type: 'dynamic', position: new planck.Vec2() }; // is it isDynamic or tye: 'dynamic'?
+    const bodyDef = { type: 'dynamic', position: new planck.Vec2() };
 
-    //this.addBridge(bodyDef);
-    this.crapBuilder.addCrap(bodyDef, 6, 0, 0); // 5, 15);
+    this.addBridge(bodyDef);
+    this.crapBuilder.addCrap(bodyDef, 6, 2, 2); // 5, 15);
   }
 
   /** Bridge */
