@@ -22,13 +22,16 @@ export default class Rectangle extends AbstractShape {
   }
 
   init() {
-    this.graphics = this.createGraphics();
+    const g = this.graphics = this.createGraphics();
     const theColor = Phaser.Display.Color.IntegerToColor(this.color);
     console.log("the rect Color=" + theColor + " c=" + this.color)
-    this.graphics.fillStyle(theColor.color, 1);
+    g.fillStyle(theColor.color, 0.3);
+    g.lineStyle(1, theColor.color);
 
     const xpos = this.x - this.width / 2;
     const ypos = this.y - this.height / 2;
-    this.graphics.fillRect(xpos, ypos, this.width, this.height);
+    g.fillRect(xpos, ypos, this.width, this.height);
+    g.strokeRect(xpos, ypos, this.width, this.height);
+    return g;
   }
 }
