@@ -5,14 +5,15 @@ import AbstractBuilder from "../animation/builders/AbstractBuilder.js";
 
 
 const NUM_SHAPES = 50;
-const NUM_PLANKS = 10;
+const NUM_SEGMENTS = 10;
 
 /** the length of one of the bridge planks */
-const PLANK_LENGTH = 44;
-const HALF_PLANK_LENGTH = PLANK_LENGTH / 2.0;
+const SEGMENT_WIDTH = 44;
+const HALF_SEGMENT_WIDTH = SEGMENT_WIDTH / 2.0;
 
-const BRIDGE_HEIGHT = 250;
+const BRIDGE_HEIGHT = 300;
 const BRIDGE_STARTX = 100;
+const ANCHOR_SIZE = 1;
 
 
 export default class BridgeSimulation extends AbstractSimulation {
@@ -31,13 +32,21 @@ export default class BridgeSimulation extends AbstractSimulation {
   addStaticElements() {
     this.anchor = new planck.Vec2();
     // used to do this.world.getGroundBody();
-    this.ground = this.shapeBuilder.createBox(50, 200 - 30, 60, 10, false, 0x00ee11);
+    this.ground = this.createGroundElement(300, 600, 400, 10 );
+  }
+
+  createGroundElement(posX, posY, width, height) {
+    return this.shapeBuilder.createBox(posX, posY, width, height, false, 0x00ee11);
   }
 
 
   addDynamicElements(){
-    const bodyDef = { type: 'dynamic', position: new planck.Vec2() };
-
+    const bodyDef = {
+      type: 'dynamic',
+      position: new planck.Vec2(),
+      density: 10.0,
+      friction: 0.2
+    };
     this.addBridge(bodyDef);
     this.crapBuilder.addCrap(bodyDef, 6, 2, 2); // 5, 15);
   }
@@ -47,35 +56,29 @@ export default class BridgeSimulation extends AbstractSimulation {
 
     const s = this.scale;
     let body;
-    //let body = this.builder.buildBlock(24 / s, 5 / s, bodyDef, 20.0, 0.2, 0.1);
-    let prevBody = this.ground;
+    let prevBody = this.createGroundElement(BRIDGE_STARTX - HALF_SEGMENT_WIDTH, BRIDGE_HEIGHT + 60, 30, 10);
 
     const jd = {
-      bodyA: prevBody,
-      bodyB: body,
-      anchorPoint: this.anchor,
-      lowerAngle: AbstractBuilder.degreesToRadians(-15),
-      upperAngle: AbstractBuilder.degreesToRadians(15),
-      enableLimit: true,
+      //lowerAngle: AbstractBuilder.degreesToRadians(-25), // not working
+      //upperAngle: AbstractBuilder.degreesToRadians(25),
+      //enableLimit: true,
     }
 
-    for (let i = 0; i < NUM_PLANKS; ++i) {
-      bodyDef.position.set((BRIDGE_STARTX + HALF_PLANK_LENGTH + PLANK_LENGTH * i) / s, BRIDGE_HEIGHT/ s);
-      body = this.shapeBuilder.buildBlock(24 / s, 5 / s, bodyDef, 20.0, 0.2, 0.1);
+    for (let i = 0; i < NUM_SEGMENTS; ++i) {
+      bodyDef.position.set((BRIDGE_STARTX + HALF_SEGMENT_WIDTH + SEGMENT_WIDTH * i) / s, BRIDGE_HEIGHT/ s);
+      body = this.shapeBuilder.buildBlock(HALF_SEGMENT_WIDTH, 5, bodyDef, 20.0, 0.2, 0.1);
 
-      this.anchor.set((BRIDGE_STARTX + PLANK_LENGTH * i) / s, BRIDGE_HEIGHT / s);
-      jd.bodyA = prevBody;
-      jd.bodyB = body;
-      jd.anchorPoint = this.anchor;
+      this.anchor.set((BRIDGE_STARTX + SEGMENT_WIDTH * i) / s, BRIDGE_HEIGHT / s);
 
-      this.world.createJoint(planck.RevoluteJoint(jd));
+      const rjoint = planck.RevoluteJoint(jd, prevBody, body, this.anchor);
+      this.world.createJoint(rjoint);
       prevBody = body;
     }
 
-    this.anchor.set((BRIDGE_STARTX + PLANK_LENGTH * NUM_PLANKS) / s, BRIDGE_HEIGHT / s);
-    jd.bodyA = prevBody;
-    jd.bodyB = this.ground;
-    jd.anchorPoint = this.anchor;
-    this.world.createJoint(planck.RevoluteJoint(jd));
+    let rightBody = this.createGroundElement(BRIDGE_STARTX + SEGMENT_WIDTH * (0.5 + NUM_SEGMENTS), BRIDGE_HEIGHT + 60, 30, 10);
+    this.anchor.set((BRIDGE_STARTX + SEGMENT_WIDTH * NUM_SEGMENTS) / s, BRIDGE_HEIGHT / s);
+    this.world.createJoint(planck.RevoluteJoint(jd, prevBody, rightBody, this.anchor));
   }
+
+
 }

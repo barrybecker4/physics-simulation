@@ -24,9 +24,9 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     if (groupIndex !== MAX_GROUP_INDEX) {
       fixtureDef.filter.groupIndex = groupIndex;
     }
-    const shape = planck.Box(width, height);
+    const shape = planck.Box(width / this.scale, height / this.scale);
     fixtureDef.shape = shape;
-    bodyDef.userData = new Rectangle(this.createGraphics, width * 2 * this.scale, height * 2 * this.scale, 0x2244ff).graphics;
+    bodyDef.userData = new Rectangle(this.createGraphics, width * 2, height * 2, 0x2244ff).graphics;
 
     return this.addShape(fixtureDef, bodyDef);
   }

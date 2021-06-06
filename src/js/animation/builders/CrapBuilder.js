@@ -67,8 +67,8 @@ export default class CrapBuilder extends AbstractBuilder {
     const scale = this.scale;
     for (let i = 0; i < num; i++) {
       this.setRandomPlacement(bodyDef);
-      const width = (Math.random() * halfSize + size) / scale;
-      const height = (Math.random() * halfSize + size) / scale;
+      const width = (Math.random() * halfSize + size);
+      const height = (Math.random() * halfSize + size);
       this.builder.buildBlock(width, height, bodyDef, DENSITY, FRICTION, RESTITUTION);
     }
   }

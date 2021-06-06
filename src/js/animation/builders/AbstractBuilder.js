@@ -22,7 +22,7 @@ export default class AbstractBuilder  {
     body.setBullet(isBullet);
     body.createFixture(fixtureDef.shape, fixtureDef);
     body.setMassData({              // need ?
-      mass: 1.0,
+      mass: 0.1,
       center: planck.Vec2(),
       I: 1 // needed to rotate
     });
@@ -37,6 +37,10 @@ export default class AbstractBuilder  {
   }
 
   static degreesToRadians(angle) {
+    return angle * (Math.PI / 180);
+  }
+
+  static radiansToDegrees(angle) {
     return angle * (180.0 / Math.PI);
   }
 
