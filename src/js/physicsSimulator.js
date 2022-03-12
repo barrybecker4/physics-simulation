@@ -1,4 +1,3 @@
-//import PhysicsControls from "/physics-simulation/src/ui/PhysicsControls.js";
 import PhysicsControls from "./ui/PhysicsControls.js";
 import PhysicsSimulatorScene from "./simulations/PhysicsSimulatorScene.js";
 import BridgeScene from "./simulations/BridgeScene.js";
@@ -14,9 +13,11 @@ window.onload = function() {
   getSimulationSelector().onchange = simulationSelectionChanged;
   getRestartButton().onclick = doRestart;
   getPauseButton().onclick = togglePause;
+  getDebugCheckbox().onclick = onCheckboxToggled;
 
   const physicsControls = new PhysicsControls(physicsOptions);
   initializePhaser();
+  onCheckboxToggled();
 };
 
 function simulationSelectionChanged() {
@@ -52,6 +53,11 @@ function doResume() {
   game.scene.paused = false;
 }
 
+function onCheckboxToggled() {
+  const debugValue = getDebugCheckbox().checked;
+  game.config.debug = debugValue;
+}
+
 function getSimulationSelector() {
     return document.getElementById("simulationSelector");
 }
@@ -62,6 +68,10 @@ function getRestartButton() {
 
 function getPauseButton() {
   return document.getElementById("pauseButton");
+}
+
+function getDebugCheckbox() {
+  return document.getElementById("debugCheckbox");
 }
 
 function initializePhaser() {

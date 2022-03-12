@@ -1,6 +1,6 @@
 # Physics Simulations
 
-A collection of physics simulations built using [Phaser]()https://phaser.io/ and [Planck](https://github.com/shakiba/planck.js/). 
+A collection of physics simulations built using [Phaser](https://phaser.io/) and [Planck](https://github.com/shakiba/planck.js/). 
 
 ## Develop
 
