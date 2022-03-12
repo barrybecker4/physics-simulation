@@ -1,4 +1,5 @@
 import TableMap from "./TableMap.js"
+import Puck from "./Puck.js"
 
 
 planck.testbed('Boxes', testbed => {
@@ -24,19 +25,8 @@ planck.testbed('Boxes', testbed => {
     table.createFixture(pl.Edge(Vec2(-4, -21), Vec2(4, -21)), { filterMaskBits:  0x0002 })
     table.createFixture(pl.Edge(Vec2(-12, 0), Vec2(12, 0)), { filterMaskBits:  0x0002 })
 
-    // Create Puck
-    const puck = world.createBody({
-        type: 'dynamic',
-        position: Vec2(0, 0),
-        bullet: true,
-        linearDamping: 0.1,
-        angularDamping: 0.02
-    })
-    puck.createFixture(pl.Circle(1), {
-        density: 0.25,
-        restitution: 0.9,
-        filterCategoryBits : 0x0004
-    })
+    const puck = new Puck(world)
+
 
     // Create Paddles
     const paddleBodyDefinition = position => ({
@@ -67,11 +57,11 @@ planck.testbed('Boxes', testbed => {
         const fixtureB = contact.getFixtureB()
         if (fixtureA == goal1Sensor) {
             alert('player1 scored')
-            world.destroyBody(puck)
+            puck.destroy()
         }
         if (fixtureA == goal2Sensor) {
             alert('player2 scored')
-            world.destroyBody(puck)
+            puck.destroy()
         }
     }
 
