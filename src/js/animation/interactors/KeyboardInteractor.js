@@ -5,7 +5,7 @@
 export default class KeyboardInteractor {
 
     /**
-     * @param owner the owning sprite for which we will handle keyboard interation.
+     * @param owner the owning sprite for which we will handle keyboard interaction.
      */
     constructor(owner) {
       this.owner = owner;

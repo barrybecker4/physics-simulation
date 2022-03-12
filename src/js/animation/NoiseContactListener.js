@@ -1,10 +1,3 @@
-//import Box2D.Collision.*;
-//import Box2D.Collision.Shapes.*;
-//import Box2D.Common.Math.*;
-//import Box2D.Dynamics.*;
-//import Box2D.Dynamics.Contacts.b2Contact;
-//import Box2D.Dynamics.Contacts.b2ContactResult;
-
 import physicsUtils from "../simulations/physicsUtils.js";
 
 

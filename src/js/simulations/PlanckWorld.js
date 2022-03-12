@@ -61,7 +61,6 @@ export default class PlanckWorld {
     return this.createBox(xpos, ypos, width, height, false, groundColor);
   }
 
-
   createBody(bodyDef) {
     return this.world.createBody(bodyDef);
   }
