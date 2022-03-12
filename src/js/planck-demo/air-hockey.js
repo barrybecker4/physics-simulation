@@ -1,173 +1,5 @@
+import TableMap from "./TableMap.js"
 
-
-
-function buildTableMap() {
-    let tableMap = []
-    const tableHeight = 42
-    const tableWidth = 24
-    const goalWidth= 8
-    const goalDepth= 3
-    const cornerRadius = 3
-    const cornerSteps = 5
-    const endLength = (tableWidth - goalWidth - (cornerRadius * 2)) / 2
-    const sideLength = (tableHeight - (cornerRadius * 2)) / 2
-    const centerX = tableWidth / 2
-    const centerY = tableHeight / 2
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: centerY
-    },{
-        x: -(goalWidth / 2) - endLength,
-        y: centerY
-    }])
-
-    tableMap.push([{
-        x: (goalWidth / 2),
-        y: centerY
-    },{
-        x: (goalWidth / 2) + endLength,
-        y: centerY
-    }])
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: centerY + goalDepth
-    },{
-        x: (goalWidth / 2),
-        y: centerY + goalDepth
-    }])
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: centerY + goalDepth
-    },{
-        x: -(goalWidth / 2),
-        y: centerY
-    }])
-
-    tableMap.push([{
-        x: (goalWidth / 2),
-        y: centerY + goalDepth
-    },{
-        x: (goalWidth / 2),
-        y: centerY
-    }])
-
-    tableMap.push([{
-        x: centerX,
-        y: centerY - cornerRadius
-    },{
-        x: centerX,
-        y: -centerY + cornerRadius
-    }])
-
-    tableMap.push([{
-        x: -centerX,
-        y: centerY - cornerRadius
-    },{
-        x: -centerX,
-        y: -centerY + cornerRadius
-    }])
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: -centerY
-    },{
-        x: -(goalWidth / 2) - endLength,
-        y: -centerY
-    }])
-
-    tableMap.push([{
-        x: (goalWidth / 2),
-        y: -centerY
-    },{
-        x: (goalWidth / 2) + endLength,
-        y: -centerY
-    }])
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: -centerY - goalDepth
-    },{
-        x: (goalWidth / 2),
-        y: -centerY - goalDepth
-    }])
-
-    tableMap.push([{
-        x: -(goalWidth / 2),
-        y: -centerY - goalDepth
-     },{
-        x: -(goalWidth / 2),
-        y: -centerY
-    }])
-
-    tableMap.push([{
-        x: (goalWidth / 2),
-        y: -centerY - goalDepth
-    },{
-        x: (goalWidth / 2),
-        y: -centerY
-    }])
-
-    createCorner({
-        x: centerX,
-        y: centerY
-    },{
-        x: centerX - cornerRadius,
-        y: centerY - cornerRadius
-    })
-
-    createCorner({
-        x: -centerX,
-        y: centerY
-    },{
-        x: -centerX + cornerRadius,
-        y: centerY - cornerRadius
-    })
-
-    createCorner({
-        x: centerX,
-        y: -centerY
-    },{
-        x: centerX - cornerRadius,
-        y: -centerY + cornerRadius
-    })
-
-    createCorner({
-        x: -centerX,
-        y: -centerY
-    },{
-        x: -centerX + cornerRadius,
-        y: -centerY + cornerRadius
-    })
-
-    function createCorner(start, end){
-        let sum = 0
-        let map = []
-        const sizeX = end.x - start.x
-        const sizeY = end.y - start.y
-
-        for(let i = 0; i < cornerSteps + 1; i++){
-            sum += i
-            map.push(sum)
-        }
-
-        function stepWidth(index, size){
-            return (size / map[cornerSteps]) * map[index]
-        }
-
-        for(let i = 0; i < cornerSteps; i++){
-            const currentX = stepWidth(i, sizeX) + start.x
-            const currentY = stepWidth(cornerSteps - i, sizeY) + start.y
-            const nextX = stepWidth(i + 1, sizeX) + start.x
-            const nextY = stepWidth(cornerSteps - i - 1, sizeY) + start.y
-            tableMap.push([{x: currentX, y: currentY}, {x: nextX, y: nextY}])
-        }
-    }
-
-    return tableMap
-}
 
 planck.testbed('Boxes', testbed => {
     testbed.y = 0
@@ -177,15 +9,15 @@ planck.testbed('Boxes', testbed => {
     const Vec2 = pl.Vec2
     const world = pl.World()
     const table = world.createBody()
-    const tableMap = buildTableMap()
+    const tableMap = new TableMap().map
 
     // Create Table Walls
     tableMap.map(edge => table.createFixture(pl.Edge(Vec2(edge[0].x, edge[0].y), Vec2(edge[1].x, edge[1].y))) )
 
     // Create Goal Detection Sensors
-    const goalFixureDefinition = { isSensor: true, filterMaskBits:  0x0004 }
-    const goal1Sensor = table.createFixture(pl.Edge(Vec2(-4, 22.5), Vec2(4, 22.5)), goalFixureDefinition)
-    const goal2Sensor = table.createFixture(pl.Edge(Vec2(-4, -22.5), Vec2(4, -22.5)), goalFixureDefinition)
+    const goalFixtureDefinition = { isSensor: true, filterMaskBits:  0x0004 }
+    const goal1Sensor = table.createFixture(pl.Edge(Vec2(-4, 22.5), Vec2(4, 22.5)), goalFixtureDefinition)
+    const goal2Sensor = table.createFixture(pl.Edge(Vec2(-4, -22.5), Vec2(4, -22.5)), goalFixtureDefinition)
 
     // Create Paddle Blocking Walls
     table.createFixture(pl.Edge(Vec2(-4, 21), Vec2(4, 21)), { filterMaskBits:  0x0002 })
