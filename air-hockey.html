@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- from https://codepen.io/steveeeie/pen/VxvrVO -->
+    <!--
+      A demo of using plank.js with its testbed.
+      from https://codepen.io/steveeeie/pen/VxvrVO
+    -->
     <link rel="stylesheet" href="src/css/styles.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/planck-js/0.1.44/planck-with-testbed.js"></script>
@@ -176,7 +179,7 @@ function buildTableMap() {
     return tableMap
 }
 
-planck.testbed('Boxes', function(testbed) {
+planck.testbed('Boxes', testbed => {
     testbed.y = 0
     let canMove = false
     const force = 100
@@ -186,22 +189,20 @@ planck.testbed('Boxes', function(testbed) {
     const table = world.createBody()
     const tableMap = buildTableMap()
 
-    //Create Table Walls
-    tableMap.map(function(edge) {
-        table.createFixture(pl.Edge(Vec2(edge[0].x, edge[0].y), Vec2(edge[1].x, edge[1].y)))
-    })
+    // Create Table Walls
+    tableMap.map(edge => table.createFixture(pl.Edge(Vec2(edge[0].x, edge[0].y), Vec2(edge[1].x, edge[1].y))) )
 
-    //Create Goal Detection Sensors
+    // Create Goal Detection Sensors
     const goalFixureDefinition = { isSensor: true, filterMaskBits:  0x0004 }
     const goal1Sensor = table.createFixture(pl.Edge(Vec2(-4, 22.5), Vec2(4, 22.5)), goalFixureDefinition)
     const goal2Sensor = table.createFixture(pl.Edge(Vec2(-4, -22.5), Vec2(4, -22.5)), goalFixureDefinition)
 
-    //Create Paddle Blocking Walls
+    // Create Paddle Blocking Walls
     table.createFixture(pl.Edge(Vec2(-4, 21), Vec2(4, 21)), { filterMaskBits:  0x0002 })
     table.createFixture(pl.Edge(Vec2(-4, -21), Vec2(4, -21)), { filterMaskBits:  0x0002 })
     table.createFixture(pl.Edge(Vec2(-12, 0), Vec2(12, 0)), { filterMaskBits:  0x0002 })
 
-    //Create Puck
+    // Create Puck
     const puck = world.createBody({
         type: 'dynamic',
         position: Vec2(0, 0),
@@ -215,8 +216,8 @@ planck.testbed('Boxes', function(testbed) {
         filterCategoryBits : 0x0004
     })
 
-    //Create Paddles
-    const paddleBodyDefinition = (position) => ({
+    // Create Paddles
+    const paddleBodyDefinition = position => ({
         type: 'dynamic',
         position: position,
         bullet: false,
@@ -233,7 +234,7 @@ planck.testbed('Boxes', function(testbed) {
     paddle2.createFixture(pl.Circle(1.5), paddleFixtureDefinition)
 
     function updatePosition(e) {
-        if(canMove){
+        if (canMove) {
         const vector = Vec2(e.movementX * force, -e.movementY * force)
         paddle2.applyForce(vector, Vec2(paddle2.getPosition()), true)
         }
