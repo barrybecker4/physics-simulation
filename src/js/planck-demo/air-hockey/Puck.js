@@ -1,4 +1,3 @@
-
 export default class Puck {
 
     constructor(world) {
@@ -23,10 +22,16 @@ export default class Puck {
     }
 
     reset() {
+        //this.body.setTransform(planck.Vec2(0, 0))
+
+        //this.body.destroyFixture(this.body.getFixtureList()[0])
         //this.world.destroyBody(this.body)
-        this.body.setAwake(false)
+
+        this.world.clearForces()
+
+        //this.body.setAwake(false)
         this.body.setPosition(planck.Vec2(0, 0))
-        this.body.position = planck.Vec2(0, 0)
+        //this.body.position = planck.Vec2(0, 0)
         //this.body.setAwake(true)
         //this.body = this.createBody()
     }

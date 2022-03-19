@@ -5,6 +5,8 @@ import Paddle from "./Paddle.js"
 
 planck.testbed('AirHockey', testbed => {
     testbed.y = 0
+    testbed.info('Use mouse to drag pucks');
+
     let canMove = false
     const force = 100
     const Vec2 = planck.Vec2
@@ -14,6 +16,12 @@ planck.testbed('AirHockey', testbed => {
     const puck = new Puck(world)
     const paddle1 = new Paddle(Vec2(0, 16), world)
     const paddle2 = new Paddle(Vec2(0, -16), world)
+
+    let counter = 0
+
+    testbed.step = function() {
+      testbed.status('time', counter++)
+    }
 
     /*
     function updatePosition(e) {
@@ -36,14 +44,20 @@ planck.testbed('AirHockey', testbed => {
         }
     }
 
-    function unlock(){
-        canMove = document.pointerLockElement === document.body ? true : false
+    function handleBodyRemoval(body) {
+        console.log("Should remove " + body)
+    }
+
+    function handleFixtureRemoval(fixture) {
+        console.log("Should remove " + fixture)
     }
 
     //window.addEventListener('mousemove', (e) => updatePosition(e))
     window.addEventListener('mousedown', (e) => canMove = true)
     window.addEventListener('mouseup', (e) => canMove = false)
-    world.on('begin-contact', (e) => handleContact(e))
+    world.on('begin-contact', handleContact)
+    world.on('remove-body', handleBodyRemoval)
+    world.on('remove-fixture', handleFixtureRemoval)
 
     return world
 })
