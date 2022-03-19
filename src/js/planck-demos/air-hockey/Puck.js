@@ -4,6 +4,14 @@ export default class Puck {
         this.world = world
         this.body = null;
         this.markedForReset = false
+
+        const intervalId = setInterval(() => {
+            if (this.markedForReset) {
+                this.destroy()
+                this.create()
+                this.markedForReset = false
+            }
+        }, 1000);
     }
 
     create() {
@@ -19,6 +27,10 @@ export default class Puck {
             restitution: 0.9,
             filterCategoryBits : 0x0004
         })
+    }
+
+    reset() {
+        this.markedForReset = true
     }
 
     destroy() {

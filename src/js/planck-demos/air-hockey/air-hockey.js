@@ -36,11 +36,11 @@ planck.testbed('AirHockey', testbed => {
         const fixtureB = contact.getFixtureB()
         if (fixtureA == table.goal1Sensor) {
             alert('player1 scored')
-            puck.markedForReset = true
+            puck.reset()
         }
         if (fixtureA == table.goal2Sensor) {
             alert('player2 scored')
-            puck.markedForReset = true
+            puck.reset()
         }
     }
 
@@ -52,7 +52,6 @@ planck.testbed('AirHockey', testbed => {
         console.log("Should remove " + fixture)
     }
 
-
     //window.addEventListener('mousemove', (e) => updatePosition(e))
     window.addEventListener('mousedown', (e) => {
       canMove = true;
@@ -63,14 +62,6 @@ planck.testbed('AirHockey', testbed => {
     world.on('begin-contact', handleContact)
     world.on('remove-body', handleBodyRemoval)
     world.on('remove-fixture', handleFixtureRemoval)
-
-    var intervalId = setInterval(function() {
-      if (puck.markedForReset) {
-        puck.destroy()
-        puck.create()
-        puck.markedForReset = false
-      }
-    }, 1000);
 
     return world
 })
