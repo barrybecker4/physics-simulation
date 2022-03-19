@@ -3,13 +3,13 @@ import phaserUtils from "./phaserUtils.js";
 import Sounds from "../sounds/Sounds.js";
 
 
-export default class PhysicsSimulatorScene extends Phaser.Scene {
+export default class FallingBoxesScene extends Phaser.Scene {
 
-  static NAME = "PhysicsSimulatorScene";
+  static NAME = "FallingBoxesScene";
   static MAX_BLOCKS = 200;
 
   constructor() {
-    super(PhysicsSimulatorScene.NAME);
+    super(FallingBoxesScene.NAME);
   }
 
   preload() {
@@ -31,9 +31,9 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
         callback: () => {
             this.createRandomBox(config);
             tick++;
-            if (tick === PhysicsSimulatorScene.MAX_BLOCKS) {
+            if (tick === FallingBoxesScene.MAX_BLOCKS) {
                 this.sounds.playScrape();
-                this.game.scene.start(PhysicsSimulatorScene.NAME, config);
+                this.game.scene.start(FallingBoxesScene.NAME, config);
             }
         },
         loop: true

@@ -29,6 +29,7 @@ export default class Puck {
         })
     }
 
+    // Cannot do the reset here because this is within a planck timeStep and the world is locked
     reset() {
         this.markedForReset = true
     }
