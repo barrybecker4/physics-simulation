@@ -17,30 +17,30 @@ planck.testbed('AirHockey', testbed => {
     const paddle1 = new Paddle(Vec2(0, 16), world)
     const paddle2 = new Paddle(Vec2(0, -16), world)
 
-    let counter = 0
+    puck.create()
 
+    let counter = 0
     testbed.step = function() {
       testbed.status('time', counter++)
     }
 
-    /*
     function updatePosition(e) {
         if (canMove) {
           const vector = Vec2(e.movementX * force, -e.movementY * force)
           //paddle2.applyForce(vector, Vec2(paddle2.getPosition()))
         }
-    }*/
+    }
 
     function handleContact(contact) {
         const fixtureA = contact.getFixtureA()
         const fixtureB = contact.getFixtureB()
         if (fixtureA == table.goal1Sensor) {
             alert('player1 scored')
-            puck.reset()
+            puck.markedForReset = true
         }
         if (fixtureA == table.goal2Sensor) {
             alert('player2 scored')
-            puck.reset()
+            puck.markedForReset = true
         }
     }
 
@@ -52,12 +52,25 @@ planck.testbed('AirHockey', testbed => {
         console.log("Should remove " + fixture)
     }
 
+
     //window.addEventListener('mousemove', (e) => updatePosition(e))
-    window.addEventListener('mousedown', (e) => canMove = true)
-    window.addEventListener('mouseup', (e) => canMove = false)
+    window.addEventListener('mousedown', (e) => {
+      canMove = true;
+    })
+    window.addEventListener('mouseup', (e) => {
+      canMove = false;
+    })
     world.on('begin-contact', handleContact)
     world.on('remove-body', handleBodyRemoval)
     world.on('remove-fixture', handleFixtureRemoval)
+
+    var intervalId = setInterval(function() {
+      if (puck.markedForReset) {
+        puck.destroy()
+        puck.create()
+        puck.markedForReset = false
+      }
+    }, 1000);
 
     return world
 })
