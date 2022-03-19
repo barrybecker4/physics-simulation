@@ -14,6 +14,7 @@ export default class BoxWorld {
     // create a Box2D world
     this.width = width;
     this.height = height;
+
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
@@ -81,9 +82,6 @@ export default class BoxWorld {
     simulation.initialize(this.world, this.createGraphics, this.physicsOptions);
     this.simulation = simulation;
     this.startAnimation();
-  }
-
-  startAnimating() {
   }
 
   startAnimation() {

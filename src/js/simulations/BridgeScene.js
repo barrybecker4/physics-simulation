@@ -14,6 +14,7 @@ export default class BridgeScene extends Phaser.Scene {
 
   preload() {
     this.sounds = new Sounds(this);
+    this.timeStep = 1 / 30;
   }
 
   create() {
@@ -28,9 +29,8 @@ export default class BridgeScene extends Phaser.Scene {
 
 
   update(time, delta) {
-    const timeStep = 1 / 30;
     //this.bridgeSim.onFrameUpdate(timeStep);
-    this.boxWorld.onEnterFrame(timeStep);
+    this.boxWorld.onEnterFrame(this.timeStep);
   }
 
 }

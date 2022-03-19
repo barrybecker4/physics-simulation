@@ -4,7 +4,6 @@ import BridgeScene from "./simulations/BridgeScene.js";
 import PhysicsOptions from "./simulations/PhysicsOptions.js";
 
 
-
 let game;
 const physicsOptions = new PhysicsOptions();
 
@@ -88,7 +87,7 @@ function initializePhaser() {
           width: 600,
           height: 600
       },
-      scene: [   BridgeScene, PhysicsSimulatorScene, ],
+      scene: [ BridgeScene, PhysicsSimulatorScene, ],
     };
     game = new Phaser.Game(gameConfig);
     game.config.currentScene = gameConfig.scene[0].NAME;

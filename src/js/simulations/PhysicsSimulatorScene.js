@@ -14,6 +14,7 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
 
   preload() {
     this.sounds = new Sounds(this);
+    this.timeStep = 1 / 30;
   }
 
   create() {
@@ -47,8 +48,7 @@ export default class PhysicsSimulatorScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    const timeStep = 1 / 30;
-    this.planckWorld.update(timeStep);
+    this.planckWorld.update(this.timeStep);
   }
 
 }

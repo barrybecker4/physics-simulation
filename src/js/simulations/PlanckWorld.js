@@ -2,9 +2,6 @@
 export default class PlanckWorld {
 
   constructor(physicsOptions, createGraphics) {
-    // create a Box2D world
-    //this.width = width;
-    //this.height = height;
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
@@ -13,6 +10,10 @@ export default class PlanckWorld {
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
 
+    this.initInteractionListeners();
+  }
+
+  initInteractionListeners() {
     this.world.on('begin-contact', contact => {
       this.contactListeners.forEach(listener => {
         if (listener.onBeginContact) {
@@ -20,6 +21,7 @@ export default class PlanckWorld {
         }
       });
     });
+
     this.world.on('end-contact', contact => {
       this.contactListeners.forEach(listener => {
         if (listener.onEndContact) {
@@ -27,6 +29,7 @@ export default class PlanckWorld {
         }
       });
     });
+
     this.world.on('pre-solve', (contact, oldManifold) => {
       this.contactListeners.forEach(listener => {
         if (listener.onPreSolve) {
@@ -34,6 +37,7 @@ export default class PlanckWorld {
         }
       });
     });
+
     this.world.on('post-solve', (contact, contactImpulse) => {
       this.contactListeners.forEach(listener => {
         if (listener.onPostSolve) {
@@ -41,6 +45,12 @@ export default class PlanckWorld {
         }
       });
     });
+
+     // Fixture removal listener
+     this.world.on('remove-fixture', (fixture) => {
+        // Remove fixture from UI if required
+        console.log("Should remove " + fixture);
+     });
   }
 
   addContactListener(contactListener) {
