@@ -23,6 +23,8 @@
 import VerticalStackSimulator from "./VerticalStackSimulator.js"
 import Bullet from "./Bullet.js"
 
+// y position of the floor
+const FLOOR = -10.0
 
 planck.testbed('VerticalStack', function(testbed) {
   var pl = planck, Vec2 = pl.Vec2;
@@ -32,16 +34,13 @@ planck.testbed('VerticalStack', function(testbed) {
     blockSolve: true,
   });
 
-  const columnCount = 2;
-  const rowCount = 20;
-  const bullet = new Bullet(world);
-
-  const simulator = new VerticalStackSimulator(columnCount, rowCount, world);
+  const bullet = new Bullet(FLOOR, world);
+  const simulator = new VerticalStackSimulator(FLOOR, world);
 
   testbed.keydown = function(code, char) {
     switch (char) {
     case 'X':
-      bullet.destroy();
+      //bullet.destroy();
       bullet.create();
       break;
 

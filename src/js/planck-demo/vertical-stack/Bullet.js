@@ -1,8 +1,15 @@
+const VELOCITY = 200;
+
+// height above the flow where the bullet shoots from
+const HEIGHT = 5.0;
+
+
 export default class Bullet {
 
-  constructor(world) {
+  constructor(floor, world) {
     this.world = world;
     this.instance = null;
+    this.floor = floor;
   }
 
   destroy() {
@@ -16,7 +23,7 @@ export default class Bullet {
       this.instance = this.world.createBody({
           type: 'dynamic',
           bullet: true,
-          position: planck.Vec2(-31.0, 5.0),
+          position: planck.Vec2(-31.0, this.floor + HEIGHT),
       });
 
       this.instance.createFixture({
@@ -25,6 +32,6 @@ export default class Bullet {
         restitution: 0.04,
       });
 
-      this.instance.setLinearVelocity(planck.Vec2(300.0, 0.0));
+      this.instance.setLinearVelocity(planck.Vec2(VELOCITY, 0.0));
   }
 }
