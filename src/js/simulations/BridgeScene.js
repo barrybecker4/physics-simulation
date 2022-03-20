@@ -30,7 +30,6 @@ export default class BridgeScene extends Phaser.Scene {
   }
 
   selectionClick(evt) {
-      //console.log(evt);
       let worldX = this.toWorldScale(evt.x);
       let worldY = this.toWorldScale(evt.y);
       this.boxWorld.makeSelection(worldX, worldY);
@@ -38,7 +37,7 @@ export default class BridgeScene extends Phaser.Scene {
 
   // simple function to convert pixels to meters
   toWorldScale(n) {
-      return 10.0 * n / this.game.config.physicsOptions.worldScale;
+      return n / this.game.config.physicsOptions.worldScale;
   }
 
   update(time, delta) {

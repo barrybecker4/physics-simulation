@@ -23,7 +23,6 @@ export default class AbstractSimulation  {
       this.world = world;
       this.createGraphics = createGraphics;
       this.params = params;
-      this._scale = 3.0;  //canvas.width / 80;
       //world.addContactListener(new NoiseContactListener()); this is raw planckWorld
     }
 
@@ -52,11 +51,6 @@ export default class AbstractSimulation  {
     }
 
     get scale() {
-        return this._scale;
+        return this.params.worldScale;
     }
-
-    set scale(s) {
-        this._scale = s;
-    }
-
 }

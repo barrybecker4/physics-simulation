@@ -15,7 +15,7 @@ const gameConfig = {
     width: 600,
     height: 600
   },
-  // Put all the scened that will appear in the scene selector here.
+  // Put all the scenes that will appear in the scene selector here.
   scene: [
     BridgeScene,
     FallingBoxesScene,
@@ -65,5 +65,4 @@ export default class PhaserGame {
   getCurrentSceneName() {
     return this.getConfig().currentSceneName;
   }
-
 }
