@@ -39,6 +39,9 @@ export default class BridgeSimulation extends AbstractSimulation {
     return this.shapeBuilder.createBox(posX, posY, width, height, false, 0x00ee11);
   }
 
+  getName() {
+    return "BridgeScene";
+  }
 
   addDynamicElements(){
     const bodyDef = {

@@ -31,6 +31,10 @@ export default class AbstractSimulation  {
           "<p>You can click on things and drag them around, and you can press 'd' over an object to delete it.</p>";
     }
 
+    getName() {
+      throw Error("You must override this method");
+    }
+
     addStaticElements() {
     }
 

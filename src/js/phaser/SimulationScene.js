@@ -1,15 +1,14 @@
-import BoxWorld from "./BoxWorld.js";
+import BoxWorld from "../simulations/BoxWorld.js";
 import Sounds from "/physics-simulation/src/js/sounds/Sounds.js";
 import NoiseContactListener from "../animation/NoiseContactListener.js";
-import BridgeSimulation from "./BridgeSimulation.js";
+import BridgeSimulation from "../simulations/AbstractSimulation.js";
 
 
-export default class BridgeScene extends Phaser.Scene {
+export default class SimulationScene extends Phaser.Scene {
 
-  static NAME = "BridgeScene";
-
-  constructor() {
-    super(BridgeScene.NAME);
+  constructor(simulation) {
+    super(simulation.getName());
+    this.simulation = simulation;
   }
 
   preload() {
@@ -23,8 +22,7 @@ export default class BridgeScene extends Phaser.Scene {
     this.boxWorld = new BoxWorld(config.width, config.height, config.physicsOptions, createGraphics);
     this.boxWorld.addContactListener(new NoiseContactListener(this.sounds));
 
-    this.bridgeSim = new BridgeSimulation();
-    this.boxWorld.setSimulation(this.bridgeSim);
+    this.boxWorld.setSimulation(this.simulation);
 
     this.input.on("pointerdown", this.selectionClick, this);
   }

@@ -1,5 +1,6 @@
 import FallingBoxesScene from "../simulations/FallingBoxesScene.js";
-import BridgeScene from "../simulations/BridgeScene.js";
+import SimulationScene from "./SimulationScene.js";
+import BridgeSimulation from "../simulations/BridgeSimulation.js"
 
 
 const gameConfig = {
@@ -17,7 +18,7 @@ const gameConfig = {
   },
   // Put all the scenes that will appear in the scene selector here.
   scene: [
-    BridgeScene,
+    new SimulationScene(new BridgeSimulation()),
     FallingBoxesScene,
   ],
 };

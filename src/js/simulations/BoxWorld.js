@@ -104,8 +104,6 @@ export default class BoxWorld {
           userData.destroy();
           this.world.destroyBody(body);
     });
-
-
   }
 
   resized(evt) {
