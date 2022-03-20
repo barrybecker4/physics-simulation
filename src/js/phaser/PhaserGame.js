@@ -1,4 +1,3 @@
-import FallingBoxesScene from "../simulations/FallingBoxesScene.js";
 import SimulationScene from "./SimulationScene.js";
 import BridgeSimulation from "../simulations/BridgeSimulation.js"
 import FallingBoxesSimulation from "../simulations/FallingBoxesSimulation.js"
