@@ -24,37 +24,37 @@ window.onload = function() {
 
 function simulationSelectionChanged() {
   const simulationSelector = getSimulationSelector();
-  game.setScene(simulationSelector.options[ simulationSelector.selectedIndex ].value)
+  const sceneName = simulationSelector.options[ simulationSelector.selectedIndex ].value;
+  game.setScene(sceneName);
   doResume();
 }
 
 function doRestart() {
   if (game) {
-    game.getScene().start(game.getConfig().currentScene, game.getConfig());
+    game.start();
     doResume();
   }
 }
 
 function togglePause() {
-  if (game.getScene().paused) doResume();
+  if (game.getScene().paused)
+    doResume();
   else doPause();
 }
 
 function doPause() {
-  game.getScene().pause(game.getConfig().currentScene);
+  game.pause();
   getPauseButton().innerText = "Resume";
-  game.getScene().paused = true;
 }
 
 function doResume() {
-  game.getScene().resume(game.getConfig().currentScene);
+  game.resume();
   getPauseButton().innerText = "Pause";
-  game.getScene().paused = false;
 }
 
 function onCheckboxToggled() {
   const debugValue = getDebugCheckbox().checked;
-  game.getConfig().debug = debugValue;
+  game.setDebug(debugValue);
 }
 
 function getSimulationSelector() {

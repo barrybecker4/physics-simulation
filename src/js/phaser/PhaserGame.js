@@ -26,7 +26,7 @@ export default class PhaserGame {
 
   constructor(physicsOptions) {
     this.game = new Phaser.Game(gameConfig);
-    this.game.config.currentScene = gameConfig.scene[0].NAME;
+    this.game.config.currentSceneName = gameConfig.scene[0].NAME;
     this.game.config.physicsOptions = physicsOptions;
   }
 
@@ -38,10 +38,32 @@ export default class PhaserGame {
     return this.game.scene;
   }
 
-  setScene(scene) {
-    this.getScene().stop(this.getConfig().currentScene);
-    this.getConfig().currentScene = scene;
-    this.getScene().start(scene);
+  setScene(sceneName) {
+    this.getScene().stop(this.getConfig().currentSceneName);
+    this.getConfig().currentSceneName = sceneName;
+    this.getScene().start(sceneName);
+  }
+
+  start() {
+    this.getScene().start(this.getCurrentSceneName(), this.getConfig());
+  }
+
+  pause() {
+    this.getScene().pause(this.getCurrentSceneName());
+    this.getScene().paused = true;
+  }
+
+  resume() {
+    this.getScene().resume(this.getCurrentSceneName());
+    this.getScene().paused = false;
+  }
+
+  setDebug(debugValue) {
+    this.getConfig().debug = debugValue;
+  }
+
+  getCurrentSceneName() {
+    return this.getConfig().currentSceneName;
   }
 
 }
