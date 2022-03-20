@@ -8,7 +8,7 @@ export default class BridgeScene extends Phaser.Scene {
 
   static NAME = "BridgeScene";
 
-  constructor(){
+  constructor() {
     super(BridgeScene.NAME);
   }
 
@@ -25,8 +25,21 @@ export default class BridgeScene extends Phaser.Scene {
 
     this.bridgeSim = new BridgeSimulation();
     this.boxWorld.setSimulation(this.bridgeSim);
+
+    this.input.on("pointerdown", this.selectionClick, this);
   }
 
+  selectionClick(evt) {
+      //console.log(evt);
+      let worldX = this.toWorldScale(evt.x);
+      let worldY = this.toWorldScale(evt.y);
+      this.boxWorld.makeSelection(worldX, worldY);
+  }
+
+  // simple function to convert pixels to meters
+  toWorldScale(n) {
+      return 10.0 * n / this.game.config.physicsOptions.worldScale;
+  }
 
   update(time, delta) {
     //this.bridgeSim.onFrameUpdate(timeStep);

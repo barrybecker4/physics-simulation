@@ -91,6 +91,23 @@ export default class BoxWorld {
     this.simulation.addDynamicElements();
   }
 
+
+  makeSelection(worldX, worldY) {
+    const worldPoint = planck.Vec2(worldX, worldY);
+
+    // query for the world coordinates to check fixtures under the pointer
+    //console.log("worldPoint = " + worldPoint)
+    this.world.queryAABB(planck.AABB(worldPoint, worldPoint), fixture => {
+
+          let body = fixture.getBody();
+          let userData = body.getUserData();
+          userData.destroy();
+          this.world.destroyBody(body);
+    });
+
+
+  }
+
   resized(evt) {
     //simulation.scale = this.width / 100;
   }

@@ -19,11 +19,6 @@ planck.testbed('AirHockey', testbed => {
 
     puck.create()
 
-    let counter = 0
-    testbed.step = function() {
-      testbed.status('time', counter++)
-    }
-
     function updatePosition(e) {
         if (canMove) {
           const vector = Vec2(e.movementX * force, -e.movementY * force)
