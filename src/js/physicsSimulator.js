@@ -1,14 +1,13 @@
 import PhysicsControls from "./ui/PhysicsControls.js";
-import FallingBoxesScene from "./simulations/FallingBoxesScene.js";
-import BridgeScene from "./simulations/BridgeScene.js";
 import PhysicsOptions from "./simulations/PhysicsOptions.js";
+import PhaserGame from "./phaser/PhaserGame.js";
 
 /**
  * Sets up Phaser and and handles interaction with the HTML elements.
  * Shows a dropdown to select the simulation scene to show.
  */
 
-let game;
+let game; // Phaser game object
 const physicsOptions = new PhysicsOptions();
 
 
@@ -25,40 +24,37 @@ window.onload = function() {
 
 function simulationSelectionChanged() {
   const simulationSelector = getSimulationSelector();
-  game.scene.stop(game.config.currentScene);
-  console.log("simulationSelector.selectedIndex = " + simulationSelector.selectedIndex)
-  game.config.currentScene = simulationSelector.options[ simulationSelector.selectedIndex ].value;
-  game.scene.start(game.config.currentScene);
+  game.setScene(simulationSelector.options[ simulationSelector.selectedIndex ].value)
   doResume();
 }
 
 function doRestart() {
   if (game) {
-    game.scene.start(game.config.currentScene, game.config);
+    game.getScene().start(game.getConfig().currentScene, game.getConfig());
     doResume();
   }
 }
 
 function togglePause() {
-  if (game.scene.paused) doResume();
+  if (game.getScene().paused) doResume();
   else doPause();
 }
 
 function doPause() {
-  game.scene.pause(game.config.currentScene);
+  game.getScene().pause(game.getConfig().currentScene);
   getPauseButton().innerText = "Resume";
-  game.scene.paused = true;
+  game.getScene().paused = true;
 }
 
 function doResume() {
-  game.scene.resume(game.config.currentScene);
+  game.getScene().resume(game.getConfig().currentScene);
   getPauseButton().innerText = "Pause";
-  game.scene.paused = false;
+  game.getScene().paused = false;
 }
 
 function onCheckboxToggled() {
   const debugValue = getDebugCheckbox().checked;
-  game.config.debug = debugValue;
+  game.getConfig().debug = debugValue;
 }
 
 function getSimulationSelector() {
@@ -78,28 +74,6 @@ function getDebugCheckbox() {
 }
 
 function initializePhaser() {
-  let gameConfig = {
-    type: Phaser.AUTO,
-    backgroundColor: 0x110022,
-    audio: {
-      disableWebAudio: false,
-    },
-    scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-      parent: "physicsSimulator",
-      width: 600,
-      height: 600
-    },
-    scene: [
-      BridgeScene,
-      FallingBoxesScene,
-    ],
-  };
-
-  game = new Phaser.Game(gameConfig);
-  game.config.currentScene = gameConfig.scene[0].NAME;
-  game.config.physicsOptions = physicsOptions;
-
+  game = new PhaserGame(physicsOptions);
   window.focus();
 }
