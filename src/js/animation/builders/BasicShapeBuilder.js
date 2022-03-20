@@ -4,7 +4,7 @@ import AbstractBuilder from "./AbstractBuilder.js";
 import Util from "../common/Util.js"
 import Line from "../sprites/Line.js"
 import Polygon from "../sprites/Polygon.js";
-import phaserUtils from "/physics-simulation/src/js/simulations/phaserUtils.js";
+import phaserUtils from "/physics-simulation/src/js/phaser/phaserUtils.js";
 
 const MAX_GROUP_INDEX = 1000000;
 

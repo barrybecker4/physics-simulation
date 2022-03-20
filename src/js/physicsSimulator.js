@@ -20,6 +20,7 @@ window.onload = function() {
   const physicsControls = new PhysicsControls(physicsOptions);
   initializePhaser();
   onCheckboxToggled();
+  simulationSelectionChanged();
 };
 
 function simulationSelectionChanged() {

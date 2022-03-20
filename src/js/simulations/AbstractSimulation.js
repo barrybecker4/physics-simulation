@@ -23,6 +23,7 @@ export default class AbstractSimulation  {
       this.world = world;
       this.createGraphics = createGraphics;
       this.params = params;
+      this.paused = false;
       //world.addContactListener(new NoiseContactListener()); this is raw planckWorld
     }
 
@@ -39,6 +40,14 @@ export default class AbstractSimulation  {
     }
 
     addDynamicElements() {
+    }
+
+    setPaused(paused) {
+      this.paused = paused;
+    }
+
+    isPaused() {
+      return this.paused;
     }
 
     //Called every time a new frame is drawn.  The default is to do nothing.

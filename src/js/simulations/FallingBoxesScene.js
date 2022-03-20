@@ -1,5 +1,5 @@
 import PlanckWorld from "./PlanckWorld.js";
-import phaserUtils from "./phaserUtils.js";
+import phaserUtils from "../phaser/phaserUtils.js";
 import Sounds from "../sounds/Sounds.js";
 
 

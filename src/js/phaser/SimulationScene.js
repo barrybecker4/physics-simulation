@@ -25,6 +25,9 @@ export default class SimulationScene extends Phaser.Scene {
     this.boxWorld.setSimulation(this.simulation);
 
     this.input.on("pointerdown", this.selectionClick, this);
+
+    this.events.on('pause', () => this.simulation.setPaused(true));
+    this.events.on('resume', () => this.simulation.setPaused(false));
   }
 
   selectionClick(evt) {
@@ -38,8 +41,13 @@ export default class SimulationScene extends Phaser.Scene {
       return n / this.game.config.physicsOptions.worldScale;
   }
 
+  setPaused(paused) {
+    this.paused = paused;
+    this.simulation.setPaused(paused);
+  }
+
   update(time, delta) {
-    //this.bridgeSim.onFrameUpdate(timeStep);
+    //this.simulation.onFrameUpdate(timeStep);
     this.boxWorld.onEnterFrame(this.timeStep);
   }
 

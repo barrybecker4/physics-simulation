@@ -1,9 +1,4 @@
-//import Box2D.Common.Math.b2Vec2;
-//import flash.geom.Point;
-
-
 const LN10 = Math.log(10.0);
-
 
 export default class Util  {
 

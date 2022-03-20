@@ -25,7 +25,7 @@ export default class Rectangle extends AbstractShape {
     const g = this.graphics = this.createGraphics();
     const theColor = Phaser.Display.Color.IntegerToColor(this.color);
     console.log("the rect Color=" + theColor + " c=" + this.color)
-    g.fillStyle(theColor.color, 0.3);
+    g.fillStyle(theColor.color, 0.6);
     g.lineStyle(1, theColor.color);
 
     const xpos = this.x - this.width / 2;

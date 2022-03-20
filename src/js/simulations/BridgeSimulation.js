@@ -18,15 +18,15 @@ const ANCHOR_SIZE = 1;
 
 export default class BridgeSimulation extends AbstractSimulation {
 
-  constructor() {
-    super();
-  }
-
   initialize(world, createGraphics, params) {
     super.initialize(world, createGraphics, params);
 
     this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, params.worldScale);
     this.crapBuilder = new CrapBuilder(world, createGraphics, params.worldScale);
+  }
+
+  getName() {
+    return "BridgeScene";
   }
 
   addStaticElements() {
@@ -37,10 +37,6 @@ export default class BridgeSimulation extends AbstractSimulation {
 
   createGroundElement(posX, posY, width, height) {
     return this.shapeBuilder.createBox(posX, posY, width, height, false, 0x00ee11);
-  }
-
-  getName() {
-    return "BridgeScene";
   }
 
   addDynamicElements(){
@@ -82,6 +78,5 @@ export default class BridgeSimulation extends AbstractSimulation {
     this.anchor.set((BRIDGE_STARTX + SEGMENT_WIDTH * NUM_SEGMENTS) / s, BRIDGE_HEIGHT / s);
     this.world.createJoint(planck.RevoluteJoint(jd, prevBody, rightBody, this.anchor));
   }
-
 
 }
