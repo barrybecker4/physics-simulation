@@ -24,21 +24,47 @@ export default class SimulationScene extends Phaser.Scene {
 
     this.boxWorld.setSimulation(this.simulation);
 
-    this.input.on("pointerdown", this.selectionClick, this);
+    this.input.mouse.disableContextMenu();
+    this.input.on("pointerdown", this.pointerDown, this);
+    this.input.on('pointermove', this.pointerMove, this);
+    this.input.on("pointerup", this.pointerReleased, this);
 
     this.events.on('pause', () => this.simulation.setPaused(true));
     this.events.on('resume', () => this.simulation.setPaused(false));
   }
 
-  selectionClick(evt) {
-      let worldX = this.toWorldScale(evt.x);
-      let worldY = this.toWorldScale(evt.y);
-      this.boxWorld.makeSelection(worldX, worldY);
+  pointerDown(pointer) {
+    const worldPoint = this.getWorldCoords(pointer);
+
+    if (pointer.leftButtonDown()) {
+      this.boxWorld.leftMouseDown(worldPoint);
+    }
+    else if (pointer.rightButtonDown()) {
+      this.boxWorld.rightMouseDown(worldPoint);
+    }
+  }
+
+  pointerMove(pointer) {
+    if (pointer.leftButtonDown()) {
+      this.boxWorld.leftMouseDragged(this.getWorldCoords(pointer));
+    }
+  }
+
+  pointerReleased(pointer) {
+    if (pointer.leftButtonReleased()) {
+      this.boxWorld.leftMouseReleased(this.getWorldCoords(pointer));
+    }
+  }
+
+  getWorldCoords(pointer) {
+    const worldX = this.toWorldScale(pointer.x);
+    const worldY = this.toWorldScale(pointer.y);
+    return planck.Vec2(worldX, worldY);
   }
 
   // simple function to convert pixels to meters
   toWorldScale(n) {
-      return n / this.game.config.physicsOptions.worldScale;
+    return n / this.game.config.physicsOptions.worldScale;
   }
 
   setPaused(paused) {

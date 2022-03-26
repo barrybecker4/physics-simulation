@@ -5,7 +5,7 @@ import AbstractShape from "../animation/sprites/AbstractShape.js";
 const VELOCITY_ITERATIONS = 10;
 const STEP_ITERATIONS = 6;
 const TIME_STEP = 1.0 / 20.0;
-
+const FORCE_SCALE = 2;
 
 
 export default class BoxWorld {
@@ -19,6 +19,8 @@ export default class BoxWorld {
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
     this.contactListeners = [];
+    this.draggedBody = null;
+    this.dragStart = null;
 
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
@@ -91,12 +93,34 @@ export default class BoxWorld {
     this.simulation.addDynamicElements();
   }
 
-
-  makeSelection(worldX, worldY) {
-    const worldPoint = planck.Vec2(worldX, worldY);
-
+  // start dragging
+  leftMouseDown(worldPoint) {
+    //this.dragStart = worldPoint;
     // query for the world coordinates to check fixtures under the pointer
     // For now this deletes, but we should allow drag and other operations.
+    this.world.queryAABB(planck.AABB(worldPoint, worldPoint), fixture => {
+          this.draggedBody = fixture.getBody();
+          this.dragStart = this.draggedBody.getPosition();
+          //console.log("draggedBody = " + this.draggedBody);
+    });
+  }
+
+  leftMouseDragged(worldPoint) {
+    const forceVector = worldPoint.sub(this.dragStart).mul(FORCE_SCALE);
+    this.draggedBody.applyForce(forceVector, this.dragStart, true);
+    this.dragStart = this.draggedBody.getPosition(); //worldPoint;
+  }
+
+  leftMouseReleased(worldPoint) {
+    this.draggedBody = null;
+    this.dragStart = null;
+  }
+
+
+  // delete the element under the mouse
+  rightMouseDown(worldX, worldY) {
+    const worldPoint = planck.Vec2(worldX, worldY);
+
     this.world.queryAABB(planck.AABB(worldPoint, worldPoint), fixture => {
           let body = fixture.getBody();
           let userData = body.getUserData();

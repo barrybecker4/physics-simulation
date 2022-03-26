@@ -26,15 +26,16 @@ planck.testbed('AirHockey', testbed => {
         }
     }
 
+    // detect when the puck is in a goal
     function handleContact(contact) {
         const fixtureA = contact.getFixtureA()
         const fixtureB = contact.getFixtureB()
         if (fixtureA == table.goal1Sensor) {
-            alert('player1 scored')
+            alert('Player1 scored')
             puck.reset()
         }
         if (fixtureA == table.goal2Sensor) {
-            alert('player2 scored')
+            alert('Player2 scored')
             puck.reset()
         }
     }

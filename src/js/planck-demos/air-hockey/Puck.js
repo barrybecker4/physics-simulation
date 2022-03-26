@@ -19,7 +19,7 @@ export default class Puck {
             type: 'dynamic',
             position: planck.Vec2(0, 0),
             bullet: true,
-            linearDamping: 0.1,
+            linearDamping: 0.01,
             angularDamping: 0.02
         })
         this.body.createFixture(planck.Circle(1), {
