@@ -19,11 +19,13 @@ export default class BoxWorld {
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
     this.contactListeners = [];
-    this.draggedBody = null;
-    this.dragStart = null;
 
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
     physicsOptions.addGravityChangeListener(this);
+
+    this.mouseGround = this.world.createBody();
+    this.mouseJoint = null;
+    this.targetBody = null;
 
     this.initInteractionListeners();
   }
@@ -95,27 +97,30 @@ export default class BoxWorld {
 
   // start dragging
   leftMouseDown(worldPoint) {
-    //this.dragStart = worldPoint;
-    // query for the world coordinates to check fixtures under the pointer
-    // For now this deletes, but we should allow drag and other operations.
     this.world.queryAABB(planck.AABB(worldPoint, worldPoint), fixture => {
-          this.draggedBody = fixture.getBody();
-          this.dragStart = this.draggedBody.getPosition();
-          //console.log("draggedBody = " + this.draggedBody);
+      // if there is already a mouse joint, delete it first
+      this.deleteMouseJoint()
+      this.mouseJoint = planck.MouseJoint({ maxForce: 100 }, this.mouseGround, fixture.getBody(), worldPoint);
+      this.world.createJoint(this.mouseJoint);
     });
   }
 
   leftMouseDragged(worldPoint) {
-    const forceVector = worldPoint.sub(this.dragStart).mul(FORCE_SCALE);
-    this.draggedBody.applyForce(forceVector, this.dragStart, true);
-    this.dragStart = this.draggedBody.getPosition(); //worldPoint;
+    if (this.mouseJoint) {
+      this.mouseJoint.setTarget(worldPoint);
+    }
   }
 
   leftMouseReleased(worldPoint) {
-    this.draggedBody = null;
-    this.dragStart = null;
+    this.deleteMouseJoint();
   }
 
+  deleteMouseJoint() {
+    if (this.mouseJoint) {
+      this.world.destroyJoint(this.mouseJoint);
+      this.mouseJoint = null;
+    }
+  }
 
   // delete the element under the mouse
   rightMouseDown(worldX, worldY) {
@@ -158,13 +163,15 @@ export default class BoxWorld {
 
     for (let bb = this.world.getBodyList(); bb; bb = bb.getNext()) {
       let shape = bb.getUserData(); // AbstractShape's graphics object
-      const scale = this.simulation.scale;
-      const bodyPosition = bb.getPosition();
-      shape.x = bodyPosition.x * scale;
-      shape.y = bodyPosition.y * scale;
-      //if (Math.random() <= .1)
-      //  console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active + " s=" + scale);
-      shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
+      if (shape) {
+        const scale = this.simulation.scale;
+        const bodyPosition = bb.getPosition();
+        shape.x = bodyPosition.x * scale;
+        shape.y = bodyPosition.y * scale;
+        //if (Math.random() <= .1)
+        //  console.log("x = " + shape.x + " y = " + shape.y + " v = " + shape.visible + " s = " + shape.scale + " active=" + shape.active + " s=" + scale);
+        shape.rotation = bb.getAngle(); //* Util.RAD_TO_DEG;
+      }
     }
   }
 
