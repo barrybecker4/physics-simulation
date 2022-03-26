@@ -107,7 +107,7 @@ export default class Util  {
     C = vec[0];
     D = vec[n-1];
     for (let i = 1; i < n - 1; i++) {
-      d = this.determinate(C, D, vec[i]);
+      d = this.determinant(C, D, vec[i]);
       if (d < 0) {
         tempVec[i1++] = vec[i];
       }
@@ -143,7 +143,7 @@ export default class Util  {
    *
    * @return the determinant
    */
-  static determinate(p1, p2, p3) {
+  static determinant(p1, p2, p3) {
     return p1.x * p2.y + p2.x * p3.y + p3.x * p1.y - p1.y * p2.x - p2.y * p3.x - p3.y * p1.x;
   }
 
