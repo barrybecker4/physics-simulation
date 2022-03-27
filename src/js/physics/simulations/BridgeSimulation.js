@@ -1,7 +1,7 @@
 import AbstractSimulation from "./AbstractSimulation.js";
-import BasicShapeBuilder from "../animation/builders/BasicShapeBuilder.js";
-import CrapBuilder from "../animation/builders/CrapBuilder.js";
-import AbstractBuilder from "../animation/builders/AbstractBuilder.js";
+import BasicShapeBuilder from "/physics-simulation/src/js/animation/builders/BasicShapeBuilder.js";
+import CrapBuilder from "/physics-simulation/src/js/animation/builders/CrapBuilder.js";
+import AbstractBuilder from "/physics-simulation/src/js/animation/builders/AbstractBuilder.js";
 
 
 const NUM_SHAPES = 50;

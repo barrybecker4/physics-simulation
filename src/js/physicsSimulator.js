@@ -1,5 +1,5 @@
 import PhysicsControls from "./ui/PhysicsControls.js";
-import PhysicsOptions from "./simulations/PhysicsOptions.js";
+import PhysicsOptions from "./physics/PhysicsOptions.js";
 import PhaserGame from "./phaser/PhaserGame.js";
 
 /**

@@ -1,8 +1,8 @@
 import AbstractSimulation from "./AbstractSimulation.js";
-import BasicShapeBuilder from "../animation/builders/BasicShapeBuilder.js";
-import CrapBuilder from "../animation/builders/CrapBuilder.js";
-import AbstractBuilder from "../animation/builders/AbstractBuilder.js";
-import Util from "../animation/common/Util.js";
+import BasicShapeBuilder from "/physics-simulation/src/js/animation/builders/BasicShapeBuilder.js";
+import CrapBuilder from "/physics-simulation/src/js/animation/builders/CrapBuilder.js";
+import AbstractBuilder from "/physics-simulation/src/js/animation/builders/AbstractBuilder.js";
+import Util from "/physics-simulation/src/js/animation/common/Util.js";
 
 const MAX_BLOCKS = 100;
 const WIDTH = 600;

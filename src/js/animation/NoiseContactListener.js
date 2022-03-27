@@ -1,4 +1,4 @@
-import physicsUtils from "../simulations/physicsUtils.js";
+import physicsUtils from "../physics/physicsUtils.js";
 
 
 export default class NoiseContactListener  {

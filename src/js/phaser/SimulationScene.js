@@ -1,7 +1,7 @@
-import BoxWorld from "../simulations/BoxWorld.js";
+import BoxWorld from "../physics/BoxWorld.js";
 import Sounds from "/physics-simulation/src/js/sounds/Sounds.js";
 import NoiseContactListener from "../animation/NoiseContactListener.js";
-import BridgeSimulation from "../simulations/AbstractSimulation.js";
+import BridgeSimulation from "../physics/simulations/AbstractSimulation.js";
 
 
 export default class SimulationScene extends Phaser.Scene {

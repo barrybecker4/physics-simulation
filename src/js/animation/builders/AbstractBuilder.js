@@ -1,11 +1,3 @@
-//import Box2D.Collision.Shapes.b2Shape;
-//import Box2D.Dynamics.b2Body;
-//import Box2D.Dynamics.b2BodyDef;
-//import Box2D.Dynamics.b2FixtureDef;
-//import Box2D.Dynamics.b2World;
-//import com.becker.animation.sprites.AbstractShape.js;
-//import mx.core.UIComponent;
-
 export default class AbstractBuilder  {
 
   constructor(world, createGraphics, scale) {

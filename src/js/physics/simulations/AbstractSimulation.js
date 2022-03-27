@@ -1,14 +1,6 @@
-//import Box2D.Dynamics.b2World;
-//import com.becker.animation.box2d.interactors.MouseDragInteractor;
-//import com.becker.animation.box2d.NoiseContactListener;
-//import com.becker.common.PhysicalParameters;
-
-//import com.becker.animation.box2d.Simulation;
-//import mx.core.UIComponent;
-
-import KeyboardInteractor from "../animation/interactors/KeyboardInteractor.js";
-import MouseDragInteractor from "../animation/interactors/MouseDragInteractor.js";
-import NoiseContactListener from "../animation/NoiseContactListener.js";
+import KeyboardInteractor from "/physics-simulation/src/js/animation/interactors/KeyboardInteractor.js";
+import MouseDragInteractor from "/physics-simulation/src/js/animation/interactors/MouseDragInteractor.js";
+import NoiseContactListener from "/physics-simulation/src/js/animation/NoiseContactListener.js";
 
 
 /**
