@@ -19,8 +19,9 @@ export default class AbstractSimulation  {
 
     constructor() {}
 
-    initialize(world, createGraphics, params) {
+    initialize(world, createGraphics, params, sounds) {
       this.world = world;
+      this.sounds = sounds;
       this.createGraphics = createGraphics;
       this.params = params;
       this.paused = false;

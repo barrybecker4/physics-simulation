@@ -4,16 +4,19 @@ import CrapBuilder from "../animation/builders/CrapBuilder.js";
 import AbstractBuilder from "../animation/builders/AbstractBuilder.js";
 import Util from "../animation/common/Util.js";
 
-const MAX_BLOCKS = 200;
+const MAX_BLOCKS = 100;
 const WIDTH = 600;
 const HEIGHT = 600
 
 
 export default class FallingBoxesSimulation extends AbstractSimulation {
 
-  initialize(world, createGraphics, params) {
-    super.initialize(world, createGraphics, params);
+  initialize(world, createGraphics, params, sounds) {
+    super.initialize(world, createGraphics, params, sounds);
     this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, params.worldScale);
+
+    // keep track of the boxes so that we can periodically delete them
+    this.randomBoxes = [];
   }
 
   getName() {
@@ -30,12 +33,14 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
      let tick = 0;
      const intervalId = setInterval(() => {
        if (!this.isPaused()) {
-         this.createRandomBox();
+         this.randomBoxes.push(this.createRandomBox());
          tick++;
          if (tick === MAX_BLOCKS) {
-           //this.sounds.playScrape();
-           //this.start(getName(), config);
            // destroy all blocks and start over
+
+           this.sounds.playScrape();
+           this.destroyBoxes();
+           tick = 0;
          }
        }
      }, 600);
@@ -50,6 +55,16 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
     const randomWidth = Phaser.Math.Between(20, 80);
     const randomHeight = Phaser.Math.Between(20, 80);
     //console.log("compare " + 0x88eeaa + " to " + phaserUtils.randomColor())
-    this.shapeBuilder.createBox(xPos, -100, randomWidth, randomHeight, true, Util.getRandomColor());
+    return this.shapeBuilder.createBox(xPos, -100, randomWidth, randomHeight, true, Util.getRandomColor());
+  }
+
+  destroyBoxes() {
+    while (this.randomBoxes.length) {
+      const box = this.randomBoxes.pop();
+
+      const userData = box.getUserData();
+      userData.destroy();
+      this.world.destroyBody(box);
+    }
   }
 }

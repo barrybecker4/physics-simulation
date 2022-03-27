@@ -10,7 +10,7 @@ const FORCE_SCALE = 2;
 
 export default class BoxWorld {
 
-  constructor(width, height, physicsOptions, createGraphics) {
+  constructor(width, height, physicsOptions, createGraphics, sounds) {
     // create a Box2D world
     this.width = width;
     this.height = height;
@@ -18,6 +18,7 @@ export default class BoxWorld {
     this.physicsOptions = physicsOptions;
     this.createGraphics = createGraphics;
     this.worldScale = physicsOptions.worldScale;
+    this.sounds = sounds;
     this.contactListeners = [];
 
     this.world = new planck.World(planck.Vec2(0, physicsOptions.gravity));
@@ -83,7 +84,7 @@ export default class BoxWorld {
     if (this.simulation != null) {
       this.simulation.cleanup();
     }
-    simulation.initialize(this.world, this.createGraphics, this.physicsOptions);
+    simulation.initialize(this.world, this.createGraphics, this.physicsOptions, this.sounds);
     this.simulation = simulation;
     this.startAnimation();
   }

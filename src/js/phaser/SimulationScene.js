@@ -19,7 +19,7 @@ export default class SimulationScene extends Phaser.Scene {
   create() {
     const createGraphics = () => this.add.graphics();
     const config = this.game.config;
-    this.boxWorld = new BoxWorld(config.width, config.height, config.physicsOptions, createGraphics);
+    this.boxWorld = new BoxWorld(config.width, config.height, config.physicsOptions, createGraphics, this.sounds);
     this.boxWorld.addContactListener(new NoiseContactListener(this.sounds));
 
     this.boxWorld.setSimulation(this.simulation);

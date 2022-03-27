@@ -18,8 +18,8 @@ const ANCHOR_SIZE = 1;
 
 export default class BridgeSimulation extends AbstractSimulation {
 
-  initialize(world, createGraphics, params) {
-    super.initialize(world, createGraphics, params);
+  initialize(world, createGraphics, params, sounds) {
+    super.initialize(world, createGraphics, params, sounds);
 
     this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, params.worldScale);
     this.crapBuilder = new CrapBuilder(world, createGraphics, params.worldScale);
