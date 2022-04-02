@@ -6,7 +6,7 @@ import Line from "../sprites/Line.js"
 import Polygon from "../sprites/Polygon.js";
 import phaserUtils from "/physics-simulation/src/js/phaser/phaserUtils.js";
 
-const MAX_GROUP_INDEX = 1000000;
+const MAX_GROUP_INDEX = 100000;
 
 export default class BasicShapeBuilder extends AbstractBuilder {
 
@@ -67,7 +67,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
 
   buildOrientedBlock(orientedBlock, bodyDef,
                      density = 1.0, friction = 0.5, restitution = 0.2,
-                     groupIndex= int.MAX_VALUE) {
+                     groupIndex = int.MAX_VALUE) {
 
     const fixtureDef = { density, fr, restitution, filter:{} };
     if (groupIndex !== MAX_GROUP_INDEX) {
@@ -84,7 +84,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return this.addShape(fixtureDef, bodyDef);
   }
 
-
   buildSensor(center, width, height, body, sensorName = "sensor") {
 
     const fixtureDef = {
@@ -96,6 +95,80 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     fixtureDef.shape = shape;
     fixtureDef.setUserData(sensorName);
     body.createFixture(fixtureDef);
+  }
+
+    /** remove this and allow passing in the class for the graphic shape
+    buildBazooka(width, height, bodyDef,
+                 density = 1.0, friction = 0.5, restitution = 0.2,
+                 groupIndex = MAX_GROUP_INDEX) {
+
+      const boxDef = { density, friction, restitution, filter:{} };
+
+      if (groupIndex != MAX_GROUP_INDEX) {
+        boxDef.filter.groupIndex = groupIndex;
+      }
+      const shape = new planck.Polygon();
+      shape.setAsBox(width, height);
+      boxDef.shape = shape;
+      bodyDef.setUserData()new Bazooka(width * 2 * scale, height * 2 * scale).graphics);
+
+      return this.addShape(boxDef, bodyDef);
+    } */
+
+    /*
+    buildBullet(radius, bodyDef,
+                density = 1.0, friction = 0.5, restitution = 0.2,
+                duration = 10000,
+                groupIndex = MAX_GROUP_INDEX) {
+
+      const circleDef = { density, fr, restitution, filter:{} };
+      if (groupIndex != int.MAX_VALUE) {
+        circleDef.filter.groupIndex = groupIndex;
+      }
+      circleDef.shape = new planck.CircleShape(radius);
+      bodyDef.setUserData(new Bullet(radius * scale, duration).graphics);
+
+      return this.addShape(circleDef, bodyDef, false); // true (causes slow)
+    }*/
+
+  /**
+   * A group of blocks that are glued together into one body
+   * @return body with children for all the decorating blocks.
+   */
+  buildCompoundBlock(orientedBlocks, bodyDef,
+                     density = 1.0, friction = 0.5, restitution = 0.2,
+                     groupIndex = MAX_GROUP_INDEX) {
+
+    const fixtureDef = { density, friction, restitution, filter: {} };
+    if (groupIndex !== MAX_GROUP_INDEX) {
+      fixtureDef.filter.groupIndex = groupIndex;
+    }
+
+    const masterBlock = orientedBlocks[0];
+
+    const mainShape = new planck.Polygon();
+    mainShape.setAsOrientedBox(masterBlock.width, masterBlock.height, masterBlock.center, masterBlock.rotation);
+    fixtureDef.shape = mainShape;
+
+    bodyDef.setUserData(new Rectangle(masterBlock.width * 2 * this.scale, masterBlock.height * 2 * this.scale).graphics);
+    const body = this.addShape(fixtureDef, bodyDef);
+
+    for (let i = 1; i < orientedBlocks.length; i++) {
+      const orientedBlock = orientedBlocks[i];
+      const blockShape = new planck.Polygon();
+      blockShape.setAsOrientedBox(orientedBlock.width, orientedBlock.height, orientedBlock.center, orientedBlock.rotation);
+
+      fixtureDef.shape = blockShape;
+      const rect = new Rectangle(orientedBlock.width * 2 * this.scale, orientedBlock.height * 2 * this.scale).graphics;
+      rect.x = orientedBlock.center.x * this.scale;
+      rect.y = orientedBlock.center.y * this.scale;
+      rect.rotation = Util.RAD_TO_DEG * orientedBlock.rotation;
+      // bodyDef.userData.addChild(rect); how to do children in phaser?
+
+      this.addShapeWithoutFixture(bodyDef);
+    }
+    body.resetMassData();
+    return body;
   }
 
   /** remove this and allow passing in the class for the graphic shape
@@ -172,7 +245,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return body;
   }
 
-  buildBall(radius, bodyDef,
+  buildBall(radius, bodyDef, color,
             density = 1.0, friction = 0.5, restitution = 0.2,
             groupIndex = MAX_GROUP_INDEX) {
 
@@ -181,7 +254,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       circleDef.filter.groupIndex = groupIndex;
     }
     circleDef.shape = new planck.Circle(radius);
-    bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, 0x4455ee).graphics;
+    bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, color).graphics;
 
     return this.addShape(circleDef, bodyDef);
   }
@@ -206,27 +279,30 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return this.addShape(polyDef, bodyDef);
   }
 
-  buildLine(start, stop, bodyDef, params,
+  buildLine(start, stop, bodyDef, color = 0x555555,
             groupIndex = MAX_GROUP_INDEX) {
+    //const diff = new planck.Vec2(stop.x - start.x, stop.y - start.y);
+    bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale).graphics;
+    return this.addShapeWithoutFixture(bodyDef);
+  }
 
+  buildWall(start, stop, bodyDef, color = 0x555555, density = 1.0, friction = 0.5, restitution = 0.2,
+            groupIndex = MAX_GROUP_INDEX, isSensor = false) {
     const lineDef = { density, friction, restitution, filter: {} };
     if (groupIndex !== MAX_GROUP_INDEX) {
       lineDef.filter.groupIndex = groupIndex;
     }
 
-    const lineShape = new b2PolygonShape();
-    const verts = [ new planck.b2Vec2(start.x, start.y), new planck.Vec2(stop.x, stop.y) ];
-    lineShape.setAsArray(verts, 2);
+    const lineShape = new planck.Edge(start, stop);
     lineDef.shape = lineShape;
+    lineDef.isSensor = isSensor;
 
-    //const diff = new planck.Vec2(stop.x - start.x, stop.y - start.y);
-    bodyDef.setUserData(new Line(this.world.graphics, start, stop).graphics);
-    return this.addShapeWithoutFixture(bodyDef);
+    bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale, 1, color).graphics;
+    return this.addShape(lineDef, bodyDef);
   }
 
   /** function to create and texture a dynamic body */
-  createExplodableBody(xPos, yPos,
-                       verticesArr, texture, numEnterPoints) {
+  createExplodableBody(xPos, yPos, verticesArr, texture, numEnterPoints) {
 
     // This temp vector helps convert pixel coordinates to Box2D meters coordinates
     const vec = [];
@@ -241,7 +317,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
 
     bodyDef.position.set(xPos/this.scale, yPos/this.scale);
     // custom userData used to map the texture
-    bodyDef.setUserData(new ExplodableShape(numEnterPoints, vec, this.scale, texture).graphics);
+    bodyDef.userData = new ExplodableShape(numEnterPoints, vec, this.scale, texture).graphics;
 
     const fixtureDef = { density: 1, friction: 0.5, restitution: 0.2, shape: polyDef };
 

@@ -24,7 +24,6 @@ export default class AbstractBuilder  {
   /** Will just be visible without physical presence. */
   addShapeWithoutFixture(bodyDef) {
     const body = this.world.createBody(bodyDef);
-    //this.canvas.addChild(bodyDef.userData);
     return body;
   }
 

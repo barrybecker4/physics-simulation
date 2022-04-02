@@ -66,7 +66,7 @@ export default class Polygon extends AbstractShape {
     g.moveTo(pts[0].x, pts[0].y);
 
     // fill poly instead
-    for (let i= 1; i < pts.length; i++) {
+    for (let i = 1; i < pts.length; i++) {
       g.lineTo(pts[i].x, pts[i].y);
     }
     g.fillStyle(theColor.color, 0.2);

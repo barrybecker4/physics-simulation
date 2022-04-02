@@ -13,6 +13,7 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
 
   initialize(world, createGraphics, params, sounds) {
     super.initialize(world, createGraphics, params, sounds);
+    this.params.gravity = 5;
     this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, params.worldScale);
 
     // keep track of the boxes so that we can periodically delete them

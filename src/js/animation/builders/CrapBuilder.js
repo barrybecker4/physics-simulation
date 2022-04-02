@@ -78,8 +78,8 @@ export default class CrapBuilder extends AbstractBuilder {
     const halfSize = size / 2.0;
     for (let i = 0; i < num; i++) {
       this.setRandomPlacement(bodyDef);
-      this.builder.buildBall((Math.random() * halfSize + size) / this.scale,
-        bodyDef, DENSITY, FRICTION, RESTITUTION);
+      const radius = (Math.random() * halfSize + size) / this.scale
+      this.builder.buildBall(radius, bodyDef, 0x22dd55, DENSITY, FRICTION, RESTITUTION);
     }
   }
 

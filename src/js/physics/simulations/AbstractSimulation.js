@@ -17,7 +17,6 @@ export default class AbstractSimulation  {
       this.createGraphics = createGraphics;
       this.params = params;
       this.paused = false;
-      //world.addContactListener(new NoiseContactListener()); this is raw planckWorld
     }
 
     get instructions() {
@@ -48,15 +47,15 @@ export default class AbstractSimulation  {
     }
 
     createInteractors() {
-        this.interactors = [new MouseDragInteractor(this.world, this.scale)];
+      this.interactors = [new MouseDragInteractor(this.world, this.scale)];
     }
 
     // Cleanup when the simulation is destroyed
     cleanup() {
-        this.interactors.forEach(interactor => interactor.removeHandlers());
+      this.interactors.forEach(interactor => interactor.removeHandlers());
     }
 
     get scale() {
-        return this.params.worldScale;
+      return this.params.worldScale;
     }
 }

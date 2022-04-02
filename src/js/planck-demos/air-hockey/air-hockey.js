@@ -7,8 +7,6 @@ planck.testbed('AirHockey', testbed => {
     testbed.y = 0
     testbed.info('Use mouse to drag pucks');
 
-    let canMove = false
-    const force = 100
     const Vec2 = planck.Vec2
     const world = planck.World()
 
@@ -17,14 +15,6 @@ planck.testbed('AirHockey', testbed => {
     const paddle1 = new Paddle(Vec2(0, 16), world)
     const paddle2 = new Paddle(Vec2(0, -16), world)
 
-    puck.create()
-
-    function updatePosition(e) {
-        if (canMove) {
-          const vector = Vec2(e.movementX * force, -e.movementY * force)
-          //paddle2.applyForce(vector, Vec2(paddle2.getPosition()))
-        }
-    }
 
     // detect when the puck is in a goal
     function handleContact(contact) {
@@ -40,24 +30,7 @@ planck.testbed('AirHockey', testbed => {
         }
     }
 
-    function handleBodyRemoval(body) {
-        console.log("Should remove " + body)
-    }
-
-    function handleFixtureRemoval(fixture) {
-        console.log("Should remove " + fixture)
-    }
-
-    //window.addEventListener('mousemove', (e) => updatePosition(e))
-    window.addEventListener('mousedown', (e) => {
-      canMove = true;
-    })
-    window.addEventListener('mouseup', (e) => {
-      canMove = false;
-    })
     world.on('begin-contact', handleContact)
-    world.on('remove-body', handleBodyRemoval)
-    world.on('remove-fixture', handleFixtureRemoval)
 
     return world
 })

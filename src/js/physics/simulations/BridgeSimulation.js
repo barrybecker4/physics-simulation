@@ -20,6 +20,7 @@ export default class BridgeSimulation extends AbstractSimulation {
 
   initialize(world, createGraphics, params, sounds) {
     super.initialize(world, createGraphics, params, sounds);
+    this.params.gravity = 5;
 
     this.shapeBuilder = new BasicShapeBuilder(world, createGraphics, params.worldScale);
     this.crapBuilder = new CrapBuilder(world, createGraphics, params.worldScale);
