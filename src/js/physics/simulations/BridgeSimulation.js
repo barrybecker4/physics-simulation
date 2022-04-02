@@ -66,7 +66,8 @@ export default class BridgeSimulation extends AbstractSimulation {
 
     for (let i = 0; i < NUM_SEGMENTS; ++i) {
       bodyDef.position.set((BRIDGE_STARTX + HALF_SEGMENT_WIDTH + SEGMENT_WIDTH * i) / s, BRIDGE_HEIGHT/ s);
-      body = this.shapeBuilder.buildBlock(HALF_SEGMENT_WIDTH, 5, bodyDef, 20.0, 0.2, 0.1);
+      const fixtureDef = { density: 20.0, friction: 0.2, restitution: 0.1 }
+      body = this.shapeBuilder.buildBlock(HALF_SEGMENT_WIDTH, 5, bodyDef, fixtureDef);
 
       this.anchor.set((BRIDGE_STARTX + SEGMENT_WIDTH * i) / s, BRIDGE_HEIGHT / s);
 

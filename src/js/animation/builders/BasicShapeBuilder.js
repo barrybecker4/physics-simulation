@@ -15,15 +15,18 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     super(world, createGraphics, scale);
   }
 
-  buildBlock(width, height, bodyDef,
-             density = 1.0, friction = 0.5, restitution = 0.2,
-             groupIndex = MAX_GROUP_INDEX) {
+  buildBlock(width, height, bodyDef, fixtureDefParam = {}) {
 
-    const fixtureDef = { density, friction, restitution, filter: {} };
-
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      fixtureDef.filter.groupIndex = groupIndex;
+    const defaultFixtureDef = {
+      density: 1.0,
+      friction: 0.5,
+      restitution: 0.2,
     }
+    const fixtureDef = {
+        ...defaultFixtureDef,
+        ...fixtureDefParam,
+    }
+
     const shape = planck.Box(width / this.scale, height / this.scale);
     fixtureDef.shape = shape;
     bodyDef.userData = new Rectangle(this.createGraphics, width * 2, height * 2, 0x2244ff).graphics;
@@ -31,20 +34,24 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return this.addShape(fixtureDef, bodyDef);
   }
 
-  createBox(posX, posY, width, height, isDynamic, color, density = 1.0, friction = 0.5, restitution = 0.2) {
+  createBox(posX, posY, width, height, isDynamic, color, fixtureDefParam = {}) {
 
     let box = this.world.createBody();
     if (isDynamic){
       box.setDynamic();
     }
 
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+        ...defaultFixtureDef,
+        ...fixtureDefParam,
+    }
+
     // a body can have one or more physical fixtures. This is how we create a box fixture inside a body
     const scale = this.scale;
     const physWidth = width / 2 / scale;
     const physHeight = height / 2 / scale;
-    box.createFixture(planck.Box(physWidth, physHeight), {
-      density, restitution, friction,
-    });
+    box.createFixture(planck.Box(physWidth, physHeight), fixtureDef);
 
     // now we place the body in the world
     box.setPosition(planck.Vec2(posX / scale, 0.8 * posY / scale)); // why 0.8?
@@ -65,13 +72,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return box;
   }
 
-  buildOrientedBlock(orientedBlock, bodyDef,
-                     density = 1.0, friction = 0.5, restitution = 0.2,
-                     groupIndex = int.MAX_VALUE) {
+  buildOrientedBlock(orientedBlock, bodyDef, fixtureDefParam = {}) {
 
-    const fixtureDef = { density, fr, restitution, filter:{} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      fixtureDef.filter.groupIndex = groupIndex;
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+      ...defaultFixtureDef,
+      ...fixtureDefParam,
     }
 
     const mainShape = new planck.Polygon();
@@ -135,13 +141,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
    * A group of blocks that are glued together into one body
    * @return body with children for all the decorating blocks.
    */
-  buildCompoundBlock(orientedBlocks, bodyDef,
-                     density = 1.0, friction = 0.5, restitution = 0.2,
-                     groupIndex = MAX_GROUP_INDEX) {
+  buildCompoundBlock(orientedBlocks, bodyDef, fixtureDefParam = {}) {
 
-    const fixtureDef = { density, friction, restitution, filter: {} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      fixtureDef.filter.groupIndex = groupIndex;
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+      ...defaultFixtureDef,
+      ...fixtureDefParam,
     }
 
     const masterBlock = orientedBlocks[0];
@@ -205,100 +210,56 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     return this.addShape(circleDef, bodyDef, false); // true (causes slow)
   }*/
 
-  /**
-   * A group of blocks that are glued together into one body
-   * @return body with children for all the decorating blocks.
-   */
-  buildCompoundBlock(orientedBlocks, bodyDef,
-                     density = 1.0, friction = 0.5, restitution = 0.2,
-                     groupIndex = MAX_GROUP_INDEX) {
+  buildBall(radius, bodyDef, color, fixtureDefParam) {
 
-    const fixtureDef = { density, friction, restitution, filter: {} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      fixtureDef.filter.groupIndex = groupIndex;
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+      ...defaultFixtureDef,
+      ...fixtureDefParam,
     }
 
-    const masterBlock = orientedBlocks[0];
-
-    const mainShape = new planck.Polygon();
-    mainShape.setAsOrientedBox(masterBlock.width, masterBlock.height, masterBlock.center, masterBlock.rotation);
-    fixtureDef.shape = mainShape;
-
-    bodyDef.setUserData(new Rectangle(masterBlock.width * 2 * this.scale, masterBlock.height * 2 * this.scale).graphics);
-    const body = this.addShape(fixtureDef, bodyDef);
-
-    for (let i = 1; i < orientedBlocks.length; i++) {
-      const orientedBlock = orientedBlocks[i];
-      const blockShape = new planck.Polygon();
-      blockShape.setAsOrientedBox(orientedBlock.width, orientedBlock.height, orientedBlock.center, orientedBlock.rotation);
-
-      fixtureDef.shape = blockShape;
-      const rect = new Rectangle(orientedBlock.width * 2 * this.scale, orientedBlock.height * 2 * this.scale).graphics;
-      rect.x = orientedBlock.center.x * this.scale;
-      rect.y = orientedBlock.center.y * this.scale;
-      rect.rotation = Util.RAD_TO_DEG * orientedBlock.rotation;
-      // bodyDef.userData.addChild(rect); how to do children in phaser?
-
-      this.addShapeWithoutFixture(bodyDef);
-    }
-    body.resetMassData();
-    return body;
-  }
-
-  buildBall(radius, bodyDef, color,
-            density = 1.0, friction = 0.5, restitution = 0.2,
-            groupIndex = MAX_GROUP_INDEX) {
-
-    const circleDef = { density, friction, restitution, filter: {} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      circleDef.filter.groupIndex = groupIndex;
-    }
-    circleDef.shape = new planck.Circle(radius);
+    fixtureDef.shape = new planck.Circle(radius);
     bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, color).graphics;
 
-    return this.addShape(circleDef, bodyDef);
+    return this.addShape(fixtureDef, bodyDef);
   }
 
-  buildPolygon(points, bodyDef,
-               density = 1.0, friction = 0.5, restitution = 0.2,
-               groupIndex = MAX_GROUP_INDEX) {
+  buildPolygon(points, bodyDef, fixtureDefParam) {
 
-    const vpoints = this.getPointsFromArray(points);
-
-    const polyDef = { density, friction, restitution, filter:{} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      polyDef.filter.groupIndex = groupIndex;
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+      ...defaultFixtureDef,
+      ...fixtureDefParam,
     }
+    const vpoints = this.getPointsFromArray(points);
 
     const verts = [];
     for (let i = 0; i < points.length; i++) {
       verts.push(new planck.Vec2(vpoints[i].x, vpoints[i].y));
     }
-    polyDef.shape = new planck.Polygon(verts);
+    fixtureDef.shape = new planck.Polygon(verts);
     bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale, 0xee22aa).graphics;
-    return this.addShape(polyDef, bodyDef);
+    return this.addShape(fixtureDef, bodyDef);
   }
 
-  buildLine(start, stop, bodyDef, color = 0x555555,
-            groupIndex = MAX_GROUP_INDEX) {
-    //const diff = new planck.Vec2(stop.x - start.x, stop.y - start.y);
+  buildLine(start, stop, bodyDef, color = 0x555555) {
     bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale).graphics;
     return this.addShapeWithoutFixture(bodyDef);
   }
 
-  buildWall(start, stop, bodyDef, color = 0x555555, density = 1.0, friction = 0.5, restitution = 0.2,
-            groupIndex = MAX_GROUP_INDEX, isSensor = false) {
-    const lineDef = { density, friction, restitution, filter: {} };
-    if (groupIndex !== MAX_GROUP_INDEX) {
-      lineDef.filter.groupIndex = groupIndex;
+  buildWall(start, stop, bodyDef, color = 0x555555, fixtureDefParam, isSensor = false) {
+
+    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
+    const fixtureDef = {
+      ...defaultFixtureDef,
+      ...fixtureDefParam,
     }
 
     const lineShape = new planck.Edge(start, stop);
-    lineDef.shape = lineShape;
-    lineDef.isSensor = isSensor;
+    fixtureDef.shape = lineShape;
 
     bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale, 1, color).graphics;
-    return this.addShape(lineDef, bodyDef);
+    return this.addShape(fixtureDef, bodyDef);
   }
 
   /** function to create and texture a dynamic body */

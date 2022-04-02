@@ -34,8 +34,8 @@ export default class Puck {
         })*/
 
         const color = 0x33ff66
-        const groupIndex = 2
-        this.body = this.shapeBuilder.buildBall(0.2, bodyDef, color, 0.25, 0.0, 0.9, groupIndex)
+        const fixtureDef = { density: 0.25, friction: 0.0, restitution: .9, groupIndex: 2}
+        this.body = this.shapeBuilder.buildBall(0.2, bodyDef, color, fixtureDef)
     }
 
     // Cannot do the reset here because this is within a planck timeStep and the world is locked

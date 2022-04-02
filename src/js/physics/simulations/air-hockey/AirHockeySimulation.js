@@ -38,11 +38,6 @@ export default class AirHockeySimulation extends AbstractSimulation {
     this.table = new Table(this.shapeBuilder)
   }
 
-  /*
-  createGroundElement(posX, posY, width, height) {
-    return this.shapeBuilder.createBox(posX, posY, width, height, false, 0x00ee11);
-  }*/
-
   addDynamicElements(){
     this.puck = new Puck(this.shapeBuilder)
     this.paddle1 = new Paddle(Vec2(0, 1.6).add(Constants.CENTER), this.shapeBuilder)

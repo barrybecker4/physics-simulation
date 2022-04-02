@@ -69,7 +69,7 @@ export default class CrapBuilder extends AbstractBuilder {
       this.setRandomPlacement(bodyDef);
       const width = (Math.random() * halfSize + size);
       const height = (Math.random() * halfSize + size);
-      this.builder.buildBlock(width, height, bodyDef, DENSITY, FRICTION, RESTITUTION);
+      this.builder.buildBlock(width, height, bodyDef, {density: DENSITY, friction: FRICTION, restitution: RESTITUTION});
     }
   }
 
@@ -79,7 +79,8 @@ export default class CrapBuilder extends AbstractBuilder {
     for (let i = 0; i < num; i++) {
       this.setRandomPlacement(bodyDef);
       const radius = (Math.random() * halfSize + size) / this.scale
-      this.builder.buildBall(radius, bodyDef, 0x22dd55, DENSITY, FRICTION, RESTITUTION);
+      const fixtureDef = { density: DENSITY, friction: FRICTION, restitution: RESTITUTION }
+      this.builder.buildBall(radius, bodyDef, 0x22dd55, fixtureDef);
     }
   }
 
