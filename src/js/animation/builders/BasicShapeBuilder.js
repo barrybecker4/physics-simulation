@@ -7,6 +7,11 @@ import Polygon from "../sprites/Polygon.js";
 import phaserUtils from "/physics-simulation/src/js/phaser/phaserUtils.js";
 
 const MAX_GROUP_INDEX = 100000;
+const defaultFixtureDef = {
+  density: 1.0,
+  friction: 0.5,
+  restitution: 0.2,
+}
 
 export default class BasicShapeBuilder extends AbstractBuilder {
 
@@ -16,12 +21,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
   }
 
   buildBlock(width, height, bodyDef, fixtureDefParam = {}) {
-
-    const defaultFixtureDef = {
-      density: 1.0,
-      friction: 0.5,
-      restitution: 0.2,
-    }
     const fixtureDef = {
         ...defaultFixtureDef,
         ...fixtureDefParam,
@@ -41,7 +40,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       box.setDynamic();
     }
 
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
         ...defaultFixtureDef,
         ...fixtureDefParam,
@@ -74,7 +72,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
 
   buildOrientedBlock(orientedBlock, bodyDef, fixtureDefParam = {}) {
 
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
       ...defaultFixtureDef,
       ...fixtureDefParam,
@@ -143,7 +140,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
    */
   buildCompoundBlock(orientedBlocks, bodyDef, fixtureDefParam = {}) {
 
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
       ...defaultFixtureDef,
       ...fixtureDefParam,
@@ -211,8 +207,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
   }*/
 
   buildBall(radius, bodyDef, color, fixtureDefParam) {
-
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
       ...defaultFixtureDef,
       ...fixtureDefParam,
@@ -225,8 +219,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
   }
 
   buildPolygon(points, bodyDef, fixtureDefParam) {
-
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
       ...defaultFixtureDef,
       ...fixtureDefParam,
@@ -248,8 +240,6 @@ export default class BasicShapeBuilder extends AbstractBuilder {
   }
 
   buildWall(start, stop, bodyDef, color = 0x555555, fixtureDefParam, isSensor = false) {
-
-    const defaultFixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2 }
     const fixtureDef = {
       ...defaultFixtureDef,
       ...fixtureDefParam,
