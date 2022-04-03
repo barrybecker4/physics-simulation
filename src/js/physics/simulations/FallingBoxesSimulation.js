@@ -48,7 +48,8 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
    }
 
   createGroundElement(posX, posY, width, height) {
-    return this.shapeBuilder.createBox(posX, posY, width, height, false, 0x00ee11);
+    const style = { color: 0x00ee11, opacity: 0.9 }
+    return this.shapeBuilder.createBox(posX, posY, width, height, false, style);
   }
 
   createRandomBox() {
@@ -56,7 +57,8 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
     const randomWidth = Phaser.Math.Between(20, 80);
     const randomHeight = Phaser.Math.Between(20, 80);
     //console.log("compare " + 0x88eeaa + " to " + phaserUtils.randomColor())
-    return this.shapeBuilder.createBox(xPos, -100, randomWidth, randomHeight, true, Util.getRandomColor());
+    const style = { color: Util.getRandomColor(), opacity: 0.7 }
+    return this.shapeBuilder.createBox(xPos, -100, randomWidth, randomHeight, true, style);
   }
 
   destroyBoxes() {

@@ -1,10 +1,3 @@
-// import com.becker.common.Images;
-// import flash.display.Graphics;
-//
-// import flash.display.BitmapData;
-// import flash.display.DisplayObject;
-// import flash.display.Shape;
-// import flash.geom.Matrix;
 import AbstractShape from "./AbstractShape.js";
 
 
@@ -15,11 +8,10 @@ import AbstractShape from "./AbstractShape.js";
 export default class Circle extends AbstractShape {
 
 
-  constructor(createGraphics, radius, image = null, color = 0x9988cc) {
-    super(createGraphics, color);
+  constructor(createGraphics, radius, image = null, style) {
+    super(createGraphics, style);
     this.radius = radius;
     this.imageClass = image;
-
     this.init();
   }
 
@@ -27,8 +19,8 @@ export default class Circle extends AbstractShape {
     this.graphics = this.createGraphics();
     const g = this.graphics;
 
-    g.lineStyle(1);
-    g.fillStyle(this.color , 0.6);
+    g.lineStyle(this.style.lineThickness, this.style.lineColor, this.style.lineOpacity);
+    g.fillStyle(this.style.color, this.style.opacity);
     g.fillCircle(this.x, this.y, this.radius);
 
     g.moveTo(0, 0);

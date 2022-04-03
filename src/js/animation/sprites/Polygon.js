@@ -7,12 +7,10 @@ import AbstractShape from "./AbstractShape.js";
  */
 export default class Polygon extends AbstractShape {
 
-  constructor(createGraphics, points, scale, color = 0x111111) {
-    super(createGraphics, color);
+  constructor(createGraphics, points, scale, style) {
+    super(createGraphics, style);
     this.points = points;
     this.scale = scale;
-    //poly = new Shape();
-    //addChild( poly );
 
     this.initBounds(points);
     this.init();
@@ -27,7 +25,6 @@ export default class Polygon extends AbstractShape {
     const scale = this.scale;
 
     pts.forEach(pt => {
-      // @@ side effect : scale the points
       pt.x *= scale;
       pt.y *= scale;
       if (pt.x < this.min.x) {
@@ -55,12 +52,8 @@ export default class Polygon extends AbstractShape {
 
     const boundingWidth = this.max.x - this.min.x;
     const boundingHeight = this.max.y - this.min.y;
-    const theColor = Phaser.Display.Color.IntegerToColor(this.color);
-    console.log("the poly Color=" + theColor + " c=" + this.color)
-    g.lineStyle(1, theColor.color);
-
-    //const matrix = new planck.Matrix(boundingWidth/img.width, 0, 0, boundingHeight/img.height, min.x, min.y);
-    //this.graphics.beginBitmapFill(bmd, matrix, true, true);
+    //const theColor = Phaser.Display.Color.IntegerToColor(this.style.lineColor || this.style.color);
+    g.lineStyle(this.style.lineThickness, this.style.lineColor, this.style.lineOpacity);
 
     const pts = this.points;
     g.moveTo(pts[0].x, pts[0].y);
@@ -69,7 +62,7 @@ export default class Polygon extends AbstractShape {
     for (let i = 1; i < pts.length; i++) {
       g.lineTo(pts[i].x, pts[i].y);
     }
-    g.fillStyle(theColor.color, 0.2);
+    g.fillStyle(this.style.color, this.style.opacity);
     g.fillPoints(this.points, true);
     g.strokePoints(this.points, true);
   }

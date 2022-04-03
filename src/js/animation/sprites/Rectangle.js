@@ -11,21 +11,20 @@ import AbstractShape from "./AbstractShape.js";
 export default class Rectangle extends AbstractShape {
 
 
-  constructor(createGraphics, width, height, color = 0xaa77ff) {
-    super(createGraphics, color);
+  constructor(createGraphics, width, height, style) {
+    super(createGraphics, style);
     this.width = width;
     this.height = height;
     //img = texture ? new texture : new Images.GOLD;
     //this.addChild(img);
-
     this.init();
   }
 
   init() {
     const g = this.graphics = this.createGraphics();
-    const theColor = Phaser.Display.Color.IntegerToColor(this.color);
-    g.fillStyle(theColor.color, 0.6);
-    g.lineStyle(1, theColor.color);
+    //const theColor = Phaser.Display.Color.IntegerToColor(this.color);
+    g.fillStyle(this.style.color, this.style.opacity);
+    g.lineStyle(this.style.lineThickness, this.style.lineColor, this.style.lineOpacity);
 
     const xpos = this.x - this.width / 2;
     const ypos = this.y - this.height / 2;

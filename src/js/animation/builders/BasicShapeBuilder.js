@@ -11,6 +11,8 @@ const defaultFixtureDef = {
   density: 1.0,
   friction: 0.5,
   restitution: 0.2,
+  color: 0x444444,
+  opacity: 0.9
 }
 
 export default class BasicShapeBuilder extends AbstractBuilder {
@@ -28,12 +30,12 @@ export default class BasicShapeBuilder extends AbstractBuilder {
 
     const shape = planck.Box(width / this.scale, height / this.scale);
     fixtureDef.shape = shape;
-    bodyDef.userData = new Rectangle(this.createGraphics, width * 2, height * 2, 0x2244ff).graphics;
+    bodyDef.userData = new Rectangle(this.createGraphics, width * 2, height * 2, { color: 0x2244ff }).graphics;
 
     return this.addShape(fixtureDef, bodyDef);
   }
 
-  createBox(posX, posY, width, height, isDynamic, color, fixtureDefParam = {}) {
+  createBox(posX, posY, width, height, isDynamic, fixtureDefParam = {}) {
 
     let box = this.world.createBody();
     if (isDynamic){
@@ -62,7 +64,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     });
 
     // now we create a graphics object representing the body
-    const userData = new Rectangle(this.createGraphics, width, height, color).graphics;
+    const userData = new Rectangle(this.createGraphics, width, height, fixtureDef).graphics;
 
     // a body can have anything in its user data, normally it's used to store its sprite
     box.setUserData(userData);
@@ -213,7 +215,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     }
 
     fixtureDef.shape = new planck.Circle(radius);
-    bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, color).graphics;
+    bodyDef.userData = new Circle(this.createGraphics, radius * this.scale, null, { color }).graphics;
 
     return this.addShape(fixtureDef, bodyDef);
   }
@@ -230,7 +232,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
       verts.push(new planck.Vec2(vpoints[i].x, vpoints[i].y));
     }
     fixtureDef.shape = new planck.Polygon(verts);
-    bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale, 0xee22aa).graphics;
+    bodyDef.userData = new Polygon(this.createGraphics, vpoints, this.scale, { color: 0xee22aa }).graphics;
     return this.addShape(fixtureDef, bodyDef);
   }
 
@@ -248,7 +250,7 @@ export default class BasicShapeBuilder extends AbstractBuilder {
     const lineShape = new planck.Edge(start, stop);
     fixtureDef.shape = lineShape;
 
-    bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale, 1, color).graphics;
+    bodyDef.userData = new Line(this.createGraphics, start, stop, this.scale, { lineThickness: 1, color }).graphics;
     return this.addShape(fixtureDef, bodyDef);
   }
 

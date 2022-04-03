@@ -40,8 +40,9 @@ export default class AirHockeySimulation extends AbstractSimulation {
 
   addDynamicElements(){
     this.puck = new Puck(this.shapeBuilder)
-    this.paddle1 = new Paddle(Vec2(0, 3.2).add(Constants.CENTER), this.shapeBuilder)
-    this.paddle2 = new Paddle(Vec2(0, -3.2).add(Constants.CENTER), this.shapeBuilder)
+    const paddleHt = Constants.TABLE_HEIGHT / 3
+    this.paddle1 = new Paddle(Vec2(0, paddleHt).add(Constants.CENTER), this.shapeBuilder)
+    this.paddle2 = new Paddle(Vec2(0, -paddleHt).add(Constants.CENTER), this.shapeBuilder)
   }
 
 }
