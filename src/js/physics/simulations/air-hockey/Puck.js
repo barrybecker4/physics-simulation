@@ -26,9 +26,8 @@ export default class Puck {
             angularDamping: 0.02
         }
 
-        const color = 0xddeeee
-        const fixtureDef = { density: 0.25, friction: 0.0, restitution: .9, filterCategoryBits : 0x0004 }
-        this.body = this.shapeBuilder.buildBall(0.2, bodyDef, color, fixtureDef)
+        const fixtureDef = { density: 0.25, friction: 0.0, restitution: .9, filterCategoryBits : 0x0004, color: 0xddeeee }
+        this.body = this.shapeBuilder.buildBall(0.2, bodyDef, fixtureDef)
     }
 
     // Cannot do the reset here because this is within a planck timeStep and the world is locked

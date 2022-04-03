@@ -1,6 +1,3 @@
-//import Box2D.Dynamics.b2BodyDef;
-//import Box2D.Dynamics.b2World;
-//import flash.geom.Point;
 import AbstractBuilder from "./AbstractBuilder.js";
 import BasicShapeBuilder from "./BasicShapeBuilder.js";
 
@@ -11,9 +8,8 @@ const DEFAULT_X_SPREAD = 400;
 const DEFAULT_Y_SPREAD = 150;
 
 const DEFAULT_SIZE = 10.0;
-const DENSITY = 1.0;
-const FRICTION = 0.5;
-const RESTITUTION = 0.1;
+const FIXTURE_DEF = { density: 1.0, friction: 0.5, restitution: 0.1 }
+
 
 
 /**
@@ -69,7 +65,7 @@ export default class CrapBuilder extends AbstractBuilder {
       this.setRandomPlacement(bodyDef);
       const width = (Math.random() * halfSize + size);
       const height = (Math.random() * halfSize + size);
-      this.builder.buildBlock(width, height, bodyDef, {density: DENSITY, friction: FRICTION, restitution: RESTITUTION});
+      this.builder.buildBlock(width, height, bodyDef, FIXTURE_DEF);
     }
   }
 
@@ -79,8 +75,9 @@ export default class CrapBuilder extends AbstractBuilder {
     for (let i = 0; i < num; i++) {
       this.setRandomPlacement(bodyDef);
       const radius = (Math.random() * halfSize + size) / this.scale
-      const fixtureDef = { density: DENSITY, friction: FRICTION, restitution: RESTITUTION }
-      this.builder.buildBall(radius, bodyDef, 0x22dd55, fixtureDef);
+
+      const fixtureDef = { ...FIXTURE_DEF, color: 0x22dd55 }
+      this.builder.buildBall(radius, bodyDef, fixtureDef);
     }
   }
 
@@ -105,7 +102,7 @@ export default class CrapBuilder extends AbstractBuilder {
       pts = this.createTrianglePoints();
     }
 
-    this.builder.buildPolygon(pts, bodyDef, DENSITY, FRICTION, RESTITUTION);
+    this.builder.buildPolygon(pts, bodyDef, FIXTURE_DEF);
   }
 
   createQuadrilateralPoints() {

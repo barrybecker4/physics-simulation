@@ -17,33 +17,28 @@ export default class Table {
     createTableGeometry() {
         const tableMap = new TableMap().map
         const bodyDef = { type: 'static' }
-        const color = 0xff4455
-        tableMap.map( edge => this.shapeBuilder.buildWall(edge[0], edge[1], bodyDef, color) )
+        const fixtureDef = { color: 0xee9955 }
+        tableMap.map( edge => this.shapeBuilder.buildWall(edge[0], edge[1], bodyDef, fixtureDef) )
     }
 
-    // Goal detection sensors
     createGoalSensors() {
         const bodyDef = { type: 'static' }
-        const color = 0xffddee
-        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, filterMaskBits: 0x0004, isSensor: true }
-
+        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, filterMaskBits: 0x0004, isSensor: true, color: 0xff6633 }
         const gHeight = Constants.TABLE_HEIGHT / 2 + 0.45
-        this.goal1Sensor = this.shapeBuilder.buildWall(point(-goalHalfWidth, gHeight), point(goalHalfWidth, gHeight), bodyDef, color, fixtureDef)
-        this.goal2Sensor = this.shapeBuilder.buildWall(point(-goalHalfWidth, -gHeight), point(goalHalfWidth, -gHeight), bodyDef, color, fixtureDef)
+        this.goal1Sensor = this.shapeBuilder.buildWall(point(-goalHalfWidth, gHeight), point(goalHalfWidth, gHeight), bodyDef, fixtureDef)
+        this.goal2Sensor = this.shapeBuilder.buildWall(point(-goalHalfWidth, -gHeight), point(goalHalfWidth, -gHeight), bodyDef, fixtureDef)
     }
 
     // Create Paddle Blocking Walls
     createBlockingWalls() {
         const bodyDef = { type: 'static' }
-        const color = 0x44ff00
         const halfWidth = Constants.TABLE_WIDTH / 2
         const halfHeight = Constants.TABLE_HEIGHT / 2
 
-
-        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, groupIndex: 1, filterMaskBits: 0x0002 }
-        this.shapeBuilder.buildWall(point(-goalHalfWidth, halfHeight), point(goalHalfWidth, halfHeight), bodyDef, color, fixtureDef)
-        this.shapeBuilder.buildWall(point(-goalHalfWidth, -halfHeight), point(goalHalfWidth, -halfHeight), bodyDef, color, fixtureDef)
-        this.shapeBuilder.buildWall(point(-halfWidth, 0), point(halfWidth, 0), bodyDef, color, fixtureDef)
+        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, groupIndex: 1, filterMaskBits: 0x0002, color: 0x44ff00 }
+        this.shapeBuilder.buildWall(point(-goalHalfWidth, halfHeight), point(goalHalfWidth, halfHeight), bodyDef, fixtureDef)
+        this.shapeBuilder.buildWall(point(-goalHalfWidth, -halfHeight), point(goalHalfWidth, -halfHeight), bodyDef, fixtureDef)
+        this.shapeBuilder.buildWall(point(-halfWidth, 0), point(halfWidth, 0), bodyDef, fixtureDef)
     }
 
     getGoal1Fixture() {

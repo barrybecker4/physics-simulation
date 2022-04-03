@@ -7,11 +7,10 @@ export default class AbstractBuilder  {
     this._scale = scale;
   }
 
-  addShape(fixtureDef, bodyDef, isBullet = false) {
+  addShape(fixtureDef, bodyDef) {
 
     const body = this.world.createBody(bodyDef);
 
-    body.setBullet(isBullet);
     body.createFixture(fixtureDef.shape, fixtureDef);
     body.setMassData({              // need ?
       mass: 0.1,

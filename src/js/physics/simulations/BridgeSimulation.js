@@ -37,8 +37,9 @@ export default class BridgeSimulation extends AbstractSimulation {
   }
 
   createGroundElement(posX, posY, width, height) {
+    const bodyDef = { type: 'static' }
     const style = { color: 0x00ee11, opacity: 0.9 }
-    return this.shapeBuilder.createBox(posX, posY, width, height, false, style);
+    return this.shapeBuilder.createBox(posX, posY, width, height, bodyDef, style);
   }
 
   addDynamicElements(){
