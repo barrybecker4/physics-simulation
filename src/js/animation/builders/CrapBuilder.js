@@ -8,8 +8,15 @@ const DEFAULT_X_SPREAD = 400;
 const DEFAULT_Y_SPREAD = 150;
 
 const DEFAULT_SIZE = 10.0;
-const FIXTURE_DEF = { density: 1.0, friction: 0.5, restitution: 0.1 }
-
+const FIXTURE_DEF = {
+  density: 1.0,
+  friction: 0.5,
+  restitution: 0.1,
+  color: 0x4455aa,
+  opacity: 0.5,
+  lineColor: 0xaabbff,
+  lineOpacity: 0.95,
+}
 
 
 /**
@@ -65,7 +72,9 @@ export default class CrapBuilder extends AbstractBuilder {
       this.setRandomPlacement(bodyDef);
       const width = (Math.random() * halfSize + size);
       const height = (Math.random() * halfSize + size);
-      this.builder.buildBlock(width, height, bodyDef, FIXTURE_DEF);
+
+      const fixtureDef = { ...FIXTURE_DEF, color: 0xcc6622 }
+      this.builder.buildBlock(width, height, bodyDef, fixtureDef);
     }
   }
 
@@ -76,7 +85,7 @@ export default class CrapBuilder extends AbstractBuilder {
       this.setRandomPlacement(bodyDef);
       const radius = (Math.random() * halfSize + size) / this.scale
 
-      const fixtureDef = { ...FIXTURE_DEF, color: 0x22dd55 }
+      const fixtureDef = { ...FIXTURE_DEF, color: 0x22dd55 };
       this.builder.buildBall(radius, bodyDef, fixtureDef);
     }
   }
@@ -102,6 +111,7 @@ export default class CrapBuilder extends AbstractBuilder {
       pts = this.createTrianglePoints();
     }
 
+    const fixtureDef = { ...FIXTURE_DEF, color: 0xaa22bb };
     this.builder.buildPolygon(pts, bodyDef, FIXTURE_DEF);
   }
 

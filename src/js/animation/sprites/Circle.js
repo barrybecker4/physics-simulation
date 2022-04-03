@@ -22,6 +22,7 @@ export default class Circle extends AbstractShape {
     g.lineStyle(this.style.lineThickness, this.style.lineColor, this.style.lineOpacity);
     g.fillStyle(this.style.color, this.style.opacity);
     g.fillCircle(this.x, this.y, this.radius);
+    g.strokeCircle(this.x, this.y, this.radius);
 
     g.moveTo(0, 0);
     g.lineTo(this.radius, 0);

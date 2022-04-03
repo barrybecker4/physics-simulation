@@ -4,7 +4,6 @@ import CrapBuilder from "/physics-simulation/src/js/animation/builders/CrapBuild
 import AbstractBuilder from "/physics-simulation/src/js/animation/builders/AbstractBuilder.js";
 
 
-const NUM_SHAPES = 50;
 const NUM_SEGMENTS = 10;
 
 /** the length of one of the bridge planks */
@@ -32,7 +31,6 @@ export default class BridgeSimulation extends AbstractSimulation {
 
   addStaticElements() {
     this.anchor = new planck.Vec2();
-    // used to do this.world.getGroundBody();
     this.ground = this.createGroundElement(300, 600, 400, 10 );
   }
 
@@ -50,7 +48,7 @@ export default class BridgeSimulation extends AbstractSimulation {
       friction: 0.2
     };
     this.addBridge(bodyDef);
-    this.crapBuilder.addCrap(bodyDef, 6, 2, 2); // 5, 15);
+    this.crapBuilder.addCrap(bodyDef, 8, 6, 12);
   }
 
   /** Bridge */

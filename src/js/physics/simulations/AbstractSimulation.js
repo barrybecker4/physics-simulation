@@ -21,7 +21,7 @@ export default class AbstractSimulation  {
 
     get instructions() {
         return "<p>A <a href=\"https://piqnt.com/planck.js/\">Planck-js</a>application to simulate dynamic structures.</p>" +
-          "<p>You can click on things and drag them around, and you can press 'd' over an object to delete it.</p>";
+          "<p>You can click on things and drag them around, and you can right-click on an object to delete it.</p>";
     }
 
     getName() {
