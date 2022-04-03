@@ -1,9 +1,10 @@
 import Constants from "./Constants.js"
 
-const tableHeight = 8.4
-const tableWidth = 4.8
-const goalWidth= 1.6
-const goalDepth= .6
+const tableHeight = Constants.TABLE_HEIGHT
+const tableWidth = Constants.TABLE_WIDTH
+const goalWidth = Constants.GOAL_WIDTH
+const goalDepth = Constants.GOAL_DEPTH
+
 const cornerRadius = .6
 const cornerSteps = 5
 const endLength = (tableWidth - goalWidth - (cornerRadius * 2)) / 2
