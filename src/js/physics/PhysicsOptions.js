@@ -8,8 +8,8 @@ export default class PhysicsOptions {
     constructor() {
         this.gravityListeners = [];
 
-        // conversion unit from pixels to meters. 30 pixels = 1 meter
-        this.worldScale = 30;
+        // conversion unit from pixels to meters. 60 pixels = 1 meter
+        this.worldScale = 60;
 
         this._gravity = DEFAULT_GRAVITY;
         this.friction = DEFAULT_FRICTION;

@@ -5,8 +5,8 @@ import AbstractBuilder from "/physics-simulation/src/js/animation/builders/Abstr
 import Util from "/physics-simulation/src/js/animation/common/Util.js";
 
 const MAX_BLOCKS = 100;
-const WIDTH = 600;
-const HEIGHT = 600
+const WIDTH = 1200;
+const HEIGHT = 1200
 
 
 export default class FallingBoxesSimulation extends AbstractSimulation {
@@ -25,7 +25,7 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
   }
 
   addStaticElements() {
-    this.ground = this.createGroundElement( WIDTH / 3, HEIGHT - 20, WIDTH / 2, 40);
+    this.ground = this.createGroundElement( WIDTH / 3, 0.8 * HEIGHT, WIDTH / 2, 0.05 * HEIGHT);
   }
 
    addDynamicElements() {
@@ -38,7 +38,6 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
          tick++;
          if (tick === MAX_BLOCKS) {
            // destroy all blocks and start over
-
            this.sounds.playScrape();
            this.destroyBoxes();
            tick = 0;
@@ -55,12 +54,12 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
 
   createRandomBox() {
     const xPos = Phaser.Math.Between(100, WIDTH - 100);
-    const randomWidth = Phaser.Math.Between(20, 80);
-    const randomHeight = Phaser.Math.Between(20, 80);
+    const randomWidth = Phaser.Math.Between(40, 160);
+    const randomHeight = Phaser.Math.Between(40, 160);
 
     const bodyDef = { type: 'dynamic', bullet: true }
     const style = { color: Util.getRandomColor(), opacity: 0.7 }
-    return this.shapeBuilder.createBox(xPos, -100, randomWidth, randomHeight, bodyDef, style);
+    return this.shapeBuilder.createBox(xPos, -50, randomWidth, randomHeight, bodyDef, style);
   }
 
   destroyBoxes() {

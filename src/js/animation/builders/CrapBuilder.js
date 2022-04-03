@@ -1,13 +1,13 @@
 import AbstractBuilder from "./AbstractBuilder.js";
 import BasicShapeBuilder from "./BasicShapeBuilder.js";
 
-const DEFAULT_X_POS = 150;
+const DEFAULT_X_POS = 300;
 const DEFAULT_Y_POS = 50;
 
-const DEFAULT_X_SPREAD = 400;
-const DEFAULT_Y_SPREAD = 150;
+const DEFAULT_X_SPREAD = 800;
+const DEFAULT_Y_SPREAD = 300;
 
-const DEFAULT_SIZE = 10.0;
+const DEFAULT_SIZE = 15.0;
 const FIXTURE_DEF = {
   density: 1.0,
   friction: 0.5,

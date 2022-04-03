@@ -2,7 +2,7 @@ import { scenes } from './scenes.js';
 
 const gameConfig = {
   type: Phaser.AUTO,
-  backgroundColor: 0x110022,
+  backgroundColor: 0x220044,
   audio: {
     disableWebAudio: false,
   },
@@ -10,8 +10,8 @@ const gameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: "physicsSimulator",
-    width: 600,
-    height: 600
+    width: 1200,
+    height: 1200
   },
   // All the scenes that will appear in the scene selector
   scene: scenes,

@@ -6,6 +6,7 @@ import PhaserGame from "./phaser/PhaserGame.js";
 /**
  * Sets up Phaser and and handles interaction with the HTML elements.
  * Shows a dropdown to select the simulation scene to show.
+ * See id references in index.html
  */
 
 let game; // Phaser game object
@@ -21,12 +22,16 @@ window.onload = function() {
   new PhysicsControls(physicsOptions);
   initializePhaser();
   onCheckboxToggled();
-  simulationSelectionChanged();
+  setSimulation(0);
 };
 
-function simulationSelectionChanged() {
-  const simulationSelector = getSimulationSelector();
-  const sceneName = simulationSelector.options[ simulationSelector.selectedIndex ].value;
+function simulationSelectionChanged(evt) {
+  const simulationSelector = evt.target; //getSimulationSelector();
+  setSimulation(simulationSelector.selectedIndex);
+}
+
+function setSimulation(index) {
+  const sceneName = simulationSelector.options[ index ].value;
   game.setScene(sceneName);
   doResume();
 }
@@ -57,10 +62,6 @@ function doResume() {
 function onCheckboxToggled() {
   const debugValue = getDebugCheckbox().checked;
   game.setDebug(debugValue);
-}
-
-function getSimulationSelector() {
-  return document.getElementById("simulationSelector");
 }
 
 function getRestartButton() {
