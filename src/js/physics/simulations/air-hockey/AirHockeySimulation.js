@@ -31,7 +31,7 @@ export default class AirHockeySimulation extends AbstractSimulation {
   }
 
   getName() {
-    return "AirHockeyScene";
+    return "Air Hockey";
   }
 
   addStaticElements() {

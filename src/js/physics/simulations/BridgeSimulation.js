@@ -26,7 +26,7 @@ export default class BridgeSimulation extends AbstractSimulation {
   }
 
   getName() {
-    return "BridgeScene";
+    return "Bridge";
   }
 
   addStaticElements() {

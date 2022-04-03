@@ -33,6 +33,10 @@ export default class SimulationScene extends Phaser.Scene {
     this.events.on('resume', () => this.simulation.setPaused(false));
   }
 
+  getName() {
+    return this.simulation.getName();
+  }
+
   pointerDown(pointer) {
     const worldPoint = this.getWorldCoords(pointer);
 

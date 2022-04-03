@@ -1,3 +1,4 @@
+import SimulationSelector from "./ui/SimulationSelector.js";
 import PhysicsControls from "./ui/PhysicsControls.js";
 import PhysicsOptions from "./physics/PhysicsOptions.js";
 import PhaserGame from "./phaser/PhaserGame.js";
@@ -12,12 +13,12 @@ const physicsOptions = new PhysicsOptions();
 
 
 window.onload = function() {
-  getSimulationSelector().onchange = simulationSelectionChanged;
   getRestartButton().onclick = doRestart;
   getPauseButton().onclick = togglePause;
   getDebugCheckbox().onclick = onCheckboxToggled;
 
-  const physicsControls = new PhysicsControls(physicsOptions);
+  new SimulationSelector(simulationSelectionChanged);
+  new PhysicsControls(physicsOptions);
   initializePhaser();
   onCheckboxToggled();
   simulationSelectionChanged();

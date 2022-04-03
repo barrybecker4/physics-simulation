@@ -1,9 +1,4 @@
-import SimulationScene from "./SimulationScene.js";
-import BridgeSimulation from "../physics/simulations/BridgeSimulation.js"
-import FallingBoxesSimulation from "../physics/simulations/FallingBoxesSimulation.js"
-import AirHockeySimulation from "../physics/simulations/air-hockey/AirHockeySimulation.js"
-
-
+import { scenes } from './scenes.js';
 
 const gameConfig = {
   type: Phaser.AUTO,
@@ -18,12 +13,8 @@ const gameConfig = {
     width: 600,
     height: 600
   },
-  // Put all the scenes that will appear in the scene selector here.
-  scene: [
-    new SimulationScene(new FallingBoxesSimulation()),
-    new SimulationScene(new BridgeSimulation()),
-    new SimulationScene(new AirHockeySimulation()),
-  ],
+  // All the scenes that will appear in the scene selector
+  scene: scenes,
 };
 
 export default class PhaserGame {

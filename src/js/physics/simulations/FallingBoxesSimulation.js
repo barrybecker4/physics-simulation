@@ -21,7 +21,7 @@ export default class FallingBoxesSimulation extends AbstractSimulation {
   }
 
   getName() {
-    return "FallingBoxesScene";
+    return "Falling Boxes";
   }
 
   addStaticElements() {
