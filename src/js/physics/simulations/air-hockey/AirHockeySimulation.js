@@ -18,13 +18,13 @@ export default class AirHockeySimulation extends AbstractSimulation {
     world.on('begin-contact', contact => {
       const fixtureA = contact.getFixtureA()
         const fixtureB = contact.getFixtureB()
-        if (fixtureA == this.table.goal1Sensor) {
+        if (fixtureA == this.table.getGoal1Fixture()) {
             alert('Player1 scored')
-            puck.reset()
+            this.puck.reset()
         }
-        if (fixtureA == this.table.goal2Sensor) {
+        if (fixtureA == this.table.getGoal2Fixture()) {
             alert('Player2 scored')
-            puck.reset()
+            this.puck.reset()
         }
       }
     )

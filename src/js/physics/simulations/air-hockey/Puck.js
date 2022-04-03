@@ -18,7 +18,6 @@ export default class Puck {
     }
 
     create() {
-
         const bodyDef = {
             type: 'dynamic',
             position: planck.Vec2(0, 0).add(Constants.CENTER),
@@ -26,15 +25,9 @@ export default class Puck {
             linearDamping: 0.01,
             angularDamping: 0.02
         }
-        /*this.body = this.world.createBody(bodyDef)
-        this.body.createFixture(planck.Circle(1), {
-            density: 0.25,
-            restitution: 0.9,
-            filterCategoryBits : 0x0004
-        })*/
 
-        const color = 0x33ff66
-        const fixtureDef = { density: 0.25, friction: 0.0, restitution: .9, groupIndex: 2}
+        const color = 0xddeeee
+        const fixtureDef = { density: 0.25, friction: 0.0, restitution: .9, filterCategoryBits : 0x0004 }
         this.body = this.shapeBuilder.buildBall(0.2, bodyDef, color, fixtureDef)
     }
 
@@ -44,7 +37,10 @@ export default class Puck {
     }
 
     destroy() {
-        this.body.destroyFixture(this.body.getFixtureList())
+        let userData = this.body.getUserData();
+        userData.destroy();
+        //this.body.destroyFixture(this.body.getFixtureList())
+        this.shapeBuilder.world.destroyBody(this.body);
         this.body = null
     }
 }

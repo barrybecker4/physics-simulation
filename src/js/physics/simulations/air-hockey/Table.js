@@ -22,9 +22,9 @@ export default class Table {
 
     // Goal detection sensors
     createGoalSensors() {
-        const bodyDef = { type: 'static' }
-        const color = 0xff3333
-        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, groupIndex: 2, filterMaskBits: 0x0004, isSensor: true}
+        const bodyDef = {}// type: 'static' }
+        const color = 0xffddee
+        const fixtureDef = { density: 1.0, friction: 0.5, restitution: 0.2, filterMaskBits: 0x0004, isSensor: true }
         this.goal1Sensor = this.shapeBuilder.buildWall(point(-.8, 4.5), point(.8, 4.5), bodyDef, color, fixtureDef)
         this.goal2Sensor = this.shapeBuilder.buildWall(point(-.8, -4.5), point(.8, -4.5), bodyDef, color, fixtureDef)
     }
@@ -37,6 +37,14 @@ export default class Table {
         this.shapeBuilder.buildWall(point(-.8, 4.2), point(.8, 4.2), bodyDef, color, fixtureDef)
         this.shapeBuilder.buildWall(point(-.8, -4.2), point(.8, -4.2), bodyDef, color, fixtureDef)
         this.shapeBuilder.buildWall(point(-2.4, 0), point(2.4, 0), bodyDef, color, fixtureDef)
+    }
+
+    getGoal1Fixture() {
+        return this.goal1Sensor.getFixtureList();
+    }
+
+    getGoal2Fixture() {
+        return this.goal2Sensor.getFixtureList();
     }
 
 }
